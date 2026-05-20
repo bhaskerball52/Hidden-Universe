@@ -744,7 +744,7 @@ export default function Galaxy({ onSwitchSim }) {
         <SimTypeBar onSwitchSim={onSwitchSim} />
         <GalaxyViewportChrome showDM={showDM} onToggleDM={setShowDM} />
         {!sidebarOpen ? (
-          <button type="button" className="galaxy-sim-reopen" onMouseEnter={reopenSidebar}>
+          <button type="button" className="galaxy-sim-reopen" onClick={reopenSidebar}>
             Controls
           </button>
         ) : null}
