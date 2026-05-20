@@ -1,0 +1,85 @@
+.slc-sim {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 30% 25%, rgba(80, 50, 110, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 70%, rgba(120, 70, 40, 0.25) 0%, transparent 60%),
+    #050208;
+  color: #f4ecff;
+  font-family: ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Floating sim-type pill — scoped here since the shared GalaxySimulation.css
+   isn't loaded in this view. */
+.slc-sim .sim-type-bar {
+  position: absolute;
+  z-index: 10;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 14px;
+  background: rgba(12, 10, 20, 0.62);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.slc-sim .sim-type-tab {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(230, 224, 250, 0.62);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.slc-sim .sim-type-tab:hover {
+  color: #f3eefc;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.slc-sim .sim-type-tab-active {
+  color: #15101e;
+  background: linear-gradient(145deg, #c8a8ff 0%, #8e6bff 55%, #6a4cd6 100%);
+}
+
+.slc-sim .sim-type-icon { font-size: 11px; line-height: 1; }
+
+.slc-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 24px;
+}
+
+.slc-placeholder h1 {
+  margin: 0 0 12px;
+  font-size: 34px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: #f8f1ff;
+}
+
+.slc-placeholder p {
+  margin: 0;
+  max-width: 520px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(228, 218, 248, 0.7);
+}

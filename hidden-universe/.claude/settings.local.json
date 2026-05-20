@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(python3 -c \" import json with open\\('/Users/bablu/.claude/projects/-Users-bablu-Documents-GitHub-Hidden-Universe-hidden-universe/2ba7ce64-cf7d-4424-894f-51e4ba41771b.jsonl'\\) as f: lines = f.readlines\\(\\) for line in lines: try: d = json.loads\\(line\\) role = d.get\\('role',''\\) content = d.get\\('content',''\\) if isinstance\\(content, list\\): for c in content: if isinstance\\(c, dict\\) and c.get\\('type'\\) == 'text': text = c['text'] if len\\(text\\) > 20: print\\(f'[{role}]: {text[:600]}'\\) print\\('==='\\) elif isinstance\\(content, str\\) and len\\(content\\) > 20: print\\(f'[{role}]: {content[:600]}'\\) print\\('==='\\) except: pass \")",
+      "Bash(python3 *)"
+    ]
+  }
+}

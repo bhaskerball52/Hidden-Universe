@@ -1,0 +1,380 @@
+.bh-sim {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: #000005;
+  color: #e8e4f2;
+  font-family: ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+.bh-sim canvas {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Floating sim-type pill (the shared GalaxySimulation.css isn't loaded in the
+   black-hole view, so define it here — absolute so it never steals canvas
+   drags away from OrbitControls). */
+.bh-sim .sim-type-bar {
+  position: absolute;
+  z-index: 10;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 14px;
+  background: rgba(12, 10, 20, 0.62);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.bh-sim .sim-type-tab {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(230, 224, 250, 0.62);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.bh-sim .sim-type-tab:hover {
+  color: #f3eefc;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.bh-sim .sim-type-tab-active {
+  color: #1a0d14;
+  background: linear-gradient(145deg, #ffa463 0%, #ff7a3c 55%, #ef5a2a 100%);
+}
+
+.bh-sim .sim-type-icon { font-size: 11px; line-height: 1; }
+
+/* High Performance Mode toggle — top right */
+.bh-perf-toggle {
+  position: absolute;
+  z-index: 10;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  border-radius: 12px;
+  background: rgba(12, 10, 20, 0.62);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: rgba(235, 228, 250, 0.85);
+  font-size: 13px;
+  font-weight: 600;
+  user-select: none;
+  cursor: pointer;
+}
+
+.bh-perf-toggle input {
+  width: 16px;
+  height: 16px;
+  accent-color: #ff7a3c;
+  cursor: pointer;
+}
+
+/* ─── Controls sidebar (right) ─────────────────────────────────────────── */
+.bh-panel {
+  position: absolute;
+  z-index: 10;
+  top: 64px;
+  right: 16px;
+  width: 256px;
+  padding: 16px 18px 18px;
+  border-radius: 14px;
+  background: rgba(12, 10, 20, 0.66);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: rgba(235, 228, 250, 0.9);
+  font-size: 13px;
+}
+
+.bh-panel-collapsed {
+  width: auto;
+  padding: 8px;
+}
+
+.bh-panel-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(235, 228, 250, 0.85);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.bh-panel-collapsed .bh-panel-toggle {
+  position: static;
+}
+
+.bh-panel-toggle:hover { background: rgba(255, 255, 255, 0.14); }
+
+.bh-panel-title {
+  margin: 2px 0 16px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 170, 120, 0.85);
+}
+
+.bh-slider-row { margin-bottom: 15px; }
+
+.bh-slider-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.bh-slider-val {
+  font-variant-numeric: tabular-nums;
+  color: #ffb585;
+  font-size: 12px;
+}
+
+.bh-slider-row input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.16);
+  outline: none;
+  cursor: pointer;
+}
+
+.bh-slider-row input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ffb37a, #ef5a2a);
+  border: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+.bh-slider-row input[type='range']::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ffb37a, #ef5a2a);
+}
+
+/* ─── Panel: glossy upgrade + tabs + scrolling ─────────────────────────── */
+.bh-panel {
+  width: 290px;
+  max-height: calc(100dvh - 96px);
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(
+    180deg,
+    rgba(28, 18, 36, 0.78) 0%,
+    rgba(10, 8, 18, 0.78) 100%
+  );
+  border: 1px solid rgba(255, 200, 160, 0.14);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.bh-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 14px 16px 0 16px;
+}
+
+.bh-tab {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(225, 215, 245, 0.7);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.bh-tab:hover {
+  color: #f4e8df;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.bh-tab-active {
+  color: #1a0d14;
+  background: linear-gradient(145deg, #ffb37a 0%, #ff7a3c 55%, #ef5a2a 100%);
+  border-color: transparent;
+  box-shadow:
+    0 4px 14px rgba(239, 90, 42, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.bh-panel-body {
+  padding: 14px 18px 18px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 180, 130, 0.35) transparent;
+}
+
+.bh-panel-body::-webkit-scrollbar { width: 7px; }
+.bh-panel-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(255, 180, 130, 0.45), rgba(239, 90, 42, 0.35));
+  border-radius: 3px;
+}
+
+/* ─── Physics cards (glossy) ────────────────────────────────────────────── */
+.bh-physics {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bh-phys-card {
+  position: relative;
+  padding: 12px 14px 13px;
+  border-radius: 11px;
+  background: linear-gradient(
+    155deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.02) 45%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.bh-phys-card::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 180, 130, 0.55) 50%,
+    transparent 100%
+  );
+}
+
+.bh-phys-card h3 {
+  margin: 0 0 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #ffd0a8;
+}
+
+.bh-phys-card p {
+  margin: 0 0 9px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(232, 220, 248, 0.82);
+}
+
+.bh-phys-card code {
+  display: block;
+  padding: 7px 10px;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(255, 200, 160, 0.08);
+  color: #ffc699;
+  font-family: 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  word-break: break-word;
+}
+
+/* MathJax equation block — same amber-tinted card as the old <code> box */
+.bh-phys-eq {
+  padding: 9px 10px 7px;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.34);
+  border: 1px solid rgba(255, 200, 160, 0.08);
+  color: #ffd6a8;
+  overflow-x: auto;
+  overflow-y: hidden;
+  font-size: 11.5px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 180, 130, 0.35) transparent;
+}
+
+.bh-phys-eq::-webkit-scrollbar { height: 6px; }
+.bh-phys-eq::-webkit-scrollbar-thumb {
+  background: rgba(255, 180, 130, 0.35);
+  border-radius: 3px;
+}
+
+/* MathJax SVG/CHTML output uses currentColor for glyphs */
+.bh-phys-eq mjx-container { color: #ffd6a8; }
+.bh-phys-eq mjx-container[display='true'] { margin: 0 !important; }
+
+/* ─── Collapsed state — small square pinned to the screen edge ─────────── */
+/* Placed after the glossy .bh-panel rule so it actually wins the cascade. */
+.bh-panel.bh-panel-collapsed {
+  top: 64px;
+  right: 0;
+  width: 42px;
+  height: 42px;
+  min-height: 0;
+  max-height: 42px;
+  padding: 0;
+  border-radius: 10px 0 0 10px;
+  border-right: none;
+  background: linear-gradient(
+    180deg,
+    rgba(28, 18, 36, 0.85) 0%,
+    rgba(10, 8, 18, 0.85) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: -4px 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+.bh-panel.bh-panel-collapsed .bh-panel-toggle {
+  position: static;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  background: transparent;
+  font-size: 18px;
+  color: rgba(255, 200, 160, 0.9);
+}
+
+.bh-panel.bh-panel-collapsed .bh-panel-toggle:hover {
+  background: rgba(255, 180, 130, 0.10);
+  color: #ffd0a8;
+}
