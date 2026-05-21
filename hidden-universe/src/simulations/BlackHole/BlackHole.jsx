@@ -51,6 +51,8 @@ const LENS_FRAG = /* glsl */`
   uniform float uThick;    // disk thickness multiplier
   uniform float uDensity;  // disk density multiplier
   uniform float uSpin;     // Kerr spin (0..~0.95) — frame-drag approximation
+  uniform float uJetLum;   // jet luminosity multiplier
+  uniform float uJetThick; // jet thickness multiplier
 
   const int STEPMAX = 360; // hard ceiling; uSteps breaks out earlier
 
@@ -145,6 +147,47 @@ const LENS_FRAG = /* glsl */`
     dens = vg * radial * (0.30 + 0.95 * fil) * uDensity;
   }
 
+  // Volumetric polar jet — bright "flashlight" beams along the ±Y spin axis.
+  // Sampled inside the ray march so it inherits gravitational lensing for free.
+  void sampleJet(vec3 p, out vec3 emis, out float dens){
+    emis = vec3(0.0); dens = 0.0;
+    float ay = abs(p.y);
+    // Jets launch just outside the disk's vertical extent and extend far out.
+    if (ay < uRS * 1.4 || ay > uROut * 2.4) return;
+
+    float rcyl = length(p.xz);
+    // Slight conical flare: narrow at the base, widening with altitude.
+    // uJetThick scales the whole cross-section.
+    float coneR = (uRS * 0.50 + ay * 0.085) * uJetThick;
+    if (rcyl > coneR * 2.2) return;
+
+    // Soft Gaussian "flashlight" cross-section — fat core, smooth fade.
+    float c2   = coneR * coneR * 1.4;
+    float core = exp(-(rcyl * rcyl) / c2);
+
+    // Length envelope: brightest near the base, exponential fade outward.
+    float along     = (ay - uRS * 1.4) / max(uROut * 2.4 - uRS * 1.4, 1e-3);
+    float lengthEnv = exp(-along * 1.9) * smoothstep(0.0, 0.15, along);
+
+    // Frame-drag twist: spin winds the beam helically along its length.
+    float dir   = sign(p.y);
+    float ang   = atan(p.z, p.x) + uSpin * 5.0 * along * dir;
+    // Turbulent filamentary substructure — knots / blobs flowing outward.
+    vec3 q = vec3(cos(ang) * rcyl, p.y * 0.22, sin(ang) * rcyl) * 0.9;
+    float n1 = fbm3(q * 1.3 + vec3(0.0, uTime * 0.55 * dir, 0.0));
+    float n2 = fbm3(q * 3.0 - vec3(uTime * 0.30 * dir, 0.0, 0.0));
+    float fil = n1 * 0.65 + n2 * 0.35;
+
+    // Hot blue-white synchrotron core, cooler violet at the sheath.
+    vec3 hot  = vec3(1.55, 1.75, 2.30);
+    vec3 edge = vec3(0.45, 0.38, 1.15);
+    vec3 col  = mix(edge, hot, core);
+    col *= (0.55 + 1.10 * fil);
+
+    emis = col * 0.95 * uJetLum;
+    dens = core * lengthEnv * (0.45 + 0.85 * fil) * 0.42 * uDensity;
+  }
+
   void main(){
     vec3 dir = normalize(uCamF
       + vNdc.x * uTanHalf * uAspect * uCamR
@@ -197,6 +240,15 @@ const LENS_FRAG = /* glsl */`
       if (rxz < uROut + 1.5 && abs(pos.y) < Hslab + 0.45)
         dt = min(dt, 0.05 * uRS);
 
+      // Near the spin axis (jet column) → keep steps small so the bright
+      // narrow beam doesn't alias into broken segments at distance.
+      // Skipped when jets are off so the BH march keeps its original speed.
+      if (uJetLum > 0.0 && uJetThick > 0.0) {
+        float ayp = abs(pos.y);
+        if (rxz < uRS * 2.2 && ayp > uRS * 1.0 && ayp < uROut * 2.4)
+          dt = min(dt, 0.22);
+      }
+
       // 1/r⁵ via multiplies (r already known) instead of two pow() calls.
       // Spin adds an approximate frame-drag: a tangential (equatorial) tug
       // ∝ uSpin / r⁴ that swirls the lensed image — the Kerr asymmetry.
@@ -222,6 +274,15 @@ const LENS_FRAG = /* glsl */`
       sampleDisk(mp, emis, dens);
       accum += emis * dens * dt * 2.6;
 
+      // Jets: sampled volumetrically just like the disk so they get the same
+      // gravitational lensing for free (they bend visibly near the horizon).
+      // Guarded so a disabled jet adds zero per-step cost to the BH march.
+      if (uJetLum > 0.0 && uJetThick > 0.0) {
+        vec3 jemis; float jdens;
+        sampleJet(mp, jemis, jdens);
+        accum += jemis * jdens * dt * 2.8;
+      }
+
       pos = np; vel = nv;
     }
 
@@ -233,7 +294,7 @@ const LENS_FRAG = /* glsl */`
 `
 
 const LensedBlackHole = memo(function LensedBlackHole({
-  highPerf, mass, temperature, thickness, density, spin,
+  highPerf, mass, temperature, thickness, density, spin, jetLum, jetThick,
 }) {
   const { camera, size } = useThree()
 
@@ -263,6 +324,8 @@ const LensedBlackHole = memo(function LensedBlackHole({
         uThick:    { value: 1.0 },
         uDensity:  { value: 1.0 },
         uSpin:     { value: 0.0 },
+        uJetLum:   { value: 1.0 },
+        uJetThick: { value: 1.0 },
       },
       depthTest: false,
       depthWrite: false,
@@ -297,6 +360,8 @@ const LensedBlackHole = memo(function LensedBlackHole({
     U.uThick.value  = thickness
     U.uDensity.value = density
     U.uSpin.value   = spin
+    U.uJetLum.value   = jetLum
+    U.uJetThick.value = jetThick
   })
 
   return (
@@ -317,8 +382,8 @@ function SimTypeBar({ onSwitchSim }) {
         <span className="sim-type-icon">⬡</span>Kerr Black Hole
       </button>
       <button type="button" className="sim-type-tab"
-        onClick={() => onSwitchSim?.('starLifeCycle')}>
-        <span className="sim-type-icon">✦</span>Star Life Cycle
+        onClick={() => onSwitchSim?.('neutronStar')}>
+        <span className="sim-type-icon">✦</span>Neutron Star
       </button>
     </div>
   )
@@ -364,6 +429,8 @@ const CONTROL_DEFS = [
   { key: 'observer',    label: 'Observer Distance', min: 10, max: 80,   step: 1,    unit: 'rₛ' },
   { key: 'density',     label: 'Disk Density',     min: 0.2, max: 3.0,  step: 0.05, unit: '×' },
   { key: 'spin',        label: 'Spin (a)',         min: 0.0, max: 0.95, step: 0.01, unit: '' },
+  { key: 'jetLum',      label: 'Jet Luminosity',   min: 0.0, max: 2.5,  step: 0.05, unit: '×' },
+  { key: 'jetThick',    label: 'Jet Thickness',    min: 0.0, max: 2.5,  step: 0.05, unit: '×' },
 ]
 
 // Physics primer — concise, tied to what the shader is doing.
@@ -508,6 +575,7 @@ export default function BlackHole({ onSwitchSim }) {
   const [params, setParams] = useState({
     mass: 1.0, temperature: 1.0, thickness: 1.0,
     observer: 26, density: 1.0, spin: 0.0,
+    jetLum: 0.0, jetThick: 0.0,
   })
   const setParam = (key, v) => setParams((p) => ({ ...p, [key]: v }))
 
@@ -531,6 +599,8 @@ export default function BlackHole({ onSwitchSim }) {
           thickness={params.thickness}
           density={params.density}
           spin={params.spin}
+          jetLum={params.jetLum}
+          jetThick={params.jetThick}
         />
         <ObserverRig distance={params.observer} />
 

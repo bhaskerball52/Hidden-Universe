@@ -1,0 +1,321 @@
+.ns-sim {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(40, 90, 160, 0.25) 0%, transparent 55%),
+    #03060f;
+  color: #e6efff;
+  font-family: ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+.ns-sim canvas {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Floating sim-type pill (the shared GalaxySimulation.css isn't loaded here, so
+   define it locally — absolute so it never steals canvas drags from OrbitControls). */
+.ns-sim .sim-type-bar {
+  position: absolute;
+  z-index: 10;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 14px;
+  background: rgba(8, 14, 26, 0.62);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.ns-sim .sim-type-tab {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(214, 228, 255, 0.62);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.ns-sim .sim-type-tab:hover {
+  color: #eef5ff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ns-sim .sim-type-tab-active {
+  color: #061021;
+  background: linear-gradient(145deg, #aee0ff 0%, #5aa9ff 55%, #2f7df0 100%);
+}
+
+.ns-sim .sim-type-icon { font-size: 11px; line-height: 1; }
+
+/* ─── Controls / physics sidebar (right) ───────────────────────────────── */
+.ns-panel {
+  position: absolute;
+  z-index: 10;
+  top: 16px;
+  right: 16px;
+  width: 290px;
+  max-height: calc(100dvh - 32px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(16, 26, 46, 0.80) 0%,
+    rgba(6, 10, 20, 0.80) 100%
+  );
+  border: 1px solid rgba(150, 200, 255, 0.16);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  color: rgba(224, 236, 255, 0.9);
+  font-size: 13px;
+}
+
+.ns-panel-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(224, 236, 255, 0.85);
+  font-size: 13px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.ns-panel-toggle:hover { background: rgba(255, 255, 255, 0.14); }
+
+.ns-panel-title {
+  margin: 2px 0 16px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(140, 200, 255, 0.9);
+}
+
+.ns-slider-row { margin-bottom: 15px; }
+
+.ns-slider-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.ns-slider-val {
+  font-variant-numeric: tabular-nums;
+  color: #8fd0ff;
+  font-size: 12px;
+}
+
+.ns-slider-row input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.16);
+  outline: none;
+  cursor: pointer;
+}
+
+.ns-slider-row input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #bfe6ff, #2f7df0);
+  border: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+.ns-slider-row input[type='range']::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #bfe6ff, #2f7df0);
+}
+
+/* ─── Tabs ──────────────────────────────────────────────────────────────── */
+.ns-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 14px 16px 0 16px;
+}
+
+.ns-tab {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(210, 224, 250, 0.7);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.ns-tab:hover {
+  color: #eaf3ff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ns-tab-active {
+  color: #061021;
+  background: linear-gradient(145deg, #aee0ff 0%, #5aa9ff 55%, #2f7df0 100%);
+  border-color: transparent;
+  box-shadow:
+    0 4px 14px rgba(47, 125, 240, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.ns-panel-body {
+  padding: 14px 18px 18px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(130, 190, 255, 0.35) transparent;
+}
+
+.ns-panel-body::-webkit-scrollbar { width: 7px; }
+.ns-panel-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(130, 190, 255, 0.45), rgba(47, 125, 240, 0.35));
+  border-radius: 3px;
+}
+
+/* ─── Physics cards ─────────────────────────────────────────────────────── */
+.ns-physics {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ns-phys-card {
+  position: relative;
+  padding: 12px 14px 13px;
+  border-radius: 11px;
+  background: linear-gradient(
+    155deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.02) 45%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.ns-phys-card::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(140, 200, 255, 0.55) 50%,
+    transparent 100%
+  );
+}
+
+.ns-phys-card h3 {
+  margin: 0 0 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #aadcff;
+}
+
+.ns-phys-card p {
+  margin: 0 0 9px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(222, 234, 252, 0.82);
+}
+
+/* MathJax equation block — blue-tinted card */
+.ns-phys-eq {
+  padding: 9px 10px 7px;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.34);
+  border: 1px solid rgba(140, 200, 255, 0.10);
+  color: #b9deff;
+  overflow-x: auto;
+  overflow-y: hidden;
+  font-size: 11.5px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(130, 190, 255, 0.35) transparent;
+}
+
+.ns-phys-eq::-webkit-scrollbar { height: 6px; }
+.ns-phys-eq::-webkit-scrollbar-thumb {
+  background: rgba(130, 190, 255, 0.35);
+  border-radius: 3px;
+}
+
+.ns-phys-eq mjx-container { color: #b9deff; }
+.ns-phys-eq mjx-container[display='true'] { margin: 0 !important; }
+
+/* ─── Collapsed state — small square pinned to the edge ─────────────────── */
+.ns-panel.ns-panel-collapsed {
+  top: 16px;
+  right: 16px;
+  width: 42px;
+  height: 42px;
+  min-height: 0;
+  max-height: 42px;
+  padding: 0;
+  border-radius: 12px;
+  border: 1px solid rgba(150, 200, 255, 0.16);
+  background: linear-gradient(
+    180deg,
+    rgba(16, 26, 46, 0.88) 0%,
+    rgba(6, 10, 20, 0.88) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5);
+}
+
+.ns-panel.ns-panel-collapsed .ns-panel-toggle {
+  position: static;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: transparent;
+  font-size: 18px;
+  color: rgba(150, 205, 255, 0.9);
+}
+
+.ns-panel.ns-panel-collapsed .ns-panel-toggle:hover {
+  background: rgba(130, 190, 255, 0.10);
+  color: #aadcff;
+}

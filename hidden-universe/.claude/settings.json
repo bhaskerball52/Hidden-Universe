@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx eslint *)",
+      "Bash(curl -s \"http://localhost:5181/src/simulations/NeutronStar/NeutronStar.jsx\")",
+      "Bash(pkill -f \"vite --port 5181\")"
+    ]
+  }
+}

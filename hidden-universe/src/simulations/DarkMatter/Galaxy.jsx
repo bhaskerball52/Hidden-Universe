@@ -646,10 +646,10 @@ function SimTypeBar({ onSwitchSim }) {
       <button
         type="button"
         className="sim-type-tab"
-        onClick={() => onSwitchSim?.('starLifeCycle')}
+        onClick={() => onSwitchSim?.('neutronStar')}
       >
         <span className="sim-type-icon">✦</span>
-        Star Life Cycle
+        Neutron Star
       </button>
     </div>
   )
