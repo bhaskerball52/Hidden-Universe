@@ -1,0 +1,103 @@
+/* ─── Shared hand-gesture UI (used by multiple sims) ───────────────────── */
+
+.gesture-btn {
+  pointer-events: auto;
+  position: absolute;
+  z-index: 25;
+  top: 14px;
+  left: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(10, 8, 18, 0.55);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  color: #f0eaf8;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.gesture-btn:hover {
+  border-color: rgba(0, 255, 204, 0.45);
+  background: rgba(20, 26, 40, 0.78);
+}
+
+.gesture-btn-active {
+  color: #042029;
+  background: linear-gradient(145deg, #b3ffe6 0%, #00ffcc 55%, #00c8a3 100%);
+  border-color: transparent;
+  box-shadow:
+    0 4px 14px rgba(0, 255, 204, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.gesture-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
+}
+
+.gesture-btn-active .gesture-dot {
+  background: #042029;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.65);
+}
+
+.gesture-video {
+  pointer-events: none;
+  position: absolute;
+  z-index: 25;
+  bottom: 20px;
+  right: 20px;
+  width: 200px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid #00ffcc;
+  background: #000;
+  /* Mirror so the user's left/right matches what they see on-screen. */
+  transform: scaleX(-1);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+}
+
+.gesture-status {
+  pointer-events: none;
+  position: absolute;
+  z-index: 25;
+  bottom: 184px;
+  right: 20px;
+  width: 220px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(10, 8, 18, 0.66);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 255, 204, 0.28);
+  color: #d6fff3;
+  font-size: 11.5px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.gesture-hint {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #00ffcc;
+  margin-bottom: 5px;
+}
+
+.gesture-state {
+  color: rgba(214, 255, 243, 0.92);
+}

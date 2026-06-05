@@ -3,6 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Sparkles, Html, Line } from '@react-three/drei'
 import * as THREE from 'three'
 import SimulationSidebar from './SimulationSidebar'
+import HandGestureControl from './HandGestureControl'
 import { computeHaloSeries } from './haloModels'
 import './GalaxySimulation.css'
 
@@ -651,6 +652,14 @@ function SimTypeBar({ onSwitchSim }) {
         <span className="sim-type-icon">✦</span>
         Neutron Star
       </button>
+      <button
+        type="button"
+        className="sim-type-tab"
+        onClick={() => onSwitchSim?.('wormhole')}
+      >
+        <span className="sim-type-icon">◯</span>
+        Wormhole
+      </button>
     </div>
   )
 }
@@ -664,10 +673,32 @@ function GalaxyViewportChrome({ showDM, onToggleDM }) {
   )
 }
 
+// Lerps the galaxy group's rotation and uniform scale toward the gesture
+// targets each frame — same low-pass smoothing the reference HTML demo uses
+// (rotation 0.05, scale 0.12).  When gestures are disabled the targets ease
+// back to identity so the galaxy returns to its rest pose.
+function GestureApply({ gestureRef, groupRef, enabled }) {
+  useFrame(() => {
+    const g = gestureRef.current
+    const obj = groupRef.current
+    if (!g || !obj) return
+    const tRotX  = enabled ? g.targetRotX  : 0
+    const tRotY  = enabled ? g.targetRotY  : 0
+    const tScale = enabled ? g.targetScale : 1
+    g.curRotX  += (tRotX  - g.curRotX)  * 0.05
+    g.curRotY  += (tRotY  - g.curRotY)  * 0.05
+    g.curScale += (tScale - g.curScale) * 0.12
+    obj.rotation.x = g.curRotX
+    obj.rotation.y = g.curRotY
+    obj.scale.setScalar(g.curScale)
+  })
+  return null
+}
+
 export default function Galaxy({ onSwitchSim }) {
   const [activeTab, setActiveTab] = useState('Simulate')
   const [model, setModel] = useState('nfw')
-  const [densityFactor, setDensityFactor] = useState(1)
+  const [densityFactor, setDensityFactor] = useState(2.5)
   const [scaleRadiusKpc, setScaleRadiusKpc] = useState(15)
   const [velocityScale, setVelocityScale] = useState(1)
   const [showDM, setShowDM] = useState(true)
@@ -676,6 +707,12 @@ export default function Galaxy({ onSwitchSim }) {
   const [rcMassFactor, setRcMassFactor] = useState(2.0)
   const [rcScaleKpc, setRcScaleKpc] = useState(15)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [gestureEnabled, setGestureEnabled] = useState(false)
+  const galaxyGroupRef = useRef(null)
+  const gestureRef = useRef({
+    targetRotX: 0, targetRotY: 0, targetScale: 1,
+    curRotX: 0,    curRotY: 0,    curScale: 1,
+  })
 
   const reopenSidebar = () => setSidebarOpen(true)
 
@@ -712,16 +749,25 @@ export default function Galaxy({ onSwitchSim }) {
       <div className="galaxy-sim-viewport">
       <Canvas
   style={{ background: '#00000a', width: '100%', height: '100%', touchAction: 'none' }}
-  camera={{ position: [0, 28, 14], fov: 50 }}
+  camera={{ position: [0, 7, 42], fov: 50 }}
   gl={{ antialias: true }}
 >
-<GalaxyParticles
-  showDM={showDM}
-  densityFactor={densityFactor}
-  scaleRadiusKpc={scaleRadiusKpc}
-  model={model}
-  velocityScale={velocityScale}
-/>
+<group ref={galaxyGroupRef}>
+  <GalaxyParticles
+    showDM={showDM}
+    densityFactor={densityFactor}
+    scaleRadiusKpc={scaleRadiusKpc}
+    model={model}
+    velocityScale={velocityScale}
+  />
+  <RotationCurveOverlay visible={showRotationCurve} series={rcSeries} massFactor={rcMassFactor} />
+  <LightRay
+    visible={showLightRay}
+    mencMsun={rcSeries.mencOuterMsun}
+    scaleRadiusKpc={rcScaleKpc}
+  />
+</group>
+<GestureApply gestureRef={gestureRef} groupRef={galaxyGroupRef} enabled={gestureEnabled} />
           <OrbitControls
   makeDefault
   enablePan
@@ -734,15 +780,14 @@ export default function Galaxy({ onSwitchSim }) {
   panSpeed={0.65}
   rotateSpeed={0.65}
 />
-          <RotationCurveOverlay visible={showRotationCurve} series={rcSeries} massFactor={rcMassFactor} />
-          <LightRay
-            visible={showLightRay}
-            mencMsun={rcSeries.mencOuterMsun}
-            scaleRadiusKpc={rcScaleKpc}
-          />
         </Canvas>
         <SimTypeBar onSwitchSim={onSwitchSim} />
         <GalaxyViewportChrome showDM={showDM} onToggleDM={setShowDM} />
+        <HandGestureControl
+          enabled={gestureEnabled}
+          onToggle={() => setGestureEnabled((v) => !v)}
+          gestureRef={gestureRef}
+        />
         {!sidebarOpen ? (
           <button type="button" className="galaxy-sim-reopen" onClick={reopenSidebar}>
             Controls

@@ -3,6 +3,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, Stars } from '@react-three/drei'
 import { MathJaxContext, MathJax } from 'better-react-mathjax'
 import * as THREE from 'three'
+import HandGestureControl from '../DarkMatter/HandGestureControl'
 import './NeutronStar.css'
 
 // MathJax v3 config — load once for the side panel
@@ -337,6 +338,10 @@ function SimTypeBar({ onSwitchSim }) {
       <button type="button" className="sim-type-tab sim-type-tab-active">
         <span className="sim-type-icon">✦</span>Neutron Star
       </button>
+      <button type="button" className="sim-type-tab"
+        onClick={() => onSwitchSim?.('wormhole')}>
+        <span className="sim-type-icon">◯</span>Wormhole
+      </button>
     </div>
   )
 }
@@ -395,9 +400,29 @@ const PHYSICS_CARDS = [
   },
 ]
 
+// Plain-language intro — shown first, mirrors the Dark Matter "Intro" tab.
+const INTRO_CARDS = [
+  {
+    title: 'What is a neutron star?',
+    body: 'The collapsed core left behind by a massive star’s supernova. About 1.4 solar masses are crushed into a city-sized sphere ~24 km across — so dense that a sugar-cube of it would weigh as much as a mountain.',
+  },
+  {
+    title: 'What am I seeing?',
+    body: 'The glowing blue sphere is the star’s searing plasma surface. The luminous loops are its magnetic dipole field, and the two beams along the magnetic axis are relativistic particle jets streaming from the poles.',
+  },
+  {
+    title: 'Why does it pulse?',
+    body: 'The magnetic axis is tilted from the spin axis, so as the star rotates the beams sweep through space like a lighthouse. If a beam crosses your line of sight you see regular pulses — that is a pulsar.',
+  },
+  {
+    title: 'What can I change?',
+    body: 'Open Controls to adjust the spin rate, magnetic tilt and field strength, surface temperature, jet luminosity, the number of field lines, and your viewing distance. The Physics tab covers the underlying equations.',
+  },
+]
+
 function SidePanel({ values, onChange }) {
   const [open, setOpen] = useState(true)
-  const [tab, setTab]   = useState('controls')
+  const [tab, setTab]   = useState('intro')
 
   return (
     <MathJaxContext version={3} config={MATHJAX_CONFIG}>
@@ -410,6 +435,9 @@ function SidePanel({ values, onChange }) {
         <>
           <div className="ns-tabs">
             <button type="button"
+              className={`ns-tab ${tab === 'intro' ? 'ns-tab-active' : ''}`}
+              onClick={() => setTab('intro')}>Intro</button>
+            <button type="button"
               className={`ns-tab ${tab === 'controls' ? 'ns-tab-active' : ''}`}
               onClick={() => setTab('controls')}>Controls</button>
             <button type="button"
@@ -418,6 +446,18 @@ function SidePanel({ values, onChange }) {
           </div>
 
           <div className="ns-panel-body">
+            {tab === 'intro' && (
+              <div className="ns-physics">
+                <h2 className="ns-panel-title">Welcome</h2>
+                {INTRO_CARDS.map((c) => (
+                  <article key={c.title} className="ns-phys-card">
+                    <h3>{c.title}</h3>
+                    <p>{c.body}</p>
+                  </article>
+                ))}
+              </div>
+            )}
+
             {tab === 'controls' && (
               <>
                 <h2 className="ns-panel-title">Magnetar Parameters</h2>
@@ -459,6 +499,27 @@ function SidePanel({ values, onChange }) {
   )
 }
 
+// Same low-pass smoothing (rotation 0.05, scale 0.12) as the reference HTML demo.
+// When gestures are off, targets ease back to identity so the magnetosphere
+// returns to rest.
+function GestureApply({ gestureRef, groupRef, enabled }) {
+  useFrame(() => {
+    const g = gestureRef.current
+    const obj = groupRef.current
+    if (!g || !obj) return
+    const tRotX  = enabled ? g.targetRotX  : 0
+    const tRotY  = enabled ? g.targetRotY  : 0
+    const tScale = enabled ? g.targetScale : 1
+    g.curRotX  += (tRotX  - g.curRotX)  * 0.05
+    g.curRotY  += (tRotY  - g.curRotY)  * 0.05
+    g.curScale += (tScale - g.curScale) * 0.12
+    obj.rotation.x = g.curRotX
+    obj.rotation.y = g.curRotY
+    obj.scale.setScalar(g.curScale)
+  })
+  return null
+}
+
 // ─── Root ─────────────────────────────────────────────────────────────────────
 export default function NeutronStar({ onSwitchSim }) {
   const [params, setParams] = useState({
@@ -466,6 +527,12 @@ export default function NeutronStar({ onSwitchSim }) {
     jetLum: 1.2, fieldDensity: 7, observer: 14,
   })
   const setParam = (key, v) => setParams((p) => ({ ...p, [key]: v }))
+  const [gestureEnabled, setGestureEnabled] = useState(false)
+  const gestureGroupRef = useRef(null)
+  const gestureRef = useRef({
+    targetRotX: 0, targetRotY: 0, targetScale: 1,
+    curRotX: 0,    curRotY: 0,    curScale: 1,
+  })
 
   return (
     <div className="ns-sim">
@@ -481,14 +548,17 @@ export default function NeutronStar({ onSwitchSim }) {
         <fog attach="fog" args={['#03060f', 34, 130]} />
         <Stars radius={140} depth={70} count={4500} factor={4} saturation={0} fade speed={0.4} />
         <AmbientGlow />
-        <Magnetosphere
-          spin={params.spin}
-          obliquity={params.obliquity}
-          bfield={params.bfield}
-          temp={params.temp}
-          jetLum={params.jetLum}
-          fieldDensity={params.fieldDensity}
-        />
+        <group ref={gestureGroupRef}>
+          <Magnetosphere
+            spin={params.spin}
+            obliquity={params.obliquity}
+            bfield={params.bfield}
+            temp={params.temp}
+            jetLum={params.jetLum}
+            fieldDensity={params.fieldDensity}
+          />
+        </group>
+        <GestureApply gestureRef={gestureRef} groupRef={gestureGroupRef} enabled={gestureEnabled} />
         <ObserverRig distance={params.observer} />
 
         <OrbitControls
@@ -504,6 +574,11 @@ export default function NeutronStar({ onSwitchSim }) {
           rotateSpeed={0.6}
         />
       </Canvas>
+      <HandGestureControl
+        enabled={gestureEnabled}
+        onToggle={() => setGestureEnabled((v) => !v)}
+        gestureRef={gestureRef}
+      />
     </div>
   )
 }

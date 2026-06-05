@@ -89,6 +89,7 @@ body {
 }
 
 .galaxy-sim {
+  position: relative;
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -193,6 +194,9 @@ body {
     inset 0 1px 0 rgba(255, 255, 255, 0.28);
 }
 
+
+/* Hand-gesture UI styles live in HandGestureControl.css (imported by the
+   component itself, so they're available wherever the component is used). */
 
 .galaxy-dm-toggle {
   pointer-events: auto;
@@ -348,18 +352,20 @@ body {
   margin: 8px 0 10px;
 }
 
+/* Floating box (matches the Black Hole / Neutron Star panels) — no longer a
+   docked full-height column. */
 .galaxy-sim-sidebar-shell {
-  flex-shrink: 0;
-  width: min(408px, 46vw);
-  height: 100%;
-  max-height: 100vh;
-  max-height: 100dvh;
+  position: absolute;
+  z-index: 30;
+  top: 64px;
+  right: 16px;
+  width: min(360px, 92vw);
+  max-height: calc(100dvh - 80px);
   min-height: 0;
   display: flex;
   flex-direction: column;
   pointer-events: auto;
   isolation: isolate;
-  transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .galaxy-sim-sidebar-shell-collapsed {
@@ -372,11 +378,14 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0;
-  padding: 18px 18px 16px;
-  border-left: 1px solid rgba(255, 255, 255, 0.06);
-  background: linear-gradient(165deg, rgba(22, 18, 34, 0.92) 0%, rgba(8, 7, 14, 0.96) 100%);
+  padding: 16px 18px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: linear-gradient(180deg, rgba(22, 18, 34, 0.88) 0%, rgba(8, 7, 14, 0.92) 100%);
   backdrop-filter: blur(20px);
-  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.04);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -939,37 +948,37 @@ body {
 @media (max-width: 980px) {
   html,
   body {
-    overflow: auto;
+    overflow: hidden;
   }
 
   .galaxy-sim {
-    flex-direction: column;
-    height: auto;
-    min-height: 100vh;
-    min-height: 100dvh;
-    overflow: visible;
+    flex-direction: row;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
   }
 
   .galaxy-sim-viewport {
-    min-height: 55vh;
-    height: 55vh;
+    min-height: 0;
+    height: 100%;
   }
 
+  /* Floating box stays floating — just span more width near the top */
   .galaxy-sim-sidebar-shell {
-    width: 100%;
-    height: auto;
-    max-height: none;
+    top: 60px;
+    right: 8px;
+    left: 8px;
+    width: auto;
+    max-height: 70dvh;
     pointer-events: auto;
   }
 
   .galaxy-sim-sidebar-shell-collapsed {
-    width: 100%;
-    height: 56px;
-    max-height: 56px;
+    width: 56px;
   }
 
   .sim-sidebar {
-    max-height: 42vh;
+    max-height: none;
   }
 
   .sim-sidebar-collapsed {

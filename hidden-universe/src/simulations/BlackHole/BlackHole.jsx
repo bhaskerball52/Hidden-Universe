@@ -1,8 +1,9 @@
-import { useMemo, memo, useState, useEffect } from 'react'
+import { useMemo, memo, useState, useEffect, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { MathJaxContext, MathJax } from 'better-react-mathjax'
 import * as THREE from 'three'
+import HandGestureControl from '../DarkMatter/HandGestureControl'
 import './BlackHole.css'
 
 // MathJax v3 config — load once for the side panel
@@ -488,9 +489,29 @@ const PHYSICS_CARDS = [
   },
 ]
 
+// Plain-language intro — shown first, mirrors the Dark Matter "Intro" tab.
+const INTRO_CARDS = [
+  {
+    title: 'What is a black hole?',
+    body: 'A region where gravity is so strong that nothing — not even light — can escape once it crosses the event horizon. This is a Kerr black hole: it also spins, dragging spacetime around with it.',
+  },
+  {
+    title: 'What am I seeing?',
+    body: 'The glowing band is an accretion disk of superheated gas spiralling inward. The perfectly dark circle is the shadow of the event horizon, and the thin bright ring hugging it is the photon ring — light that orbited the hole before reaching you.',
+  },
+  {
+    title: 'Why does it look warped?',
+    body: 'Gravity bends the light paths so severely that you see the far side of the disk lifted both above and below the shadow. The whole image is gravitationally lensed, recomputed from your live viewing angle — not faked geometry.',
+  },
+  {
+    title: 'What can I change?',
+    body: 'Open Controls to set the mass, spin, disk temperature, thickness and density, your observer distance, and the polar jets. The Physics tab explains the relativity behind each effect.',
+  },
+]
+
 function SidePanel({ values, onChange }) {
   const [open, setOpen] = useState(true)
-  const [tab, setTab]   = useState('controls')
+  const [tab, setTab]   = useState('intro')
 
   return (
     <MathJaxContext version={3} config={MATHJAX_CONFIG}>
@@ -508,6 +529,13 @@ function SidePanel({ values, onChange }) {
           <div className="bh-tabs">
             <button
               type="button"
+              className={`bh-tab ${tab === 'intro' ? 'bh-tab-active' : ''}`}
+              onClick={() => setTab('intro')}
+            >
+              Intro
+            </button>
+            <button
+              type="button"
               className={`bh-tab ${tab === 'controls' ? 'bh-tab-active' : ''}`}
               onClick={() => setTab('controls')}
             >
@@ -523,6 +551,18 @@ function SidePanel({ values, onChange }) {
           </div>
 
           <div className="bh-panel-body">
+            {tab === 'intro' && (
+              <div className="bh-physics">
+                <h2 className="bh-panel-title">Welcome</h2>
+                {INTRO_CARDS.map((c) => (
+                  <article key={c.title} className="bh-phys-card">
+                    <h3>{c.title}</h3>
+                    <p>{c.body}</p>
+                  </article>
+                ))}
+              </div>
+            )}
+
             {tab === 'controls' && (
               <>
                 <h2 className="bh-panel-title">Kerr Parameters</h2>
@@ -569,6 +609,56 @@ function SidePanel({ values, onChange }) {
   )
 }
 
+// ─── Camera-driving gesture rig ───────────────────────────────────────────────
+// When hand gestures are enabled, drive the OrbitControls camera directly from
+// the gesture targets:  open hand → rotate the view; fist + palm size → zoom
+// (closer hand = larger palmSize → smaller orbital distance → closer view).
+// Uses the same low-pass smoothing as the reference demo (rot 0.05, scale 0.12).
+function BHGestureCamera({ gestureRef, enabled }) {
+  const camera   = useThree((s) => s.camera)
+  const controls = useThree((s) => s.controls)
+  const baseRef  = useRef(null)
+
+  useEffect(() => { if (!enabled) baseRef.current = null }, [enabled])
+
+  useFrame(() => {
+    const g = gestureRef.current
+    if (!g) return
+    if (!enabled) {
+      // Ease state back to identity so re-enabling doesn't snap.
+      g.curRotX  += (0 - g.curRotX)  * 0.05
+      g.curRotY  += (0 - g.curRotY)  * 0.05
+      g.curScale += (1 - g.curScale) * 0.12
+      return
+    }
+    // Capture the current orbital distance the first frame gestures take over —
+    // so toggling on doesn't teleport the camera.
+    if (baseRef.current == null) {
+      const t = controls?.target
+      baseRef.current = t ? camera.position.distanceTo(t) : camera.position.length()
+    }
+    const D0 = baseRef.current
+    g.curRotX  += (g.targetRotX  - g.curRotX)  * 0.05
+    g.curRotY  += (g.targetRotY  - g.curRotY)  * 0.05
+    g.curScale += (g.targetScale - g.curScale) * 0.12
+
+    const tgt = controls?.target ?? new THREE.Vector3()
+    // hand left → camera left, hand up → camera up
+    const az = -g.curRotY
+    const el = Math.max(-1.3, Math.min(1.3, -g.curRotX))
+    const dist = Math.max(8, Math.min(90, D0 / Math.max(g.curScale, 0.05)))
+    const cE = Math.cos(el), sE = Math.sin(el)
+    camera.position.set(
+      tgt.x + dist * Math.sin(az) * cE,
+      tgt.y + dist * sE,
+      tgt.z + dist * Math.cos(az) * cE,
+    )
+    camera.lookAt(tgt)
+    controls?.update?.()
+  })
+  return null
+}
+
 // ─── Root ─────────────────────────────────────────────────────────────────────
 export default function BlackHole({ onSwitchSim }) {
   const [highPerf, setHighPerf] = useState(true)
@@ -578,6 +668,11 @@ export default function BlackHole({ onSwitchSim }) {
     jetLum: 0.0, jetThick: 0.0,
   })
   const setParam = (key, v) => setParams((p) => ({ ...p, [key]: v }))
+  const [gestureEnabled, setGestureEnabled] = useState(false)
+  const gestureRef = useRef({
+    targetRotX: 0, targetRotY: 0, targetScale: 1,
+    curRotX: 0,    curRotY: 0,    curScale: 1,
+  })
 
   return (
     <div className="bh-sim">
@@ -603,9 +698,11 @@ export default function BlackHole({ onSwitchSim }) {
           jetThick={params.jetThick}
         />
         <ObserverRig distance={params.observer} />
+        <BHGestureCamera gestureRef={gestureRef} enabled={gestureEnabled} />
 
         <OrbitControls
           makeDefault
+          enabled={!gestureEnabled}
           enableRotate
           enableZoom
           enablePan={false}
@@ -619,6 +716,11 @@ export default function BlackHole({ onSwitchSim }) {
           rotateSpeed={0.6}
         />
       </Canvas>
+      <HandGestureControl
+        enabled={gestureEnabled}
+        onToggle={() => setGestureEnabled((v) => !v)}
+        gestureRef={gestureRef}
+      />
     </div>
   )
 }
