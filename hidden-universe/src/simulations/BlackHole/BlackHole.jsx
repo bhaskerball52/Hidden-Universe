@@ -3,7 +3,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { MathJaxContext, MathJax } from 'better-react-mathjax'
 import * as THREE from 'three'
-import HandGestureControl from '../DarkMatter/HandGestureControl'
+import HandGestureControl, { advanceGesture } from '../DarkMatter/HandGestureControl'
 import './BlackHole.css'
 
 // MathJax v3 config — load once for the side panel
@@ -386,6 +386,10 @@ function SimTypeBar({ onSwitchSim }) {
         onClick={() => onSwitchSim?.('neutronStar')}>
         <span className="sim-type-icon">✦</span>Neutron Star
       </button>
+      <button type="button" className="sim-type-tab"
+        onClick={() => onSwitchSim?.('wormhole')}>
+        <span className="sim-type-icon">◯</span>Wormhole
+      </button>
     </div>
   )
 }
@@ -625,10 +629,9 @@ function BHGestureCamera({ gestureRef, enabled }) {
     const g = gestureRef.current
     if (!g) return
     if (!enabled) {
-      // Ease state back to identity so re-enabling doesn't snap.
-      g.curRotX  += (0 - g.curRotX)  * 0.05
-      g.curRotY  += (0 - g.curRotY)  * 0.05
-      g.curScale += (1 - g.curScale) * 0.12
+      // Ease state back to identity so re-enabling doesn't snap; OrbitControls
+      // owns the camera while gestures are off, so don't drive it here.
+      advanceGesture(g, false)
       return
     }
     // Capture the current orbital distance the first frame gestures take over —
@@ -638,9 +641,9 @@ function BHGestureCamera({ gestureRef, enabled }) {
       baseRef.current = t ? camera.position.distanceTo(t) : camera.position.length()
     }
     const D0 = baseRef.current
-    g.curRotX  += (g.targetRotX  - g.curRotX)  * 0.05
-    g.curRotY  += (g.targetRotY  - g.curRotY)  * 0.05
-    g.curScale += (g.targetScale - g.curScale) * 0.12
+    // While a hand drives it the view tracks the targets; when the hand leaves
+    // the frame the orbit conserves momentum and coasts to a smooth stop.
+    advanceGesture(g, true)
 
     const tgt = controls?.target ?? new THREE.Vector3()
     // hand left → camera left, hand up → camera up
@@ -672,6 +675,7 @@ export default function BlackHole({ onSwitchSim }) {
   const gestureRef = useRef({
     targetRotX: 0, targetRotY: 0, targetScale: 1,
     curRotX: 0,    curRotY: 0,    curScale: 1,
+    velRotX: 0,    velRotY: 0,    handPresent: false,
   })
 
   return (

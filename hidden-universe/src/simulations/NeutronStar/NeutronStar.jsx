@@ -3,7 +3,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, Stars } from '@react-three/drei'
 import { MathJaxContext, MathJax } from 'better-react-mathjax'
 import * as THREE from 'three'
-import HandGestureControl from '../DarkMatter/HandGestureControl'
+import HandGestureControl, { advanceGesture } from '../DarkMatter/HandGestureControl'
 import './NeutronStar.css'
 
 // MathJax v3 config — load once for the side panel
@@ -499,20 +499,15 @@ function SidePanel({ values, onChange }) {
   )
 }
 
-// Same low-pass smoothing (rotation 0.05, scale 0.12) as the reference HTML demo.
-// When gestures are off, targets ease back to identity so the magnetosphere
-// returns to rest.
+// Low-pass smoothing with angular momentum: while a hand drives it the group
+// tracks the gesture targets; when the hand leaves the frame it conserves its
+// last angular velocity and coasts to a smooth stop instead of snapping to rest.
 function GestureApply({ gestureRef, groupRef, enabled }) {
   useFrame(() => {
     const g = gestureRef.current
     const obj = groupRef.current
     if (!g || !obj) return
-    const tRotX  = enabled ? g.targetRotX  : 0
-    const tRotY  = enabled ? g.targetRotY  : 0
-    const tScale = enabled ? g.targetScale : 1
-    g.curRotX  += (tRotX  - g.curRotX)  * 0.05
-    g.curRotY  += (tRotY  - g.curRotY)  * 0.05
-    g.curScale += (tScale - g.curScale) * 0.12
+    advanceGesture(g, enabled)
     obj.rotation.x = g.curRotX
     obj.rotation.y = g.curRotY
     obj.scale.setScalar(g.curScale)
@@ -532,6 +527,7 @@ export default function NeutronStar({ onSwitchSim }) {
   const gestureRef = useRef({
     targetRotX: 0, targetRotY: 0, targetScale: 1,
     curRotX: 0,    curRotY: 0,    curScale: 1,
+    velRotX: 0,    velRotY: 0,    handPresent: false,
   })
 
   return (

@@ -11,6 +11,41 @@ const PALM_SIZE_SCALE_ONE = 0.1547368421
 const mapLinear = (v, a1, a2, b1, b2) => b1 + ((b2 - b1) * (v - a1)) / (a2 - a1)
 const clamp     = (v, a, b) => Math.max(a, Math.min(b, v))
 
+// ── Shared per-frame smoothing with angular momentum ────────────────────────
+// Advances a gesture state object (curRotX/Y/Scale + velRotX/Y) one frame.
+//   • enabled & hand present → low-pass toward the hand targets while tracking
+//     the resulting angular velocity (an EMA, so it reflects recent motion).
+//   • enabled & hand gone    → conserve momentum: keep spinning on the last
+//     angular velocity, decaying smoothly by `friction` each frame until it
+//     coasts to rest (zoom is held, matching the prior behaviour).
+//   • disabled               → ease rotation/scale back to the identity pose.
+// Consumers call this, then read g.curRotX / g.curRotY / g.curScale.
+export function advanceGesture(g, enabled, opts = {}) {
+  if (!g) return
+  const { rotLerp = 0.05, scaleLerp = 0.12, friction = 0.95, velBlend = 0.3 } = opts
+  if (enabled && g.handPresent) {
+    const px = g.curRotX, py = g.curRotY
+    g.curRotX  += (g.targetRotX  - g.curRotX)  * rotLerp
+    g.curRotY  += (g.targetRotY  - g.curRotY)  * rotLerp
+    g.curScale += (g.targetScale - g.curScale) * scaleLerp
+    g.velRotX = g.velRotX * (1 - velBlend) + (g.curRotX - px) * velBlend
+    g.velRotY = g.velRotY * (1 - velBlend) + (g.curRotY - py) * velBlend
+  } else if (enabled) {
+    g.curRotX += g.velRotX
+    g.curRotY += g.velRotY
+    g.velRotX *= friction
+    g.velRotY *= friction
+    if (Math.abs(g.velRotX) < 1e-5) g.velRotX = 0
+    if (Math.abs(g.velRotY) < 1e-5) g.velRotY = 0
+  } else {
+    g.curRotX  += (0 - g.curRotX)  * rotLerp
+    g.curRotY  += (0 - g.curRotY)  * rotLerp
+    g.curScale += (1 - g.curScale) * scaleLerp
+    g.velRotX = 0
+    g.velRotY = 0
+  }
+}
+
 // Piecewise palm-size → scale mapping: small palm collapses toward MIN, large
 // palm expands toward MAX, with palm = PALM_SIZE_SCALE_ONE pinned at 1.0.
 function mapPalmSizeToScale(palmSize) {
@@ -58,6 +93,12 @@ export default function HandGestureControl({ enabled, onToggle, gestureRef }) {
     if (!enabled) return
     let cancelled = false
     const setStatus = (txt) => { if (statusRef.current) statusRef.current.textContent = txt }
+    // Start with no coast carried over from a previous session.
+    if (gestureRef.current) {
+      gestureRef.current.handPresent = false
+      gestureRef.current.velRotX = 0
+      gestureRef.current.velRotY = 0
+    }
 
     async function setup() {
       setStatus('Loading hand-tracking model…')
@@ -88,13 +129,14 @@ export default function HandGestureControl({ enabled, onToggle, gestureRef }) {
           if (!g) return
 
           if (!results.multiHandLandmarks || results.multiHandLandmarks.length === 0) {
-            g.targetRotX = 0
-            g.targetRotY = 0
-            // Hold the last fist-set zoom — briefly losing the hand shouldn't
-            // snap your zoom level back to 1.
-            setStatus(`No hand detected — show your hand (zoom held ${g.targetScale.toFixed(2)}×)`)
+            // Hand left the frame: don't snap to rest — clearing handPresent lets
+            // the scene conserve its angular momentum and coast to a smooth stop.
+            // The last fist-set zoom is also held.
+            g.handPresent = false
+            setStatus(`No hand detected — coasting to a stop (zoom held ${g.targetScale.toFixed(2)}×)`)
             return
           }
+          g.handPresent = true
           // (the per-frame status text written below already states the
           //  Fist→zoom / Open-hand→rotate mapping explicitly.)
 
@@ -183,7 +225,10 @@ export default function HandGestureControl({ enabled, onToggle, gestureRef }) {
       // lifetime, so it's safe to read in cleanup despite the generic warning.
       // eslint-disable-next-line react-hooks/exhaustive-deps
       const g = gestureRef.current
-      if (g) { g.targetRotX = 0; g.targetRotY = 0; g.targetScale = 1 }
+      if (g) {
+        g.targetRotX = 0; g.targetRotY = 0; g.targetScale = 1
+        g.handPresent = false; g.velRotX = 0; g.velRotY = 0
+      }
     }
   }, [enabled, gestureRef])
 

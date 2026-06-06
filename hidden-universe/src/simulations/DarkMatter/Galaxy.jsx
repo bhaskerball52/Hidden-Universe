@@ -3,7 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Sparkles, Html, Line } from '@react-three/drei'
 import * as THREE from 'three'
 import SimulationSidebar from './SimulationSidebar'
-import HandGestureControl from './HandGestureControl'
+import HandGestureControl, { advanceGesture } from './HandGestureControl'
 import { computeHaloSeries } from './haloModels'
 import './GalaxySimulation.css'
 
@@ -673,21 +673,16 @@ function GalaxyViewportChrome({ showDM, onToggleDM }) {
   )
 }
 
-// Lerps the galaxy group's rotation and uniform scale toward the gesture
-// targets each frame — same low-pass smoothing the reference HTML demo uses
-// (rotation 0.05, scale 0.12).  When gestures are disabled the targets ease
-// back to identity so the galaxy returns to its rest pose.
+// Drives the galaxy group's rotation and uniform scale from the gesture state.
+// While a hand is present it low-pass tracks the targets; when the hand leaves
+// the frame the galaxy conserves its angular momentum and coasts to a smooth
+// stop instead of snapping back. Disabling gestures eases it to its rest pose.
 function GestureApply({ gestureRef, groupRef, enabled }) {
   useFrame(() => {
     const g = gestureRef.current
     const obj = groupRef.current
     if (!g || !obj) return
-    const tRotX  = enabled ? g.targetRotX  : 0
-    const tRotY  = enabled ? g.targetRotY  : 0
-    const tScale = enabled ? g.targetScale : 1
-    g.curRotX  += (tRotX  - g.curRotX)  * 0.05
-    g.curRotY  += (tRotY  - g.curRotY)  * 0.05
-    g.curScale += (tScale - g.curScale) * 0.12
+    advanceGesture(g, enabled)
     obj.rotation.x = g.curRotX
     obj.rotation.y = g.curRotY
     obj.scale.setScalar(g.curScale)
@@ -712,6 +707,7 @@ export default function Galaxy({ onSwitchSim }) {
   const gestureRef = useRef({
     targetRotX: 0, targetRotY: 0, targetScale: 1,
     curRotX: 0,    curRotY: 0,    curScale: 1,
+    velRotX: 0,    velRotY: 0,    handPresent: false,
   })
 
   const reopenSidebar = () => setSidebarOpen(true)
