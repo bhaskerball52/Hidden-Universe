@@ -1,0 +1,28 @@
+/* Deliberately unscoped-but-specific: each simulation restyles .sim-type-tab
+   under its own root class, and `button.sim-type-tab.sim-type-home` outranks
+   all of them so the home tab looks the same in every scene. */
+
+button.sim-type-tab.sim-type-home {
+  gap: 6px;
+  padding-inline: 13px;
+  color: rgba(236, 233, 246, 0.72);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-right: 4px;
+}
+
+button.sim-type-tab.sim-type-home:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.11);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 720px) {
+  .sim-type-home-label {
+    display: none;
+  }
+
+  button.sim-type-tab.sim-type-home {
+    padding-inline: 10px;
+  }
+}

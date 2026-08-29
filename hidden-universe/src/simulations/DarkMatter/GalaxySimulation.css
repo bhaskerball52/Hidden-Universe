@@ -1,17 +1,6 @@
-html,
-body {
-  height: 100%;
-  overflow: hidden;
-}
-
-#root {
-  max-width: none;
-  width: 100%;
-  height: 100%;
-  border: none;
-  margin: 0;
-  text-align: initial;
-}
+/* Page-level layout for simulation mode lives in src/index.css, keyed off
+   body[data-mode='sim'] — every stylesheet here is bundled into one sheet, so
+   unscoped html/body/#root rules would also apply to the homepage. */
 
 .sim-equation-block {
   display: flex;
@@ -946,11 +935,6 @@ body {
 }
 
 @media (max-width: 980px) {
-  html,
-  body {
-    overflow: hidden;
-  }
-
   .galaxy-sim {
     flex-direction: row;
     height: 100vh;

@@ -1,111 +1,163 @@
+/* ---------------------------------------------------------------------------
+   Global base. The site has two layout modes, switched by App via
+   body[data-mode]:
+
+     home — the hub, a normal scrolling document
+     sim  — a full-bleed WebGL scene with page scroll locked
+
+   Keeping both here (rather than letting a simulation's stylesheet override
+   html/body globally) matters because Vite bundles every imported stylesheet
+   into one sheet: rules meant for one screen would otherwise apply to both.
+--------------------------------------------------------------------------- */
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
+  color-scheme: dark;
+  font-family: ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
+html,
 body {
   margin: 0;
+  padding: 0;
+  background: #030308;
+  color: #ece9f6;
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
+  width: 100%;
   min-height: 100svh;
+  margin: 0;
+  text-align: initial;
+}
+
+/* --- hub mode ------------------------------------------------------------ */
+
+body[data-mode='home'] {
+  overflow-x: clip;
+  scrollbar-gutter: stable;
+}
+
+body[data-mode='home'] #root {
+  display: block;
+}
+
+html:has(body[data-mode='home']) {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(body[data-mode='home']) {
+    scroll-behavior: auto;
+  }
+}
+
+/* Anchor targets clear the sticky nav bar. */
+body[data-mode='home'] :target {
+  scroll-margin-top: 76px;
+}
+
+/* Scroll stays locked until the opening sequence finishes. Set on <body> from
+   main.jsx before the first paint so the page can never flash a scrollbar. */
+body[data-intro='running'],
+html:has(body[data-intro='running']) {
+  overflow: hidden;
+}
+
+/* --- simulation mode ----------------------------------------------------- */
+
+body[data-mode='sim'],
+html:has(body[data-mode='sim']) {
+  height: 100%;
+  overflow: hidden;
+}
+
+body[data-mode='sim'] #root {
+  height: 100%;
+  min-height: 0;
+  max-width: none;
+  border: none;
+}
+
+/* --- shared -------------------------------------------------------------- */
+
+body ::selection {
+  background: rgba(255, 77, 109, 0.32);
+  color: #fff;
+}
+
+body[data-mode='home'] ::-webkit-scrollbar {
+  width: 11px;
+}
+
+body[data-mode='home'] ::-webkit-scrollbar-track {
+  background: #05040c;
+}
+
+body[data-mode='home'] ::-webkit-scrollbar-thumb {
+  border: 3px solid #05040c;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+body[data-mode='home'] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+:focus-visible {
+  outline: 2px solid #ff8fab;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* --- simulation chunk loading state -------------------------------------- */
+
+.sim-loading {
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 100%;
+  min-height: 100svh;
+  background: radial-gradient(ellipse 120% 80% at 30% 20%, #0d0a14 0%, #030308 45%, #020206 100%);
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+.sim-loading-orb {
+  width: 46px;
+  height: 46px;
+  margin-bottom: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--sim-accent);
+  animation: sim-loading-spin 0.9s linear infinite;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
+.sim-loading-name {
   margin: 0;
+  font-size: 16px;
+  font-weight: 620;
+  letter-spacing: -0.01em;
+  color: #ece9f6;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+.sim-loading-note {
+  margin: 0;
+  font-size: 13px;
+  color: #746e8c;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+@keyframes sim-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sim-loading-orb {
+    animation-duration: 2.4s;
+  }
 }

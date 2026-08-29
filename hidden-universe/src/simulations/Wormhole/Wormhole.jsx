@@ -3,6 +3,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { MathJaxContext, MathJax } from 'better-react-mathjax'
 import * as THREE from 'three'
 import './Wormhole.css'
+import SimHomeButton from '../../site/SimHomeButton'
 
 // MathJax v3 config — load once for the side panel
 const MATHJAX_CONFIG = {
@@ -366,6 +367,7 @@ function EmbeddingDiagram({ posRef }) {
 function SimTypeBar({ onSwitchSim }) {
   return (
     <div className="sim-type-bar">
+      <SimHomeButton onSwitchSim={onSwitchSim} />
       <button type="button" className="sim-type-tab"
         onClick={() => onSwitchSim?.('darkMatter')}>
         <span className="sim-type-icon">◉</span>Dark Matter

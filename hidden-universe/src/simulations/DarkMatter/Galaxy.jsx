@@ -6,6 +6,7 @@ import SimulationSidebar from './SimulationSidebar'
 import HandGestureControl, { advanceGesture } from './HandGestureControl'
 import { computeHaloSeries } from './haloModels'
 import './GalaxySimulation.css'
+import SimHomeButton from '../../site/SimHomeButton'
 
 /* Procedural particle buffers: Math.random is intentional one-shot noise in useMemo. */
 /* eslint-disable react-hooks/purity */
@@ -632,6 +633,7 @@ function RotationCurveOverlay({ visible, series, massFactor = 1 }) {
 function SimTypeBar({ onSwitchSim }) {
   return (
     <div className="sim-type-bar">
+      <SimHomeButton onSwitchSim={onSwitchSim} />
       <button type="button" className="sim-type-tab sim-type-tab-active">
         <span className="sim-type-icon">◉</span>
         Dark Matter
