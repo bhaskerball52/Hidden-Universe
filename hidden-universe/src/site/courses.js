@@ -59,7 +59,7 @@ export const COURSES = {
   'mit-6-0001': { name: '6.0001 Introduction to Programming in Python', provider: 'MIT OpenCourseWare', format: 'Lectures + problem sets', url: 'https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/' },
   'astropy-learn': { name: 'Astropy tutorials', provider: 'Astropy Project', format: 'Guided notebooks', url: 'https://learn.astropy.org/' },
   'khan-physics': { name: 'Physics library', provider: 'Khan Academy', format: 'Full course · free', url: 'https://www.khanacademy.org/science/physics' },
-  'tong-notes': { name: 'Lecture notes: GR, cosmology, dynamics, QM', provider: 'David Tong, Cambridge', format: 'Full lecture notes · free PDFs', url: 'https://www.damtp.cam.ac.uk/user/tong/teaching.html' },
+  'tong-notes': { name: 'Lecture notes: GR, cosmology, dynamics, QM', provider: 'David Tong, Cambridge', format: 'Full lecture notes · free PDFs', url: 'https://davidtong.org/teaching/' },
   'carroll-gr': { name: 'Lecture Notes on General Relativity', provider: 'Sean Carroll', format: 'Full course notes · free', url: 'https://arxiv.org/abs/gr-qc/9712019' },
   'feynman': { name: 'The Feynman Lectures on Physics', provider: 'Caltech', format: 'Complete text · free online', url: 'https://www.feynmanlectures.caltech.edu/' },
 }

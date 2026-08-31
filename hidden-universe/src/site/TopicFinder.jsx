@@ -41,7 +41,7 @@ function TopicPlan({ topic, onLaunch, onClear, covered, hasBackground }) {
   const ready = readiness(topic, covered, hasBackground)
   // Some references are also listed as a course for the same topic (Carroll's GR
   // notes, Tong's lectures). Show each URL once, under Courses.
-  const courseUrls = new Set((topic.courses ?? []).map((id) => COURSES[id]?.url).filter(Boolean))
+  const courseUrls = new Set((topic.courses ?? []).map((c) => COURSES[c.id]?.url).filter(Boolean))
   const refs = topic.links.filter((l) => !courseUrls.has(l.u))
   return (
     <div className="tf-plan" role="region" aria-label={`Learning plan for ${topic.name}`}>
@@ -113,7 +113,7 @@ function TopicPlan({ topic, onLaunch, onClear, covered, hasBackground }) {
         <div className="tf-plan-col">
           <h4 className="tf-plan-label">Courses</h4>
           <div className="tf-links">
-            {(topic.courses ?? []).map((id) => {
+            {(topic.courses ?? []).map(({ id, where }) => {
               const c = COURSES[id]
               if (!c) return null
               return (
@@ -123,6 +123,7 @@ function TopicPlan({ topic, onLaunch, onClear, covered, hasBackground }) {
                     <span className="tf-link-source">
                       {c.provider} · {c.format}
                     </span>
+                    {where ? <span className="tf-link-where">{where}</span> : null}
                   </span>
                   <ExternalIcon />
                 </a>

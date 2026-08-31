@@ -820,3 +820,24 @@
     flex-direction: column;
   }
 }
+
+/* "Which chapters to read" pointer under a course. This is the line that turns
+   a link into an instruction, so it gets the accent rather than the muted grey. */
+.tf-link-where {
+  display: block;
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px dashed rgba(95, 208, 255, 0.22);
+  font-size: 12px;
+  line-height: 1.45;
+  color: #8fd8ff;
+}
+
+.tf-link-course {
+  align-items: flex-start;
+}
+
+.tf-link-course > svg {
+  margin-top: 2px;
+  flex: 0 0 auto;
+}

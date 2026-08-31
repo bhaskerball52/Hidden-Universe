@@ -9,6 +9,7 @@ import {
 } from './siteData'
 import SimArt from './SimArt'
 import TopicFinder from './TopicFinder'
+import { TOPICS } from './topics'
 import Starfield from './Starfield'
 import { useIntro } from './useIntro'
 import { ArrowIcon, ExternalIcon, GitHubIcon, LogoMark, SocialIcon } from './Icons'
@@ -22,9 +23,10 @@ function NavBar({ onLaunch }) {
         <span>{SITE.name}</span>
       </a>
       <nav className="hu-nav-links">
+        <a href="#learn">Find a topic</a>
         <a href="#simulations">Simulations</a>
         <a href="#path">Start here</a>
-        <a href="#learn">Resources</a>
+        <a href="#library">Library</a>
         <a href="#follow">Follow</a>
       </nav>
       <div className="hu-nav-actions">
@@ -64,7 +66,7 @@ function Hero({ onLaunch, burstAt }) {
             <ArrowIcon />
           </button>
           <a className="hu-btn hu-btn-ghost" href="#learn">
-            Browse the resource library
+            Find a topic to learn
           </a>
         </div>
         <dl className="hu-stats hu-stage hu-stage-4">
@@ -199,7 +201,7 @@ function ResourceCard({ item }) {
 
 const RESOURCE_PAGE = 6
 
-function Learn({ onLaunch }) {
+function Learn() {
   const [filter, setFilter] = useState('all')
   const [query, setQuery] = useState('')
   const [shownCount, setShownCount] = useState(RESOURCE_PAGE)
@@ -225,22 +227,14 @@ function Learn({ onLaunch }) {
   const remaining = shown.length - visible.length
 
   return (
-    <section className="hu-section" id="learn">
+    <section className="hu-section" id="library">
       <div className="hu-section-head">
-        <span className="hu-eyebrow">Learning resources</span>
-        <h2>Where to actually learn</h2>
+        <span className="hu-eyebrow">The full library</span>
+        <h2>Or browse everything</h2>
         <p>
-          Start by naming what you are after — a topic, or a competition you are preparing for —
-          and get a route and the specific links for it. The full library is underneath if you
-          would rather browse.
+          {RESOURCES.length} hand-picked courses, lecture notes, tools and archives — the whole
+          shelf, if you would rather look around than search.
         </p>
-      </div>
-
-      <TopicFinder onLaunch={onLaunch} />
-
-      <div className="hu-browse-head">
-        <h3>Or browse everything</h3>
-        <p>{RESOURCES.length} hand-picked courses, notes, tools and archives.</p>
       </div>
 
       <div className="hu-res-controls">
@@ -304,6 +298,23 @@ function Learn({ onLaunch }) {
   )
 }
 
+function FindTopic({ onLaunch }) {
+  return (
+    <section className="hu-section hu-section-find" id="learn">
+      <div className="hu-section-head">
+        <span className="hu-eyebrow">Start learning</span>
+        <h2>What do you want to learn?</h2>
+        <p>
+          Name a topic or a competition you are preparing for — {TOPICS.length} of them, from
+          constellations to tensor calculus — and get a route through it with the specific courses
+          to read, not a wall of links.
+        </p>
+      </div>
+      <TopicFinder onLaunch={onLaunch} />
+    </section>
+  )
+}
+
 function Follow() {
   return (
     <section className="hu-section" id="follow">
@@ -362,7 +373,7 @@ function Footer({ onLaunch }) {
           <a className="hu-footer-link" href="#path">
             Start here
           </a>
-          <a className="hu-footer-link" href="#learn">
+          <a className="hu-footer-link" href="#library">
             Resource library
           </a>
           <a className="hu-footer-link" href="https://astrobites.org/" target="_blank" rel="noreferrer noopener">
@@ -399,9 +410,10 @@ export default function Home({ onLaunch }) {
       <NavBar onLaunch={onLaunch} />
       <main>
         <Hero onLaunch={onLaunch} burstAt={burstAt} />
+        <FindTopic onLaunch={onLaunch} />
         <Simulations onLaunch={onLaunch} />
         <LearningPath />
-        <Learn onLaunch={onLaunch} />
+        <Learn />
         <Follow />
       </main>
       <Footer onLaunch={onLaunch} />
