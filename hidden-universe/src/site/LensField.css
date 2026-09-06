@@ -1,0 +1,12 @@
+/* The sitewide background layer. Fixed behind everything, never intercepts
+   clicks, and fades itself in once the hero has scrolled away. */
+
+.hu-lens-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}

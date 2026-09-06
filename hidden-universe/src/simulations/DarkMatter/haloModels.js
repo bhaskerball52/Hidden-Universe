@@ -3,7 +3,7 @@
  * Mass in M☉, radii in kpc, circular speed in km/s via G in galactic units.
  */
 
-export const G_MSUN_KPC_KMS2 = 4.3009e-6 // kpc · (km/s)² / M☉  — G in galactic units
+export const G_MSUN_KPC_KMS2 = 4.3009e-6 // kpc · (km/s)² / M☉ , G in galactic units
 
 const MSUN_KG = 1.98847e30
 const KPC_M = 3.085677581e19
@@ -25,7 +25,7 @@ export function vcircKms(MencMsun, rKpc) {
   return Math.sqrt(G_MSUN_KPC_KMS2 * (MencMsun / r))
 }
 
-/** ρ_NFW(r) = ρ_s / ((r/r_s)(1+r/r_s)²) — Msun/kpc³ */
+/** ρ_NFW(r) = ρ_s / ((r/r_s)(1+r/r_s)²), Msun/kpc³ */
 export function rhoNfw(rKpc, rhoS, rsKpc) {
   const rs = Math.max(rsKpc, 1e-9)
   const x = rKpc / rs
@@ -41,7 +41,7 @@ export function mencNfw(rKpc, rhoS, rsKpc) {
   return 4 * Math.PI * rhoS * rs ** 3 * (lx - x / (1 + x))
 }
 
-/** ρ_iso(r) = ρ₀ / (1 + (r/r_c)²) — Msun/kpc³ */
+/** ρ_iso(r) = ρ₀ / (1 + (r/r_c)²), Msun/kpc³ */
 export function rhoPseudoIsothermal(rKpc, rho0, rcKpc) {
   const rc = Math.max(rcKpc, 1e-9)
   const x = rKpc / rc
@@ -97,7 +97,7 @@ export function computeHaloSeries(model, p) {
     nPoints = 56,
   } = p
 
-  const rhoSNfwRef = 2.1e6 // Msun/kpc³ — order-of-magnitude MW-like halo scale
+  const rhoSNfwRef = 2.1e6 // Msun/kpc³, order-of-magnitude MW-like halo scale
   const rho0IsoRef = 9e6
 
   const rs = Math.max(scaleRadiusKpc, 0.5)
@@ -117,7 +117,7 @@ export function computeHaloSeries(model, p) {
   const mwKms = []
   const vcBaryonKms = []
 
-  // Baryonic disk parameters — peak scales with sqrt(mass), disk scale ~ 20% of halo scale
+  // Baryonic disk parameters, peak scales with sqrt(mass), disk scale ~ 20% of halo scale
   const vBaryPeak = 185 * Math.sqrt(densityFactor)
   const rDisk = Math.max(rs * 0.22, 2.0)
 

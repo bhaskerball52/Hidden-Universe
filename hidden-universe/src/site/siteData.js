@@ -7,8 +7,8 @@ export const SITE = {
   name: 'Hidden Universe',
   tagline: 'Real physics you can grab, spin, and break.',
   blurb:
-    'Interactive astrophysics simulations built on the actual equations — Kerr geodesics, ' +
-    'NFW halos, magnetic dipole spin-down — paired with a curated route into learning the ' +
+    'Interactive astrophysics simulations built on the actual equations: Kerr geodesics, ' +
+    'NFW halos, magnetic dipole spin-down. Paired with a curated route into learning the ' +
     'universe for yourself.',
   repo: 'https://github.com/bhaskerball52/Hidden-Universe',
 }
@@ -86,7 +86,7 @@ export const SIMULATIONS = [
     accentSoft: '#ffb37a',
     art: 'blackhole',
     summary:
-      'A spinning black hole rendered from ray-traced null geodesics — the accretion disk bends ' +
+      'A spinning black hole rendered from ray-traced null geodesics. The accretion disk bends ' +
       'over the top of the shadow because the light really is following curved spacetime, not a ' +
       'texture trick.',
     concepts: ['Schwarzschild metric', 'Photon sphere', 'ISCO', 'Frame dragging', 'Doppler beaming'],
@@ -107,7 +107,7 @@ export const SIMULATIONS = [
     art: 'pulsar',
     summary:
       'A magnetar the size of a city with the mass of the Sun. Tilt the magnetic axis away from ' +
-      'the spin axis and the beams sweep past you as a pulse — the lighthouse model, running live.',
+      'the spin axis and the beams sweep past you as a pulse. That is the lighthouse model, running live.',
     concepts: ['Degeneracy pressure', 'TOV limit', 'Magnetic dipole', 'Light cylinder', 'Spin-down'],
     features: [
       'Dipole field lines that open out beyond the light cylinder',
@@ -126,7 +126,7 @@ export const SIMULATIONS = [
     art: 'wormhole',
     summary:
       'Fly through an Ellis / Morris–Thorne throat and watch two sky regions blend at the mouth. ' +
-      'The lensing comes from integrating null geodesics through the metric — including the part ' +
+      'The lensing comes from integrating null geodesics through the metric, including the part ' +
       'where you need matter that almost certainly does not exist.',
     concepts: ['Ellis metric', 'Throat radius', 'Null geodesics', 'Exotic matter', 'NEC violation'],
     features: [
@@ -153,11 +153,11 @@ export const PATH = [
   },
   {
     step: '02',
-    title: 'Delve into the physics',
+    title: 'Get into the physics',
     blurb:
       'Newtonian gravity, orbital mechanics, then special and general relativity. This is where ' +
       'the black hole and wormhole simulations stop being pretty and start being readable.',
-    picks: ["Susskind's Theoretical Minimum", 'David Tong — GR notes', 'Carroll — GR lecture notes'],
+    picks: ["Susskind's Theoretical Minimum", "David Tong's GR notes", "Carroll's GR lecture notes"],
     accent: '#ff7a3c',
   },
   {
@@ -185,7 +185,7 @@ export const RESOURCES = [
   // --- Courses -------------------------------------------------------------
   {
     category: 'course',
-    title: 'MIT 8.286 — The Early Universe',
+    title: 'MIT 8.286: The Early Universe',
     source: 'MIT OpenCourseWare',
     url: 'https://ocw.mit.edu/courses/8-286-the-early-universe-fall-2013/',
     blurb: 'Alan Guth teaching inflationary cosmology, with full lecture video and problem sets.',
@@ -194,7 +194,7 @@ export const RESOURCES = [
   },
   {
     category: 'course',
-    title: 'ASTR 160 — Frontiers and Controversies in Astrophysics',
+    title: 'ASTR 160: Frontiers and Controversies in Astrophysics',
     source: 'Open Yale Courses',
     url: 'https://oyc.yale.edu/astronomy/astr-160',
     blurb:
@@ -220,7 +220,7 @@ export const RESOURCES = [
     source: 'Sean Carroll',
     url: 'https://www.preposterousuniverse.com/biggestideas/',
     blurb:
-      'Equation-first explanations for non-specialists — the honest middle ground between pop ' +
+      'Equation-first explanations for non-specialists, the honest middle ground between pop ' +
       'science and a textbook.',
     level: 'Intermediate',
     free: true,
@@ -258,7 +258,7 @@ export const RESOURCES = [
   },
   {
     category: 'reading',
-    title: 'David Tong — Lectures on Theoretical Physics',
+    title: 'David Tong: Lectures on Theoretical Physics',
     source: 'University of Cambridge',
     url: 'https://www.damtp.cam.ac.uk/user/tong/teaching.html',
     blurb:
@@ -314,7 +314,7 @@ export const RESOURCES = [
     source: 'YouTube',
     url: 'https://www.youtube.com/@3blue1brown',
     blurb:
-      'Not astronomy — but the linear algebra and calculus intuition that makes astrophysics ' +
+      'Not astronomy, but the linear algebra and calculus intuition that makes astrophysics ' +
       'readable rather than memorised.',
     level: 'Beginner',
     free: true,
@@ -345,7 +345,7 @@ export const RESOURCES = [
     source: 'Astropy Project',
     url: 'https://www.astropy.org/',
     blurb:
-      'The Python library professional astronomers actually use — coordinates, units, cosmology, ' +
+      'The Python library professional astronomers actually use: coordinates, units, cosmology, ' +
       'FITS files.',
     level: 'Intermediate',
     free: true,
@@ -390,7 +390,7 @@ export const RESOURCES = [
   },
   {
     category: 'tool',
-    title: 'MAST — Space Telescope Archive',
+    title: 'MAST, the Space Telescope Archive',
     source: 'STScI',
     url: 'https://archive.stsci.edu/',
     blurb: 'Raw and calibrated Hubble, JWST, TESS and Kepler data. Free, no affiliation needed.',
@@ -443,7 +443,7 @@ export const RESOURCES = [
     source: 'Harvard/Smithsonian',
     url: 'https://ui.adsabs.harvard.edu/',
     blurb:
-      'The literature search engine of astronomy — citations, full text, and export back to 1850.',
+      'The literature search engine of astronomy, with citations, full text, and export back to 1850.',
     level: 'Advanced',
     free: true,
   },
@@ -473,7 +473,7 @@ export const RESOURCES = [
     source: 'EHT Collaboration',
     url: 'https://eventhorizontelescope.org/',
     blurb:
-      'The M87* and Sgr A* results — worth reading next to the Kerr simulation on this site.',
+      'The M87* and Sgr A* results, worth reading next to the Kerr simulation on this site.',
     level: 'Intermediate',
     free: true,
   },

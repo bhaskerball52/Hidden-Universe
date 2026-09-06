@@ -150,7 +150,7 @@ export default function BackgroundPicker({ math, physics, onChangeMath, onChange
       <div className="bp-head">
         <p className="bp-intro">
           <strong>Optional:</strong> tell us how far you have got in maths and physics, and every
-          topic will show whether you are ready for it — and exactly what to learn first if not.
+          topic will show whether you are ready for it, and exactly what to learn first if not.
           Picking your highest course fills in everything below it.
         </p>
         {any ? (

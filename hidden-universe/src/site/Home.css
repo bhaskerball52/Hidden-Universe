@@ -19,11 +19,11 @@
   width: 100%;
   min-height: 100svh;
   color: var(--hu-ink);
-  background:
-    radial-gradient(ellipse 90% 55% at 78% 8%, rgba(95, 208, 255, 0.09) 0%, transparent 60%),
-    radial-gradient(ellipse 90% 60% at 12% 22%, rgba(255, 77, 109, 0.1) 0%, transparent 62%),
-    radial-gradient(ellipse 120% 70% at 50% 100%, rgba(122, 90, 255, 0.08) 0%, transparent 65%),
-    linear-gradient(180deg, #06040e 0%, #030308 42%, #04030a 100%);
+  /* Transparent on purpose. .hu-home is position:relative with z-index:auto, so
+     it creates no stacking context: the LensField canvas at z-index:-1 lands in
+     the ROOT stacking context, and any background painted here would cover it.
+     The page's base colour lives on body (#030308) instead. */
+  background: transparent;
   font-family: ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif;
   font-size: 16px;
   line-height: 1.6;
@@ -44,11 +44,13 @@
 
 .hu-eyebrow {
   display: inline-block;
-  font-size: 11.5px;
-  font-weight: 650;
-  letter-spacing: 0.16em;
+  font-size: 12px;
+  font-weight: 780;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--hu-ink-faint);
+  /* Brighter than --hu-ink-faint: these sit over the live star field now, and
+     a faint small-caps label was the first thing to disappear against it. */
+  color: #c3bedb;
 }
 
 .hu-btn {
@@ -984,7 +986,7 @@
 /* --- responsive ---------------------------------------------------------- */
 
 @media (max-width: 860px) {
-  /* Wrap the section links onto their own row and let them scroll sideways —
+  /* Wrap the section links onto their own row and let them scroll sideways,
      hiding them would leave a one-page hub with no way to jump around. */
   .hu-nav {
     flex-wrap: wrap;
@@ -1101,7 +1103,7 @@
 
    Timeline, from first paint (mirrors INTRO in useIntro.js):
      0.10–1.00s  title fades up and its glow blooms
-     1.00s       the bang — canvas detonates, black backdrop clears
+     1.00s       the bang, canvas detonates, black backdrop clears
      1.35–2.35s  eyebrow, subhead, buttons, stats, scroll hint stagger in
      3.00s       scroll unlocks
 
@@ -1266,7 +1268,7 @@
   border-color: rgba(255, 255, 255, 0.35);
 }
 
-/* Someone who prefers reduced motion gets the finished page, immediately —
+/* Someone who prefers reduced motion gets the finished page, immediately,
    useIntro also never starts the sequence for them. */
 @media (prefers-reduced-motion: reduce) {
   .hu-home[data-intro='running'] .hu-intro-black,
@@ -1283,5 +1285,131 @@
 
   .hu-home[data-intro='running'] .hu-intro-black {
     opacity: 0;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------
+   Background layering.
+
+   LensField is a fixed canvas at z-index -1 behind the whole page. Sections are
+   transparent so it shows through continuously: no scrim, so no hard seam where
+   a section starts. .hu-home carries the only opaque colour.
+--------------------------------------------------------------------------- */
+
+.hu-section,
+.hu-footer {
+  position: relative;
+  background: transparent;
+}
+
+/* The hero already has its own starfield, so the seam into the next section is
+   a fade rather than a border. */
+.hu-hero + .hu-section {
+  border-top: 0;
+}
+
+/* Learn sits directly above the simulations; the pair reads as one block, so
+   the boundary between them is tighter than a normal section change. */
+#learn {
+  padding-bottom: clamp(28px, 3vw, 44px);
+}
+
+#simulations {
+  padding-top: clamp(28px, 3vw, 44px);
+  border-top: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Glow buttons.
+
+   Ported from unlumen/glow on 21st.dev, which animates a blurred conic-gradient
+   layer behind the button with motion/react. Same effect here with an
+   @property-registered angle, so the gradient interpolates natively on the
+   compositor, dropping motion/react, class-variance-authority,
+   @radix-ui/react-slot and the shadcn Button it depended on.
+--------------------------------------------------------------------------- */
+
+@property --hu-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.hu-btn-primary,
+.hu-btn-sim {
+  position: relative;
+  isolation: isolate;
+}
+
+/* The glow layer. Blurred, scaled past the button edge, rotating. */
+.hu-btn-primary::before,
+.hu-btn-sim::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--hu-angle) at 50% 50%,
+    #ff4d6d, #c084fc, #5fd0ff, #ff8fab, #ff4d6d
+  );
+  filter: blur(9px);
+  opacity: 0;
+  transform: scale(0.96);
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: hu-glow-spin 5s linear infinite;
+}
+
+.hu-btn-primary:hover::before,
+.hu-btn-sim:hover::before,
+.hu-btn-primary:focus-visible::before,
+.hu-btn-sim:focus-visible::before {
+  opacity: 0.85;
+  transform: scale(1.06);
+}
+
+@keyframes hu-glow-spin {
+  to { --hu-angle: 360deg; }
+}
+
+/* The primary button also gets a shimmer sweep across its face. */
+.hu-btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 70%
+  );
+  background-size: 220% 100%;
+  background-position: 190% 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.hu-btn-primary:hover::after {
+  opacity: 1;
+  animation: hu-shimmer 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes hu-shimmer {
+  from { background-position: 190% 0; }
+  to   { background-position: -90% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hu-home::before,
+  .hu-home::after,
+  .hu-btn-primary::before,
+  .hu-btn-sim::before,
+  .hu-btn-primary:hover::after {
+    animation: none;
   }
 }

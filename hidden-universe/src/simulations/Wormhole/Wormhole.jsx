@@ -5,7 +5,7 @@ import * as THREE from 'three'
 import './Wormhole.css'
 import SimHomeButton from '../../site/SimHomeButton'
 
-// MathJax v3 config — load once for the side panel
+// MathJax v3 config, load once for the side panel
 const MATHJAX_CONFIG = {
   loader: { load: ['[tex]/ams', '[tex]/boldsymbol'] },
   tex: {
@@ -17,11 +17,11 @@ const MATHJAX_CONFIG = {
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
 
-// ─── Ellis / Morris–Thorne wormhole — per-pixel geodesic ray-march ────────────
+// ─── Ellis / Morris–Thorne wormhole, per-pixel geodesic ray-march ────────────
 // Metric:  ds² = −c²dt² + dl² + (b² + l²)(dθ² + dφ²)
 // l is the proper radial coordinate; the throat sits at l = 0 with radius b, and
 // l < 0 is a SECOND universe.  For each pixel we integrate the null geodesic in
-// the plane it defines, then sample whichever sky the ray escapes into — so a ray
+// the plane it defines, then sample whichever sky the ray escapes into, so a ray
 // aimed through the throat shows the other universe, lensed into concentric rings.
 const LENS_VERT = /* glsl */`
   varying vec2 vNdc;
@@ -77,7 +77,7 @@ const LENS_FRAG = /* glsl */`
     return col * tint;
   }
 
-  // Faint nebula — lensing curves it into the coloured arcs seen around the throat.
+  // Faint nebula, lensing curves it into the coloured arcs seen around the throat.
   vec3 nebula(vec3 d, vec3 ca, vec3 cb){
     float n1 = fbm(d * 2.4 + 11.0);
     float n2 = fbm(d * 5.3 - 4.0);
@@ -266,7 +266,7 @@ function WormholeLens({ throat, speed, starDensity, fov, quality, resetKey, posR
   return <mesh geometry={geo} material={mat} frustumCulled={false} renderOrder={-1} />
 }
 
-// ─── Embedding diagram (Flamm-style funnel) — bottom-left inset ────────────────
+// ─── Embedding diagram (Flamm-style funnel), bottom-left inset ────────────────
 function makeFunnel() {
   const a = 0.55, hScale = 0.62, lMax = 2.7, rings = 15, seg = 44, merid = 18
   const pos = []
@@ -308,11 +308,11 @@ function FunnelWire() {
 
 // Tracker bead that slides along the funnel showing the camera's signed l.
 // Sits at a fixed meridian (φ=0) so the spinning wireframe carries the eye
-// around it — the radial bead position is what tracks your trajectory.
+// around it, the radial bead position is what tracks your trajectory.
 function TrackerMarker({ posRef }) {
   const beadRef = useRef()
   const haloRef = useRef()
-  // Funnel mesh constants — keep in sync with makeFunnel().
+  // Funnel mesh constants, keep in sync with makeFunnel().
   const A = 0.55, H_SCALE = 0.62, L_MAX = 2.7
   const L_CAM_MAX = 30  // camera l beyond this clamps to the funnel's edge
   useFrame(() => {
@@ -399,7 +399,7 @@ const CONTROL_DEFS = [
 const INTRO_CARDS = [
   {
     title: 'What is a wormhole?',
-    body: 'A hypothetical tunnel through spacetime that connects two distant regions — or two entirely separate universes — through a narrow "throat". This is an Ellis/Morris–Thorne wormhole, the simplest traversable kind.',
+    body: 'A hypothetical tunnel through spacetime that connects two distant regions, or two entirely separate universes, through a narrow "throat". This is an Ellis/Morris–Thorne wormhole, the simplest traversable kind.',
   },
   {
     title: 'What am I seeing?',
@@ -407,7 +407,7 @@ const INTRO_CARDS = [
   },
   {
     title: 'How do I move?',
-    body: 'Drag to look around. W / S fly forward and back, A / D turn, and Shift boosts speed. Fly straight into the throat to pass through to the other universe — keep going and you can come back.',
+    body: 'Drag to look around. W / S fly forward and back, A / D turn, and Shift boosts speed. Fly straight into the throat to pass through to the other universe, keep going and you can come back.',
   },
   {
     title: 'Is this real?',
@@ -428,7 +428,7 @@ const PHYSICS_CARDS = [
   },
   {
     title: 'Null Geodesics & Lensing',
-    body: 'Light follows null geodesics. With conserved angular momentum L the radial coordinate obeys the equation the shader integrates — bending rays so strongly that the far universe wraps into rings.',
+    body: 'Light follows null geodesics. With conserved angular momentum L the radial coordinate obeys the equation the shader integrates, bending rays so strongly that the far universe wraps into rings.',
     eq: String.raw`\frac{d^{2}l}{d\lambda^{2}}=\frac{L^{2}\,l}{r^{4}},\qquad \frac{d\varphi}{d\lambda}=\frac{L}{r^{2}}`,
   },
   {
@@ -438,12 +438,12 @@ const PHYSICS_CARDS = [
   },
   {
     title: 'Exotic Matter (NEC violation)',
-    body: 'To stay open, a wormhole must thread its throat with matter that violates the null energy condition — effectively negative energy density. This is the central obstacle to a real wormhole.',
+    body: 'To stay open, a wormhole must thread its throat with matter that violates the null energy condition, effectively negative energy density. This is the central obstacle to a real wormhole.',
     eq: String.raw`T_{\mu\nu}k^{\mu}k^{\nu}<0\quad(\text{null energy condition violated})`,
   },
   {
     title: 'Embedding Diagram',
-    body: 'Slicing the geometry at a fixed time and embedding it in flat 3-space gives the funnel shown bottom-left: two sheets joined at the throat — the iconic picture of a wormhole.',
+    body: 'Slicing the geometry at a fixed time and embedding it in flat 3-space gives the funnel shown bottom-left: two sheets joined at the throat, the iconic picture of a wormhole.',
     eq: String.raw`z(r)=\pm\, b\,\cosh^{-1}\!\left(\frac{r}{b}\right)`,
   },
 ]

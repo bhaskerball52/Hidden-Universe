@@ -16,8 +16,8 @@ export const MATH_COURSES = [
   { id: 'precalculus', name: 'Precalculus', tier: 'School', requires: ['algebra-2', 'trigonometry'] },
 
   // --- calculus ----------------------------------------------------------
-  { id: 'calculus-1', name: 'Calculus I — differential', tier: 'Calculus', requires: ['precalculus'] },
-  { id: 'calculus-2', name: 'Calculus II — integral & series', tier: 'Calculus', requires: ['calculus-1'] },
+  { id: 'calculus-1', name: 'Calculus I: differential', tier: 'Calculus', requires: ['precalculus'] },
+  { id: 'calculus-2', name: 'Calculus II: integral & series', tier: 'Calculus', requires: ['calculus-1'] },
   { id: 'multivariable-calculus', name: 'Multivariable calculus', tier: 'Calculus', requires: ['calculus-2'] },
   { id: 'vector-calculus', name: 'Vector calculus (div, grad, curl)', tier: 'Calculus', requires: ['multivariable-calculus'] },
 
@@ -78,7 +78,7 @@ const MATH_BY_ID = Object.fromEntries(MATH_COURSES.map((c) => [c.id, c]))
 const PHYSICS_BY_ID = Object.fromEntries(PHYSICS_COURSES.map((c) => [c.id, c]))
 export const COURSE_BY_ID = { ...MATH_BY_ID, ...PHYSICS_BY_ID }
 
-// Every course upstream of `id`, inclusive. Memoised — the graph never changes.
+// Every course upstream of `id`, inclusive. Memoised, since the graph never changes.
 const closureCache = new Map()
 export function withPrerequisites(id) {
   const cached = closureCache.get(id)
@@ -101,7 +101,7 @@ export function expandBackground(ids) {
   return out
 }
 
-// True when `id` is already implied by something else in the selection — used to
+// True when `id` is already implied by something else in the selection. Used to
 // show the auto-included courses differently from the ones actually ticked.
 export function isImpliedBy(id, selectedIds) {
   for (const sel of selectedIds) {

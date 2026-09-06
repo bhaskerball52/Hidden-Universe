@@ -1,5 +1,5 @@
 /* Page-level layout for simulation mode lives in src/index.css, keyed off
-   body[data-mode='sim'] — every stylesheet here is bundled into one sheet, so
+   body[data-mode='sim'], every stylesheet here is bundled into one sheet, so
    unscoped html/body/#root rules would also apply to the homepage. */
 
 .sim-equation-block {
@@ -341,7 +341,7 @@
   margin: 8px 0 10px;
 }
 
-/* Floating box (matches the Black Hole / Neutron Star panels) — no longer a
+/* Floating box (matches the Black Hole / Neutron Star panels), no longer a
    docked full-height column. */
 .galaxy-sim-sidebar-shell {
   position: absolute;
@@ -947,7 +947,7 @@
     height: 100%;
   }
 
-  /* Floating box stays floating — just span more width near the top */
+  /* Floating box stays floating, just span more width near the top */
   .galaxy-sim-sidebar-shell {
     top: 60px;
     right: 8px;

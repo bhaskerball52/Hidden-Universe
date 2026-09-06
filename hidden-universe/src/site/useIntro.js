@@ -8,8 +8,8 @@ export const INTRO = {
 
 // Module-level, deliberately NOT sessionStorage: this resets on every page load
 // but survives React remounts. So the sequence plays each time the site is
-// loaded (which is the point of it), yet returning from a simulation — which
-// only remounts Home — does not replay it.
+// loaded (which is the point of it), yet returning from a simulation, which
+// only remounts Home, does not replay it.
 let hasPlayed = false
 
 export function shouldRunIntro() {
@@ -23,7 +23,7 @@ export function shouldRunIntro() {
 export function useIntro() {
   // Both are fixed at first render. performance.now() is the clock
   // requestAnimationFrame reports in, so the canvas burst lines up with the CSS
-  // keyframes — which start at this element's first paint — instead of drifting.
+  // keyframes, which start at this element's first paint, instead of drifting.
   const [initial] = useState(() => {
     const run = shouldRunIntro()
     return { run, burstAt: run ? performance.now() + INTRO.bang : null }

@@ -20,7 +20,7 @@
 }
 
 /* Floating sim-type pill (the shared GalaxySimulation.css isn't loaded here, so
-   define it locally — absolute so it never steals canvas drags from OrbitControls). */
+   define it locally, absolute so it never steals canvas drags from OrbitControls). */
 .ns-sim .sim-type-bar {
   position: absolute;
   z-index: 10;
@@ -259,7 +259,7 @@
   color: rgba(222, 234, 252, 0.82);
 }
 
-/* MathJax equation block — blue-tinted card */
+/* MathJax equation block, blue-tinted card */
 .ns-phys-eq {
   padding: 9px 10px 7px;
   border-radius: 7px;
@@ -282,7 +282,7 @@
 .ns-phys-eq mjx-container { color: #b9deff; }
 .ns-phys-eq mjx-container[display='true'] { margin: 0 !important; }
 
-/* ─── Collapsed state — small square pinned to the edge ─────────────────── */
+/* ─── Collapsed state, small square pinned to the edge ─────────────────── */
 .ns-panel.ns-panel-collapsed {
   top: 16px;
   right: 16px;

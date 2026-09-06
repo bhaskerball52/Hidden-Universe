@@ -6,7 +6,7 @@ function formatSci(n) {
 }
 
 function formatMass(n) {
-  if (!Number.isFinite(n)) return '—'
+  if (!Number.isFinite(n)) return 'n/a'
   if (n >= 1e10) return `${(n / 1e10).toFixed(2)}×10¹⁰`
   if (n >= 1e9) return `${(n / 1e9).toFixed(2)}×10⁹`
   return n.toExponential(2)

@@ -1,11 +1,11 @@
 // Decorative SVG previews for the simulation cards. These are cheap, static
-// vectors with CSS-driven motion — the real WebGL scenes only mount when a
+// vectors with CSS-driven motion, the real WebGL scenes only mount when a
 // simulation is actually launched, so the homepage stays light.
 
 const VB = '0 0 200 140'
 
 // The card's art panel is wider than the viewBox, so crop rather than
-// letterbox — every composition here is centred on (100, 70).
+// letterbox, every composition here is centred on (100, 70).
 const FIT = 'xMidYMid slice'
 
 // Two logarithmic spiral arms, sampled into dots that thin out with radius.

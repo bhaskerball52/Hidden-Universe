@@ -129,11 +129,11 @@ export default function HandGestureControl({ enabled, onToggle, gestureRef }) {
           if (!g) return
 
           if (!results.multiHandLandmarks || results.multiHandLandmarks.length === 0) {
-            // Hand left the frame: don't snap to rest — clearing handPresent lets
+            // Hand left the frame: don't snap to rest, clearing handPresent lets
             // the scene conserve its angular momentum and coast to a smooth stop.
             // The last fist-set zoom is also held.
             g.handPresent = false
-            setStatus(`No hand detected — coasting to a stop (zoom held ${g.targetScale.toFixed(2)}×)`)
+            setStatus(`No hand detected, coasting to a stop (zoom held ${g.targetScale.toFixed(2)}×)`)
             return
           }
           g.handPresent = true
@@ -185,7 +185,7 @@ export default function HandGestureControl({ enabled, onToggle, gestureRef }) {
           g.targetRotX =  (handCenterY - 0.5) * Math.PI * 1.1
 
           // ── Fist + palm size → scale (closer hand = larger). Opening the
-          //    hand only rotates — it KEEPS the last fist-set zoom so you can
+          //    hand only rotates, it KEEPS the last fist-set zoom so you can
           //    inspect the scene at a chosen zoom level.
           if (isFist) {
             g.targetScale = clamp(mapPalmSizeToScale(palmSize), MIN_GESTURE_SCALE, MAX_GESTURE_SCALE)
@@ -205,7 +205,7 @@ export default function HandGestureControl({ enabled, onToggle, gestureRef }) {
         camRef.current   = cam
         await cam.start()
         if (cancelled) { try { cam.stop() } catch { /* noop */ } ; return }
-        setStatus('Camera active — show your hand to control.')
+        setStatus('Camera active. Show your hand to control.')
       } catch (err) {
         console.error('[HandGestureControl] setup failed', err)
         if (!cancelled) {

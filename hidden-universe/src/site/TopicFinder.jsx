@@ -23,7 +23,7 @@ function readiness(topic, covered, hasBackground) {
 }
 
 // Group a flat result list into [groupName, topics[]]. Groups appear in order of
-// first match, and each one appears exactly once — results are ranked by score,
+// first match, and each one appears exactly once. Results are ranked by score,
 // so the same group can otherwise resurface further down the list and render a
 // duplicate heading.
 function groupResults(list) {
@@ -66,7 +66,7 @@ function TopicPlan({ topic, onLaunch, onClear, covered, hasBackground }) {
             {ready.state === 'ready'
               ? 'You have the background for this'
               : ready.state === 'stretch'
-                ? 'Almost — one gap'
+                ? 'Almost, one gap left'
                 : ready.state === 'gap'
                   ? 'Build these first'
                   : 'Assumed background'}
@@ -93,7 +93,7 @@ function TopicPlan({ topic, onLaunch, onClear, covered, hasBackground }) {
             })}
           </ul>
         ) : (
-          <p className="tf-prereq-none">No formal prerequisites — you can start here today.</p>
+          <p className="tf-prereq-none">No formal prerequisites, so you can start here today.</p>
         )}
       </div>
 
@@ -191,13 +191,30 @@ export default function TopicFinder({ onLaunch }) {
   const hasBackground = math.length > 0 || physics.length > 0
   const covered = useMemo(() => expandBackground([...math, ...physics]), [math, physics])
 
+  const [focused, setFocused] = useState(false)
+
   const listId = useId()
   const wrapRef = useRef(null)
   const inputRef = useRef(null)
   const optionRefs = useRef([])
 
+  // "/" focuses the search from anywhere on the page, the way a search-first
+  // site should behave. Ignored while the visitor is already typing somewhere.
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey) return
+      const t = e.target
+      if (t instanceof HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return
+      e.preventDefault()
+      inputRef.current?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+      inputRef.current?.focus()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   // With no query the dropdown offers a handful of common starting points.
-  // Once a background is given, whatever they are ready for floats to the top —
+  // Once a background is given, whatever they are ready for floats to the top.
   // and `readyOnly` turns that ranking into a hard filter.
   const results = useMemo(() => {
     const base = query.trim() ? searchTopics(query, 24) : SUGGESTED
@@ -282,7 +299,7 @@ export default function TopicFinder({ onLaunch }) {
 
   return (
     <div className="tf">
-      <div className="tf-search-wrap" ref={wrapRef}>
+      <div className={`tf-search-wrap${focused ? ' tf-search-wrap-on' : ''}`} ref={wrapRef}>
         <span className="tf-search-icon" aria-hidden="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             <circle cx="11" cy="11" r="7" />
@@ -306,12 +323,17 @@ export default function TopicFinder({ onLaunch }) {
             setActive(0)
             setOpen(true)
           }}
-          onFocus={() => setOpen(true)}
+          onFocus={() => {
+            setOpen(true)
+            setFocused(true)
+          }}
+          onBlur={() => setFocused(false)}
           // Focus alone isn't enough: after Escape the input keeps focus, so a
           // click has to be able to reopen the list too.
           onClick={() => setOpen(true)}
           onKeyDown={onKeyDown}
         />
+        {!query && !focused ? <kbd className="tf-search-kbd">/</kbd> : null}
         {query ? (
           <button type="button" className="tf-search-clear" onClick={() => { setQuery(''); inputRef.current?.focus() }} aria-label="Clear search">
             ×
@@ -329,7 +351,7 @@ export default function TopicFinder({ onLaunch }) {
                     {readyOnly && hiddenByFilter ? <span className="tf-readyonly-count">{hiddenByFilter} hidden</span> : null}
                   </label>
                 ) : null}
-                {!query.trim() ? <p className="tf-hint">Popular starting points — or type to search {TOPICS.length} topics</p> : null}
+                {!query.trim() ? <p className="tf-hint">Popular starting points, or type to search {TOPICS.length} topics</p> : null}
                 {grouped.map(([group, items]) => (
                   <div className="tf-group" key={group}>
                     <div className="tf-group-label">{group}</div>
@@ -387,7 +409,7 @@ export default function TopicFinder({ onLaunch }) {
                     to see what to build toward.
                   </>
                 ) : (
-                  <>Nothing matches “{query}”. Try a broader term — “relativity”, “stars”, “data”.</>
+                  <>Nothing matches “{query}”. Try something broader, like “relativity”, “stars” or “data”.</>
                 )}
               </p>
             )}

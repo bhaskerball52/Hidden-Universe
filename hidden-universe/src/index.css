@@ -2,8 +2,8 @@
    Global base. The site has two layout modes, switched by App via
    body[data-mode]:
 
-     home — the hub, a normal scrolling document
-     sim  — a full-bleed WebGL scene with page scroll locked
+     home, the hub, a normal scrolling document
+     sim , a full-bleed WebGL scene with page scroll locked
 
    Keeping both here (rather than letting a simulation's stylesheet override
    html/body globally) matters because Vite bundles every imported stylesheet
@@ -23,8 +23,19 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: #030308;
   color: #ece9f6;
+}
+
+/* The base colour lives on html only, never on body. html's background paints
+   as the canvas, underneath everything; a background on body would paint as a
+   block-level descendant, which is ABOVE negative-z-index elements and would
+   hide the fixed LensField canvas sitting at z-index:-1. */
+html {
+  background: #030308;
+}
+
+body {
+  background: transparent;
 }
 
 #root {

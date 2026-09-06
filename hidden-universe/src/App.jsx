@@ -16,8 +16,8 @@ const SLUG_BY_KEY = Object.fromEntries(SIMULATIONS.map((s) => [s.key, s.route]))
 const KEY_BY_SLUG = Object.fromEntries(SIMULATIONS.map((s) => [s.route, s.key]))
 const SIM_BY_KEY = Object.fromEntries(SIMULATIONS.map((s) => [s.key, s]))
 
-// Hash routing keeps deep links to individual simulations shareable — which
-// matters when a social post points straight at one — without pulling in a
+// Hash routing keeps deep links to individual simulations shareable, which
+// matters when a social post points straight at one, without pulling in a
 // router dependency or needing server-side rewrites on a static host.
 function readHash() {
   const slug = window.location.hash.replace(/^#\/?/, '').split('?')[0]
@@ -50,7 +50,7 @@ export default function App() {
     document.body.dataset.mode = sim === 'home' ? 'home' : 'sim'
     document.title =
       sim === 'home'
-        ? `${SITE.name} — Interactive Astrophysics`
+        ? `${SITE.name}, Interactive Astrophysics`
         : `${SIM_BY_KEY[sim].name} · ${SITE.name}`
   }, [sim])
 

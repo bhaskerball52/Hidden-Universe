@@ -7,7 +7,7 @@ import HandGestureControl, { advanceGesture } from '../DarkMatter/HandGestureCon
 import './BlackHole.css'
 import SimHomeButton from '../../site/SimHomeButton'
 
-// MathJax v3 config — load once for the side panel
+// MathJax v3 config, load once for the side panel
 const MATHJAX_CONFIG = {
   loader: { load: ['[tex]/ams', '[tex]/boldsymbol'] },
   tex: {
@@ -22,7 +22,7 @@ const MATHJAX_CONFIG = {
 // integrating the Schwarzschild null geodesic, then tested against a FLAT
 // accretion disk.  Because the bending is recomputed from the live camera each
 // frame, the Gargantua wrap, photon ring and secondary images are all correct
-// from any of the 360° viewing angles — no faked geometry.
+// from any of the 360° viewing angles, no faked geometry.
 const LENS_VERT = /* glsl */`
   varying vec2 vNdc;
   void main() {
@@ -52,7 +52,7 @@ const LENS_FRAG = /* glsl */`
   uniform float uTemp;     // disk colour temperature
   uniform float uThick;    // disk thickness multiplier
   uniform float uDensity;  // disk density multiplier
-  uniform float uSpin;     // Kerr spin (0..~0.95) — frame-drag approximation
+  uniform float uSpin;     // Kerr spin (0..~0.95), frame-drag approximation
   uniform float uJetLum;   // jet luminosity multiplier
   uniform float uJetThick; // jet thickness multiplier
 
@@ -63,7 +63,7 @@ const LENS_FRAG = /* glsl */`
     p += dot(p, p + 45.32);
     return fract(p.x * p.y * p.z);
   }
-  // 3D value noise + fbm — gives the disk real volumetric cloud structure
+  // 3D value noise + fbm, gives the disk real volumetric cloud structure
   float vnoise(vec3 p){
     vec3 i = floor(p), f = fract(p);
     f = f * f * (3.0 - 2.0 * f);
@@ -74,13 +74,13 @@ const LENS_FRAG = /* glsl */`
           mix(h21(i+vec3(0,1,1)), h21(i+vec3(1,1,1)), f.x), f.y), f.z);
   }
   float fbm3(vec3 p){
-    // 3 octaves — one fewer than before; negligible visual loss, ~25% cheaper
+    // 3 octaves, one fewer than before; negligible visual loss, ~25% cheaper
     float s = 0.0, a = 0.5;
     for (int i = 0; i < 3; i++) { s += a * vnoise(p); p *= 2.05; a *= 0.5; }
     return s;
   }
 
-  // Disk half-thickness — flares outward like a real accretion disk.
+  // Disk half-thickness, flares outward like a real accretion disk.
   // Thin slab: clearly volumetric, but far from the earlier bloated version.
   float diskHalfH(float r){ return (0.13 + 0.037 * r) * uThick; }
 
@@ -95,7 +95,7 @@ const LENS_FRAG = /* glsl */`
     if (abs(y) > 3.0 * H) return;   // perf early-out only; vg fades smoothly
 
     // Soft inner ramp: emission begins faintly near the photon sphere and
-    // ramps to full density by uRIn — no hard edge, so the band blends
+    // ramps to full density by uRIn, no hard edge, so the band blends
     // continuously into the bright inner ring (kills the gap + dashed ring).
     float inner = smoothstep(uRGlow, uRIn, r);
     float t   = clamp((r - uRGlow) / (uROut - uRGlow), 0.0, 1.0);
@@ -103,7 +103,7 @@ const LENS_FRAG = /* glsl */`
     float omega = 3.6 * pow(max(r, 0.05), -1.5);          // Keplerian
     float sw  = ang + omega * uTime;
 
-    // Layered 3D turbulence — swirls in φ, banded in r, puffy in y
+    // Layered 3D turbulence, swirls in φ, banded in r, puffy in y
     vec3 q = vec3(cos(sw), y * 0.9, sin(sw)) * (1.2 + 1.6 * t);
     float n1 = fbm3(q * 1.4 + vec3(0.0, uTime * 0.15, 0.0));
     float n2 = fbm3(q * 3.3 - vec3(uTime * 0.20, 0.0, 0.0));
@@ -149,7 +149,7 @@ const LENS_FRAG = /* glsl */`
     dens = vg * radial * (0.30 + 0.95 * fil) * uDensity;
   }
 
-  // Volumetric polar jet — bright "flashlight" beams along the ±Y spin axis.
+  // Volumetric polar jet, bright "flashlight" beams along the ±Y spin axis.
   // Sampled inside the ray march so it inherits gravitational lensing for free.
   void sampleJet(vec3 p, out vec3 emis, out float dens){
     emis = vec3(0.0); dens = 0.0;
@@ -163,7 +163,7 @@ const LENS_FRAG = /* glsl */`
     float coneR = (uRS * 0.50 + ay * 0.085) * uJetThick;
     if (rcyl > coneR * 2.2) return;
 
-    // Soft Gaussian "flashlight" cross-section — fat core, smooth fade.
+    // Soft Gaussian "flashlight" cross-section, fat core, smooth fade.
     float c2   = coneR * coneR * 1.4;
     float core = exp(-(rcyl * rcyl) / c2);
 
@@ -174,7 +174,7 @@ const LENS_FRAG = /* glsl */`
     // Frame-drag twist: spin winds the beam helically along its length.
     float dir   = sign(p.y);
     float ang   = atan(p.z, p.x) + uSpin * 5.0 * along * dir;
-    // Turbulent filamentary substructure — knots / blobs flowing outward.
+    // Turbulent filamentary substructure, knots / blobs flowing outward.
     vec3 q = vec3(cos(ang) * rcyl, p.y * 0.22, sin(ang) * rcyl) * 0.9;
     float n1 = fbm3(q * 1.3 + vec3(0.0, uTime * 0.55 * dir, 0.0));
     float n2 = fbm3(q * 3.0 - vec3(uTime * 0.30 * dir, 0.0, 0.0));
@@ -208,7 +208,7 @@ const LENS_FRAG = /* glsl */`
     // Per-pixel dither phase.  Used to randomise WHERE inside each step the
     // disk is sampled, so coherent step-quantisation banding (the blocky
     // outer-edge tiles and the dashed lensed ring) breaks up into fine noise
-    // the eye integrates as smooth — at ZERO extra marching cost.
+    // the eye integrates as smooth, at ZERO extra marching cost.
     float jit = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233)))
                       * 43758.5453);
 
@@ -228,7 +228,7 @@ const LENS_FRAG = /* glsl */`
       float Hslab = diskHalfH(min(rxz, uROut));
 
       // Curvature-aware step.  Light bending near the photon sphere (r≈1.5–3)
-      // is extreme — that is where the lensed TOP image is formed — so the
+      // is extreme, that is where the lensed TOP image is formed, so the
       // step must be tiny there or strongly-bent rays land in the wrong place
       // per pixel and the top layer tears apart near edge-on.  Far from the
       // hole spacetime is ~flat, so big strides are accurate and cheap.
@@ -253,7 +253,7 @@ const LENS_FRAG = /* glsl */`
 
       // 1/r⁵ via multiplies (r already known) instead of two pow() calls.
       // Spin adds an approximate frame-drag: a tangential (equatorial) tug
-      // ∝ uSpin / r⁴ that swirls the lensed image — the Kerr asymmetry.
+      // ∝ uSpin / r⁴ that swirls the lensed image, the Kerr asymmetry.
       vec3  tang = vec3(-pos.z, 0.0, pos.x);
       vec3  drag = (1.6 * uSpin) * tang / (r2 * r2 + 1.0);
       vec3  acc = kGR * pos / (r2 * r2 * r) + drag;
@@ -264,13 +264,13 @@ const LENS_FRAG = /* glsl */`
       vec3  na  = kGR * np / (nr2 * nr2 * nr) + (1.6 * uSpin) * ntang / (nr2 * nr2 + 1.0);
       vec3  nv  = vel + 0.5 * (acc + na) * dt;              // velocity Verlet
 
-      // OPTICALLY THIN — pure emission, NO absorption.  The near side, the
+      // OPTICALLY THIN, pure emission, NO absorption.  The near side, the
       // lensed far side and secondary images all simply ADD, so nothing can
       // occlude anything: there is no dark self-occlusion wedge by
       // construction, and the regions join continuously.  The shadow stays
       // black because captured rays accumulate nothing.
       // Sample at a per-pixel-jittered point within the step (not the fixed
-      // midpoint) — decorrelates the banding/dashing into smooth fine noise.
+      // midpoint), decorrelates the banding/dashing into smooth fine noise.
       vec3 mp = mix(pos, np, 0.18 + 0.64 * jit);
       vec3 emis; float dens;
       sampleDisk(mp, emis, dens);
@@ -440,8 +440,8 @@ const CONTROL_DEFS = [
   { key: 'jetThick',    label: 'Jet Thickness',    min: 0.0, max: 2.5,  step: 0.05, unit: '×' },
 ]
 
-// Physics primer — concise, tied to what the shader is doing.
-// Equations rendered with MathJax (LaTeX, no delimiters — wrapped at render).
+// Physics primer, concise, tied to what the shader is doing.
+// Equations rendered with MathJax (LaTeX, no delimiters, wrapped at render).
 const PHYSICS_CARDS = [
   {
     title: 'Schwarzschild Metric',
@@ -450,17 +450,17 @@ const PHYSICS_CARDS = [
   },
   {
     title: 'Event Horizon',
-    body: 'The one-way surface at r = rₛ. Inside, every future-directed path leads inward; not even light escapes. In the sim, rays that cross r = rₛ are captured and contribute nothing — that is the perfectly black shadow.',
+    body: 'The one-way surface at r = rₛ. Inside, every future-directed path leads inward; not even light escapes. In the sim, rays that cross r = rₛ are captured and contribute nothing, that is the perfectly black shadow.',
     eq: String.raw`r_{\text{horizon}} = r_{s}`,
   },
   {
     title: 'Photon Sphere & Shadow',
-    body: 'Massless particles can orbit on an unstable circular orbit at r = 1.5 rₛ. Rays grazing it pile up into the bright thin "photon ring" you see hugging the shadow. The apparent shadow radius is √27/2 · rₛ ≈ 2.6 rₛ — this emerges from the ray-march, not hardcoded.',
+    body: 'Massless particles can orbit on an unstable circular orbit at r = 1.5 rₛ. Rays grazing it pile up into the bright thin "photon ring" you see hugging the shadow. The apparent shadow radius is √27/2 · rₛ ≈ 2.6 rₛ, this emerges from the ray-march, not hardcoded.',
     eq: String.raw`r_{\text{ph}}=\tfrac{3}{2}\,r_{s},\quad b_{\text{crit}}=\tfrac{3\sqrt{3}}{2}\,r_{s}`,
   },
   {
-    title: 'ISCO — Innermost Stable Orbit',
-    body: 'The smallest stable circular orbit for matter. For Schwarzschild it sits at 3 rₛ (= 6GM/c²); the disk inner edge in the sim is built to ramp up to full density here. Spin shrinks the prograde ISCO — the Spin slider pulls the bright inner edge inward.',
+    title: 'ISCO: the innermost stable orbit',
+    body: 'The smallest stable circular orbit for matter. For Schwarzschild it sits at 3 rₛ (= 6GM/c²); the disk inner edge in the sim is built to ramp up to full density here. Spin shrinks the prograde ISCO, the Spin slider pulls the bright inner edge inward.',
     eq: String.raw`r_{\text{ISCO}}=3\,r_{s}\quad(a=0)`,
   },
   {
@@ -475,7 +475,7 @@ const PHYSICS_CARDS = [
   },
   {
     title: 'Gravitational Redshift',
-    body: 'Photons climbing out of the well lose energy. The sim multiplies disk emission by g = √(1 − rₛ/r), darkening and reddening the inner ring — the same effect that makes the EHT M87 image asymmetric in color.',
+    body: 'Photons climbing out of the well lose energy. The sim multiplies disk emission by g = √(1 − rₛ/r), darkening and reddening the inner ring, the same effect that makes the EHT M87 image asymmetric in color.',
     eq: String.raw`1+z=\frac{1}{\sqrt{1-r_{s}/r}},\qquad E_{\text{obs}}=g\,E_{\text{emit}}`,
   },
   {
@@ -485,29 +485,29 @@ const PHYSICS_CARDS = [
   },
   {
     title: 'Kerr Metric & Frame-Dragging',
-    body: 'A spinning black hole drags spacetime itself around with it (Lense-Thirring effect). The Spin slider feeds an a/r⁴ tangential pull into the geodesic and boosts the orbital β — a tractable approximation of the full Kerr metric in Boyer-Lindquist coordinates.',
+    body: 'A spinning black hole drags spacetime itself around with it (Lense-Thirring effect). The Spin slider feeds an a/r⁴ tangential pull into the geodesic and boosts the orbital β, a tractable approximation of the full Kerr metric in Boyer-Lindquist coordinates.',
     eq: String.raw`a=\frac{J}{M c},\qquad 0\le a\le M\;(\text{extremal})`,
   },
   {
     title: 'Optically-Thin Emission',
-    body: 'The disk is modelled as glowing transparent gas: every ray accumulates emission with NO absorption. That is why the near side does not occlude the lensed far side — the same physical assumption used in Interstellar / EHT renders.',
+    body: 'The disk is modelled as glowing transparent gas: every ray accumulates emission with NO absorption. That is why the near side does not occlude the lensed far side, the same physical assumption used in Interstellar / EHT renders.',
     eq: String.raw`I_{\nu}(\lambda)=\int j_{\nu}(s)\,ds\quad(\text{no opacity term})`,
   },
 ]
 
-// Plain-language intro — shown first, mirrors the Dark Matter "Intro" tab.
+// Plain-language intro, shown first, mirrors the Dark Matter "Intro" tab.
 const INTRO_CARDS = [
   {
     title: 'What is a black hole?',
-    body: 'A region where gravity is so strong that nothing — not even light — can escape once it crosses the event horizon. This is a Kerr black hole: it also spins, dragging spacetime around with it.',
+    body: 'A region where gravity is so strong that nothing, not even light, can escape once it crosses the event horizon. This is a Kerr black hole: it also spins, dragging spacetime around with it.',
   },
   {
     title: 'What am I seeing?',
-    body: 'The glowing band is an accretion disk of superheated gas spiralling inward. The perfectly dark circle is the shadow of the event horizon, and the thin bright ring hugging it is the photon ring — light that orbited the hole before reaching you.',
+    body: 'The glowing band is an accretion disk of superheated gas spiralling inward. The perfectly dark circle is the shadow of the event horizon, and the thin bright ring hugging it is the photon ring, light that orbited the hole before reaching you.',
   },
   {
     title: 'Why does it look warped?',
-    body: 'Gravity bends the light paths so severely that you see the far side of the disk lifted both above and below the shadow. The whole image is gravitationally lensed, recomputed from your live viewing angle — not faked geometry.',
+    body: 'Gravity bends the light paths so severely that you see the far side of the disk lifted both above and below the shadow. The whole image is gravitationally lensed, recomputed from your live viewing angle, not faked geometry.',
   },
   {
     title: 'What can I change?',
@@ -636,7 +636,7 @@ function BHGestureCamera({ gestureRef, enabled }) {
       advanceGesture(g, false)
       return
     }
-    // Capture the current orbital distance the first frame gestures take over —
+    // Capture the current orbital distance the first frame gestures take over,
     // so toggling on doesn't teleport the camera.
     if (baseRef.current == null) {
       const t = controls?.target

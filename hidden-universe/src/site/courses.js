@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Structured courses — full lecture series with problem sets, not article
+// Structured courses: full lecture series with problem sets, not article
 // pages. Topics reference these by id so one course is described once.
 //
 // Every URL here was checked for a 200 response when this file was written.
@@ -58,14 +58,14 @@ export const COURSES = {
   'openstax-astro': { name: 'Astronomy 2e', provider: 'OpenStax', format: 'Textbook · free', url: 'https://openstax.org/details/books/astronomy-2e' },
   'mit-6-0001': { name: '6.0001 Introduction to Programming in Python', provider: 'MIT OpenCourseWare', format: 'Lectures + problem sets', url: 'https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/' },
   'astropy-learn': { name: 'Astropy tutorials', provider: 'Astropy Project', format: 'Guided notebooks', url: 'https://learn.astropy.org/' },
-  'khan-physics': { name: 'Physics library', provider: 'Khan Academy', format: 'Full course · free', url: 'https://www.khanacademy.org/science/physics' },
+  'khan-physics': { name: 'AP®/College Physics 1', provider: 'Khan Academy', format: 'Full course · free', url: 'https://www.khanacademy.org/science/ap-college-physics-1' },
   'tong-notes': { name: 'Lecture notes: GR, cosmology, dynamics, QM', provider: 'David Tong, Cambridge', format: 'Full lecture notes · free PDFs', url: 'https://davidtong.org/teaching/' },
   'carroll-gr': { name: 'Lecture Notes on General Relativity', provider: 'Sean Carroll', format: 'Full course notes · free', url: 'https://arxiv.org/abs/gr-qc/9712019' },
   'feynman': { name: 'The Feynman Lectures on Physics', provider: 'Caltech', format: 'Complete text · free online', url: 'https://www.feynmanlectures.caltech.edu/' },
 }
 
 // The recommended course for each background ladder entry, so the picker can
-// offer "you haven't done this — here's where to start".
+// offer "you haven't done this, here's where to start".
 export const COURSE_FOR_BACKGROUND = {
   'algebra-1': 'khan-algebra1',
   geometry: 'khan-geometry',

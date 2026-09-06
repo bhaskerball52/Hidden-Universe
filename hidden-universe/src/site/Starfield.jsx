@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react'
 //
 // Two modes share one particle set. Normally the stars drift on three parallax
 // layers and twinkle. When `burstAt` is set, every particle instead flies out
-// from the centre to that same resting position — so the explosion resolves
+// from the centre to that same resting position, so the explosion resolves
 // into exactly the field the page would have shown anyway.
 
 const LAYERS = [
@@ -108,6 +108,12 @@ export default function Starfield({ className = '', burstAt = null }) {
 
     const draw = (t) => {
       ctx.clearRect(0, 0, w, h)
+      // Cross-fade with the sitewide LensField, which fades in over the same
+      // stretch of scroll. Together they hand the background over smoothly
+      // instead of one section cutting to the next.
+      const vh = window.innerHeight || 1
+      const scrollFade = Math.max(0, 1 - Math.max(0, window.scrollY) / (vh * 0.75))
+      if (scrollFade <= 0.004) return
       const cx = w / 2
       const cy = h / 2
       const burst = burstRef.current
@@ -146,7 +152,7 @@ export default function Starfield({ className = '', burstAt = null }) {
         const g = ctx.createRadialGradient(x, y, 0, x, y, d.r)
         g.addColorStop(0, d.tint)
         g.addColorStop(1, 'rgba(0,0,0,0)')
-        ctx.globalAlpha = d.a * k
+        ctx.globalAlpha = d.a * k * scrollFade
         ctx.fillStyle = g
         ctx.beginPath()
         ctx.arc(x, y, d.r, 0, Math.PI * 2)
@@ -168,13 +174,13 @@ export default function Starfield({ className = '', burstAt = null }) {
           y = cy + (s.ty - cy) * k
           scale = 0.35 + 0.65 * k
           alpha = s.a * Math.min(1, p * 4)
-          // Motion streak while it is still moving fast — this is what sells
+          // Motion streak while it is still moving fast, this is what sells
           // the explosion; a dot moving between frames just reads as a jump.
           const dx = x - s.px
           const dy = y - s.py
           const d2 = dx * dx + dy * dy
           if (d2 > 4) {
-            ctx.globalAlpha = Math.min(0.7, alpha * 0.85)
+            ctx.globalAlpha = Math.min(0.7, alpha * 0.85) * scrollFade
             ctx.strokeStyle = s.tint
             ctx.lineWidth = Math.max(0.5, s.r * scale * 0.9)
             ctx.lineCap = 'round'
@@ -203,7 +209,7 @@ export default function Starfield({ className = '', burstAt = null }) {
           alpha = s.a * flicker
         }
 
-        ctx.globalAlpha = Math.min(1, alpha)
+        ctx.globalAlpha = Math.min(1, alpha) * scrollFade
         ctx.fillStyle = s.tint
         ctx.beginPath()
         ctx.arc(x, y, Math.max(0.25, s.r * scale), 0, Math.PI * 2)

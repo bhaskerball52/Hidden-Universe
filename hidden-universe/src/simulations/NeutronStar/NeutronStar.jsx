@@ -7,7 +7,7 @@ import HandGestureControl, { advanceGesture } from '../DarkMatter/HandGestureCon
 import './NeutronStar.css'
 import SimHomeButton from '../../site/SimHomeButton'
 
-// MathJax v3 config — load once for the side panel
+// MathJax v3 config, load once for the side panel
 const MATHJAX_CONFIG = {
   loader: { load: ['[tex]/ams', '[tex]/boldsymbol'] },
   tex: {
@@ -19,7 +19,7 @@ const MATHJAX_CONFIG = {
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
 
-// ─── Shared GLSL — value-noise + fbm for plasma & jet turbulence ──────────────
+// ─── Shared GLSL, value-noise + fbm for plasma & jet turbulence ──────────────
 const NOISE = /* glsl */`
   float h31(vec3 p){ p = fract(p * vec3(127.1, 311.7, 74.7)); p += dot(p, p + 45.32); return fract(p.x * p.y * p.z); }
   float vnoise(vec3 p){
@@ -106,7 +106,7 @@ const SHELL_FRAG = /* glsl */`
   }
 `
 
-// ─── Polar jets — collimated synchrotron beams along the magnetic axis ─────────
+// ─── Polar jets, collimated synchrotron beams along the magnetic axis ─────────
 const JET_VERT = /* glsl */`
   varying vec2 vUv; varying vec3 vLocal;
   void main(){ vUv = uv; vLocal = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }
@@ -372,7 +372,7 @@ const PHYSICS_CARDS = [
   },
   {
     title: 'Nuclear Density',
-    body: 'Roughly 1.4 solar masses are crushed into a sphere ~12 km across. The matter reaches the density of an atomic nucleus — a sugar-cube of it would weigh as much as a mountain.',
+    body: 'Roughly 1.4 solar masses are crushed into a sphere ~12 km across. The matter reaches the density of an atomic nucleus, a sugar-cube of it would weigh as much as a mountain.',
     eq: String.raw`\rho \sim 2\text{–}4\times10^{17}\;\mathrm{kg\,m^{-3}}`,
   },
   {
@@ -382,7 +382,7 @@ const PHYSICS_CARDS = [
   },
   {
     title: 'Magnetic Dipole Geometry',
-    body: 'To leading order the field is a dipole. Each field line follows r = L·sin²θ about the magnetic axis — exactly the nested loops drawn here. Surface fields range from 10⁸ G (millisecond pulsars) to 10¹⁵ G (magnetars).',
+    body: 'To leading order the field is a dipole. Each field line follows r = L·sin²θ about the magnetic axis, exactly the nested loops drawn here. Surface fields range from 10⁸ G (millisecond pulsars) to 10¹⁵ G (magnetars).',
     eq: String.raw`r(\theta)=L\,\sin^{2}\theta,\qquad B\sim10^{8}\text{–}10^{15}\,\mathrm{G}`,
   },
   {
@@ -392,7 +392,7 @@ const PHYSICS_CARDS = [
   },
   {
     title: 'Light Cylinder & Pulsar Beam',
-    body: 'At the light cylinder co-rotating field lines would have to move at c. Beyond it the field opens up and accelerates particles into the polar beams. Because the magnetic axis is tilted, the beam sweeps space like a lighthouse — the pulse.',
+    body: 'At the light cylinder co-rotating field lines would have to move at c. Beyond it the field opens up and accelerates particles into the polar beams. Because the magnetic axis is tilted, the beam sweeps space like a lighthouse, the pulse.',
     eq: String.raw`R_{\text{LC}}=\frac{c}{\Omega}`,
   },
   {
@@ -402,11 +402,11 @@ const PHYSICS_CARDS = [
   },
 ]
 
-// Plain-language intro — shown first, mirrors the Dark Matter "Intro" tab.
+// Plain-language intro, shown first, mirrors the Dark Matter "Intro" tab.
 const INTRO_CARDS = [
   {
     title: 'What is a neutron star?',
-    body: 'The collapsed core left behind by a massive star’s supernova. About 1.4 solar masses are crushed into a city-sized sphere ~24 km across — so dense that a sugar-cube of it would weigh as much as a mountain.',
+    body: 'The collapsed core left behind by a massive star’s supernova. About 1.4 solar masses are crushed into a city-sized sphere ~24 km across, so dense that a sugar-cube of it would weigh as much as a mountain.',
   },
   {
     title: 'What am I seeing?',
@@ -414,7 +414,7 @@ const INTRO_CARDS = [
   },
   {
     title: 'Why does it pulse?',
-    body: 'The magnetic axis is tilted from the spin axis, so as the star rotates the beams sweep through space like a lighthouse. If a beam crosses your line of sight you see regular pulses — that is a pulsar.',
+    body: 'The magnetic axis is tilted from the spin axis, so as the star rotates the beams sweep through space like a lighthouse. If a beam crosses your line of sight you see regular pulses, that is a pulsar.',
   },
   {
     title: 'What can I change?',

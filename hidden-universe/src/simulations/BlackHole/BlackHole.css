@@ -18,7 +18,7 @@
 }
 
 /* Floating sim-type pill (the shared GalaxySimulation.css isn't loaded in the
-   black-hole view, so define it here — absolute so it never steals canvas
+   black-hole view, so define it here, absolute so it never steals canvas
    drags away from OrbitControls). */
 .bh-sim .sim-type-bar {
   position: absolute;
@@ -63,7 +63,7 @@
 
 .bh-sim .sim-type-icon { font-size: 11px; line-height: 1; }
 
-/* High Performance Mode toggle — top right */
+/* High Performance Mode toggle, top right */
 .bh-perf-toggle {
   position: absolute;
   z-index: 10;
@@ -316,7 +316,7 @@
   word-break: break-word;
 }
 
-/* MathJax equation block — same amber-tinted card as the old <code> box */
+/* MathJax equation block, same amber-tinted card as the old <code> box */
 .bh-phys-eq {
   padding: 9px 10px 7px;
   border-radius: 7px;
@@ -340,7 +340,7 @@
 .bh-phys-eq mjx-container { color: #ffd6a8; }
 .bh-phys-eq mjx-container[display='true'] { margin: 0 !important; }
 
-/* ─── Collapsed state — small square pinned to the screen edge ─────────── */
+/* ─── Collapsed state, small square pinned to the screen edge ─────────── */
 /* Placed after the glossy .bh-panel rule so it actually wins the cascade. */
 .bh-panel.bh-panel-collapsed {
   /* Sits just under the High Performance Mode pill, mirroring its inset */

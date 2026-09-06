@@ -1,5 +1,5 @@
 /* ---------------------------------------------------------------------------
-   Topic finder — the "what do you want to learn?" combobox and the plan panel
+   Topic finder, the "what do you want to learn?" combobox and the plan panel
    it opens. Sits above the resource library so nobody has to wade through 29
    cards to find the one thing they came for.
 --------------------------------------------------------------------------- */
@@ -27,12 +27,15 @@
   width: 100%;
   padding: 18px 46px 18px 50px;
   border-radius: 16px;
-  border: 1px solid var(--hu-line-strong);
-  background: linear-gradient(180deg, rgba(24, 20, 40, 0.8), rgba(14, 12, 24, 0.7));
-  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  /* More opaque than before: the page is transparent over a moving star field,
+     so a sheer input lost its edge against the background. */
+  background: linear-gradient(180deg, rgba(30, 26, 48, 0.94), rgba(17, 15, 30, 0.92));
+  backdrop-filter: blur(16px);
   font: inherit;
-  font-size: 16px;
-  color: var(--hu-ink);
+  font-size: 16.5px;
+  font-weight: 560;
+  color: #f3f1fa;
   outline: none;
   transition:
     border-color 0.18s ease,
@@ -441,14 +444,14 @@
 .bp-intro {
   margin: 0;
   max-width: 76ch;
-  font-size: 13px;
+  font-size: 13.5px;
   line-height: 1.55;
-  color: var(--hu-ink-faint);
+  color: var(--hu-ink-dim);
 }
 
 .bp-intro strong {
-  color: var(--hu-ink-dim);
-  font-weight: 640;
+  color: #e6e3f2;
+  font-weight: 720;
 }
 
 .bp-reset {
@@ -481,12 +484,12 @@
 
 .bp-label {
   display: block;
-  margin-bottom: 6px;
-  font-size: 11px;
-  font-weight: 680;
+  margin-bottom: 7px;
+  font-size: 11.5px;
+  font-weight: 780;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--hu-ink-faint);
+  color: #c3bedb;
 }
 
 .bp-input-wrap {
@@ -495,13 +498,14 @@
 
 .bp-input {
   width: 100%;
-  padding: 10px 38px 10px 13px;
+  padding: 11px 38px 11px 13px;
   border-radius: 10px;
-  border: 1px solid var(--hu-line);
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(20, 17, 34, 0.9);
   font: inherit;
-  font-size: 13.5px;
-  color: var(--hu-ink);
+  font-size: 14px;
+  font-weight: 540;
+  color: #f3f1fa;
   outline: none;
   text-overflow: ellipsis;
 }
@@ -840,4 +844,108 @@
 .tf-link-course > svg {
   margin-top: 2px;
   flex: 0 0 auto;
+}
+
+/* ---------------------------------------------------------------------------
+   Search bar interactivity, same conic-gradient language as the buttons, so
+   the focus state reads as one design system rather than a stack of effects.
+--------------------------------------------------------------------------- */
+
+.tf-search-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  z-index: -1;
+  border-radius: 17px;
+  background: conic-gradient(
+    from var(--hu-angle) at 50% 50%,
+    #ff4d6d, #c084fc, #5fd0ff, #ff8fab, #ff4d6d
+  );
+  opacity: 0;
+  filter: blur(7px);
+  transition: opacity 0.3s ease;
+  animation: hu-glow-spin 6s linear infinite;
+  pointer-events: none;
+}
+
+.tf-search-wrap-on::before {
+  opacity: 0.7;
+}
+
+/* The input's own border becomes the crisp edge of that same gradient. */
+.tf-search-wrap-on .tf-search {
+  border-color: transparent;
+  background:
+    linear-gradient(rgba(16, 13, 28, 0.94), rgba(16, 13, 28, 0.94)) padding-box,
+    conic-gradient(from var(--hu-angle) at 50% 50%, #ff4d6d, #c084fc, #5fd0ff, #ff8fab, #ff4d6d)
+      border-box;
+  animation: hu-glow-spin 6s linear infinite;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
+}
+
+.tf-search-kbd {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 6px;
+  border: 1px solid var(--hu-line-strong);
+  background: rgba(255, 255, 255, 0.05);
+  font: inherit;
+  font-size: 12px;
+  color: var(--hu-ink-faint);
+  pointer-events: none;
+}
+
+/* Options slide in rather than appearing, and the active row leads with a bar. */
+.tf-option {
+  position: relative;
+  transition:
+    background 0.16s ease,
+    transform 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tf-option::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  width: 2px;
+  height: 0;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #ff8fab, #c084fc);
+  transform: translateY(-50%);
+  transition: height 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tf-option-active {
+  transform: translateX(3px);
+}
+
+.tf-option-active::before {
+  height: 62%;
+}
+
+.tf-dropdown {
+  animation: hu-dropdown-in 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes hu-dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.99);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tf-search-wrap::before,
+  .tf-search-wrap-on .tf-search,
+  .tf-dropdown {
+    animation: none;
+  }
 }

@@ -109,7 +109,7 @@ function DarkMatterHalo({ visible, densityFactor, scaleRadiusKpc, model, velocit
           rho = 1 / (1 + x * x)
         }
 
-        // Normalize — NFW and ISO max at small r
+        // Normalize, NFW and ISO max at small r
         const rhoMax = model === 'nfw'
           ? 1 / ((2 / scaleRadiusKpc) * Math.pow(1 + 2 / scaleRadiusKpc, 2))
           : 1.0
@@ -123,7 +123,7 @@ function DarkMatterHalo({ visible, densityFactor, scaleRadiusKpc, model, velocit
       positions[i3 + 1] = r * Math.cos(phi)
       positions[i3 + 2] = r * Math.sin(phi) * Math.sin(theta)
 
-      // Color encodes local density — brighter/redder = denser
+      // Color encodes local density, brighter/redder = denser
       const rKpc = r / kpcToScene
       let densityT
       if (model === 'nfw') {
@@ -197,7 +197,7 @@ function DarkMatterHalo({ visible, densityFactor, scaleRadiusKpc, model, velocit
 /**
  * Gravitational lensing light ray. Uses GR deflection α = 4GM/(c²b) (exaggerated).
  * The ray enters from the left, curves toward the galactic centre, exits right.
- * Deflection profile follows a Lorentzian centred on the galaxy — matches how
+ * Deflection profile follows a Lorentzian centred on the galaxy, matches how
  * projected mass accumulates along the line of sight.
  */
 function LightRay({ visible, mencMsun, scaleRadiusKpc }) {
@@ -454,12 +454,12 @@ function GalaxyParticles({ showDM, densityFactor, scaleRadiusKpc,model, velocity
   )
 }
 
-// 3D rotation-curve overlay — layout constants
+// 3D rotation-curve overlay, layout constants
 const RC_R_MAX = 45      // kpc
 const RC_V_MAX = 400     // km/s
-const RC_W = 18          // scene units X — reaches galaxy visual edge
-const RC_H = 18          // scene units Y — velocity axis height
-const RC_D = 5           // scene units Z — octant depth
+const RC_W = 18          // scene units X, reaches galaxy visual edge
+const RC_H = 18          // scene units Y, velocity axis height
+const RC_D = 5           // scene units Z, octant depth
 const RC_SR = RC_W / RC_R_MAX
 
 // Power-law Y scale: spreads out low velocities so the predicted curve
@@ -492,17 +492,17 @@ function RotationCurveOverlay({ visible, series, massFactor = 1 }) {
     sw.rotation.y = Math.PI / 2
     sw.position.set(0, RC_H / 2, -RC_D / 2)
 
-    // Grid — back-wall horizontal lines follow ySc, vertical lines linear
+    // Grid, back-wall horizontal lines follow ySc, vertical lines linear
     const gPts = []
     const seg = (ax, ay, az, bx, by, bz) =>
       gPts.push(new THREE.Vector3(ax, ay, az), new THREE.Vector3(bx, by, bz))
 
-    // Back-wall vertical lines (radius axis — linear)
+    // Back-wall vertical lines (radius axis, linear)
     for (let i = 0; i <= 5; i++) {
       const x = (i / 5) * RC_W
       seg(x, 0, 0, x, RC_H, 0)
     }
-    // Back-wall horizontal lines (velocity axis — non-linear via ySc)
+    // Back-wall horizontal lines (velocity axis, non-linear via ySc)
     V_GRID.forEach(v => {
       const y = ySc(v)
       seg(0, y, 0, RC_W, y, 0)
@@ -544,7 +544,7 @@ function RotationCurveOverlay({ visible, series, massFactor = 1 }) {
     }
   }, [])
 
-  // ── Curve points — rebuilt when series (sliders) or massFactor changes ───
+  // ── Curve points, rebuilt when series (sliders) or massFactor changes ───
   const { modelPts, mwPts } = useMemo(() => {
     if (!series?.rKpc?.length) return { modelPts: [], mwPts: [] }
     // Baryonic-only curve (peaks then Keplerian decline) as the "predicted" line
@@ -585,7 +585,7 @@ function RotationCurveOverlay({ visible, series, massFactor = 1 }) {
     <group position={[0, 0.4, 0]}>
       {imperObj.objects.map((o, i) => <primitive key={i} object={o} />)}
 
-      {/* Data curves — thick, via drei Line which supports real lineWidth */}
+      {/* Data curves, thick, via drei Line which supports real lineWidth */}
       {modelPts.length > 1 && (
         <Line points={modelPts} color="#cc44ff" lineWidth={8} transparent opacity={t} />
       )}
@@ -610,7 +610,7 @@ function RotationCurveOverlay({ visible, series, massFactor = 1 }) {
             </Html>
           ))}
 
-          {/* Velocity tick labels — positioned at non-linear ySc heights */}
+          {/* Velocity tick labels, positioned at non-linear ySc heights */}
           {[100, 200, 300].map(v => (
             <Html key={`v${v}`} position={[-0.85, ySc(v), 0]} center occlude={false}>
               <span style={lbl({ fontSize: 13, fontFamily: 'ui-monospace,monospace', color: '#8899cc' })}>{v}</span>

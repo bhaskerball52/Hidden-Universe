@@ -32,7 +32,7 @@ function IntroTab() {
         <h2 className="sim-panel-title">What is dark matter?</h2>
         <p className="sim-body-text">
           Dark matter is an invisible substance that makes up about 27% of the universe.
-          It doesn't emit, absorb, or reflect light — we can only detect it through its
+          It doesn't emit, absorb, or reflect light, we can only detect it through its
           gravitational effects on visible matter.
         </p>
       </section>
@@ -40,7 +40,7 @@ function IntroTab() {
         <h2 className="sim-panel-title">What am I seeing?</h2>
         <p className="sim-body-text">
           The glowing particles are stars and gas in a spiral galaxy like the Milky Way.
-          The faint red-violet cloud surrounding the galaxy is its dark matter halo —
+          The faint red-violet cloud surrounding the galaxy is its dark matter halo,
           an enormous invisible sphere of mass that extends far beyond the visible disk.
         </p>
       </section>
@@ -48,7 +48,7 @@ function IntroTab() {
         <h2 className="sim-panel-title">Why do we believe it exists?</h2>
         <p className="sim-body-text">
           Stars at the outer edges of galaxies orbit too fast. By Newton's laws, they
-          should slow down as they get farther from the galactic center — just like outer
+          should slow down as they get farther from the galactic center, just like outer
           planets in our solar system. Instead, rotation curves stay flat, implying a
           huge invisible mass surrounding the galaxy.
         </p>
@@ -74,8 +74,8 @@ function SimulateTab({
   series
 }) {
   const modelLabel = model === 'nfw'
-    ? 'Navarro–Frenk–White — cusp at center, widespread in cosmological simulations.'
-    : 'Pseudo-isothermal sphere — finite core density; motivates flat rotation curves.'
+    ? 'Navarro–Frenk–White, cusp at center, widespread in cosmological simulations.'
+    : 'Pseudo-isothermal sphere, finite core density; motivates flat rotation curves.'
 
   return (
     <>
@@ -99,7 +99,7 @@ function SimulateTab({
 
         <SliderRow
           label="Dark matter density scale"
-          hint="Scales characteristic density ρ — raises enclosed mass and rotation speeds."
+          hint="Scales characteristic density ρ, raises enclosed mass and rotation speeds."
           min={0.2} max={5} step={0.01}
           value={densityFactor} onChange={onDensityFactorChange}
           format={(v) => `${v.toFixed(2)}×`}
@@ -124,14 +124,14 @@ function SimulateTab({
         <dl className="sim-summary">
           <div>
             <dt>Peak rotation (model)</dt>
-            <dd>{series?.peakVc != null ? `${series.peakVc.toFixed(1)} km/s` : '—'}</dd>
+            <dd>{series?.peakVc != null ? `${series.peakVc.toFixed(1)} km/s` : 'n/a'}</dd>
           </div>
           <div>
             <dt>Mass enclosed at outer radius</dt>
             <dd>
               {series?.mencOuterMsun != null ? (
                 <>{(series.mencOuterMsun / 1e10).toFixed(2)}<span className="sim-summary-unit"> ×10¹⁰ M☉</span></>
-              ) : '—'}
+              ) : 'n/a'}
             </dd>
           </div>
         </dl>
@@ -156,7 +156,7 @@ function AdvancedTab({
           <>
             <SliderRow
               label="Mass Scale"
-              hint="Scales halo characteristic density — increases enclosed mass and rotation speed."
+              hint="Scales halo characteristic density, increases enclosed mass and rotation speed."
               min={0.2} max={5} step={0.01}
               value={rcMassFactor}
               onChange={onRcMassFactorChange}
@@ -199,7 +199,7 @@ function AdvancedTab({
         {showLightRay && (
           <p className="sim-body-text" style={{ marginTop: 8 }}>
             Deflection angle α = 4GM/c²b (GR formula). The beam bends toward the
-            galactic center — increasing mass or decreasing scale radius amplifies
+            galactic center, increasing mass or decreasing scale radius amplifies
             the effect. Exaggerated ×50 000 for visibility.
           </p>
         )}

@@ -9,6 +9,9 @@ import {
 } from './siteData'
 import SimArt from './SimArt'
 import TopicFinder from './TopicFinder'
+import LensField from './LensField'
+import { AccountNav, ProgressTracker } from './Account'
+import { useProgress } from './useProgress'
 import { TOPICS } from './topics'
 import Starfield from './Starfield'
 import { useIntro } from './useIntro'
@@ -43,6 +46,7 @@ function NavBar({ onLaunch }) {
           Launch a sim
           <ArrowIcon />
         </button>
+        <AccountNav />
       </div>
     </header>
   )
@@ -131,10 +135,11 @@ function Simulations({ onLaunch }) {
         <span className="hu-eyebrow">The simulations</span>
         <h2>High-quality simulations, driven by physics and data</h2>
         <p>
-          Every scene integrates the real equations live in the browser — geodesics, density
-          profiles, dipole fields — against measured values, not artist impressions. Watching a
-          disk warp over an event horizon, or a rotation curve refuse to fall off, gives you a feel
-          for what is actually going on that no derivation on paper quite delivers.
+          Every scene integrates the real equations live in the browser, running geodesics,
+          density profiles and dipole fields against measured values rather than artist
+          impressions. Watching a disk warp over an event horizon, or a rotation curve refuse to
+          fall off, gives you a feel for what is going on that no derivation on paper quite
+          delivers.
         </p>
       </div>
       <div className="hu-sim-grid">
@@ -146,7 +151,7 @@ function Simulations({ onLaunch }) {
   )
 }
 
-function LearningPath() {
+function LearningPath({ progress, onToggleStage, onSetNotify }) {
   return (
     <section className="hu-section hu-section-tight" id="path">
       <div className="hu-section-head">
@@ -157,22 +162,29 @@ function LearningPath() {
           each with the resources below filtered down to what actually matters at that point.
         </p>
       </div>
-      <ol className="hu-path">
-        {PATH.map((stage) => (
-          <li className="hu-path-step" key={stage.step} style={{ '--sim-accent': stage.accent }}>
-            <span className="hu-path-num">{stage.step}</span>
-            <h3>{stage.title}</h3>
-            <p>{stage.blurb}</p>
-            <div className="hu-chips">
-              {stage.picks.map((p) => (
-                <span className="hu-chip" key={p}>
-                  {p}
-                </span>
-              ))}
-            </div>
-          </li>
-        ))}
-      </ol>
+      <div className="hu-path-wrap">
+        <ol className="hu-path">
+          {PATH.map((stage) => (
+            <li className="hu-path-step" key={stage.step} style={{ '--sim-accent': stage.accent }}>
+              <span className="hu-path-num">{stage.step}</span>
+              <h3>{stage.title}</h3>
+              <p>{stage.blurb}</p>
+              <div className="hu-chips">
+                {stage.picks.map((p) => (
+                  <span className="hu-chip" key={p}>
+                    {p}
+                  </span>
+                ))}
+              </div>
+            </li>
+          ))}
+        </ol>
+        <ProgressTracker
+          progress={progress}
+          onToggleStage={onToggleStage}
+          onSetNotify={onSetNotify}
+        />
+      </div>
     </section>
   )
 }
@@ -232,7 +244,7 @@ function Learn() {
         <span className="hu-eyebrow">The full library</span>
         <h2>Or browse everything</h2>
         <p>
-          {RESOURCES.length} hand-picked courses, lecture notes, tools and archives — the whole
+          {RESOURCES.length} hand-picked courses, lecture notes, tools and archives. The whole
           shelf, if you would rather look around than search.
         </p>
       </div>
@@ -305,9 +317,9 @@ function FindTopic({ onLaunch }) {
         <span className="hu-eyebrow">Start learning</span>
         <h2>What do you want to learn?</h2>
         <p>
-          Name a topic or a competition you are preparing for — {TOPICS.length} of them, from
-          constellations to tensor calculus — and get a route through it with the specific courses
-          to read, not a wall of links.
+          Name a topic or a competition you are preparing for. There are {TOPICS.length} of them,
+          from constellations to tensor calculus, and each one gives you a route through it with
+          the specific courses to read instead of a wall of links.
         </p>
       </div>
       <TopicFinder onLaunch={onLaunch} />
@@ -399,9 +411,11 @@ function Footer({ onLaunch }) {
 
 export default function Home({ onLaunch }) {
   const { running, burstAt, skip } = useIntro()
+  const { progress, toggleStage, setNotify } = useProgress()
 
   return (
     <div className="hu-home" data-intro={running ? 'running' : undefined}>
+      <LensField />
       {running ? (
         <button type="button" className="hu-intro-skip" onClick={skip}>
           Skip
@@ -412,7 +426,11 @@ export default function Home({ onLaunch }) {
         <Hero onLaunch={onLaunch} burstAt={burstAt} />
         <FindTopic onLaunch={onLaunch} />
         <Simulations onLaunch={onLaunch} />
-        <LearningPath />
+        <LearningPath
+          progress={progress}
+          onToggleStage={toggleStage}
+          onSetNotify={setNotify}
+        />
         <Learn />
         <Follow />
       </main>

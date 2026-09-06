@@ -1,0 +1,221 @@
+/* Account shell and progress tracker. Uses the site's existing tokens so it
+   reads as part of the page rather than a bolted-on auth widget. */
+
+/* --- nav ------------------------------------------------------------------ */
+
+.ac-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ac-nav-ghost {
+  padding: 8px 13px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: none;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 620;
+  color: var(--hu-ink-dim);
+  cursor: pointer;
+  transition: color 0.16s ease, background 0.16s ease;
+}
+
+.ac-nav-ghost:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.ac-nav-solid {
+  padding: 8px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.07);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 660;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.16s ease, border-color 0.16s ease;
+}
+
+.ac-nav-solid:hover {
+  background: rgba(255, 255, 255, 0.13);
+  border-color: rgba(255, 255, 255, 0.38);
+}
+
+
+
+
+@media (max-width: 900px) {
+  .ac-nav-out {
+    display: none;
+  }
+}
+
+/* --- tracker -------------------------------------------------------------- */
+
+.ac-track {
+  align-self: start;
+  /* The route is taller than the tracker, so it follows you down it. */
+  position: sticky;
+  top: 78px;
+  padding: 22px;
+  border: 1px solid var(--hu-line-strong);
+  border-radius: 16px;
+  background: rgba(13, 11, 24, 0.86);
+  backdrop-filter: blur(10px);
+}
+
+.ac-track-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.ac-ring-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 5;
+}
+
+.ac-ring-fg {
+  fill: none;
+  stroke: url(#none) #c084fc;
+  stroke-width: 5;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 28px 28px;
+  transition: stroke-dashoffset 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ac-ring-label {
+  fill: #fff;
+  font-size: 13px;
+  font-weight: 720;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.ac-ring-muted .ac-ring-label {
+  fill: var(--hu-ink-faint);
+}
+
+.ac-stages {
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 7px;
+}
+
+.ac-stage {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 10px 11px;
+  border: 1px solid var(--hu-line);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--hu-ink-dim);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
+}
+
+.ac-stage:hover {
+  border-color: var(--hu-line-strong);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.ac-stage-done {
+  border-color: color-mix(in srgb, var(--sim-accent) 45%, transparent);
+  background: color-mix(in srgb, var(--sim-accent) 12%, transparent);
+  color: #fff;
+}
+
+.ac-tick {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--sim-accent);
+  color: #14101f;
+}
+
+.ac-stage:not(.ac-stage-done) .ac-tick {
+  background: none;
+}
+
+.ac-tick-empty {
+  width: 15px;
+  height: 15px;
+  border: 1.5px solid var(--hu-line-strong);
+  border-radius: 50%;
+}
+
+.ac-stage-num {
+  margin-right: 8px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 760;
+  color: var(--sim-accent);
+}
+
+.ac-notify {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--hu-ink-dim);
+  cursor: pointer;
+}
+
+.ac-notify input {
+  margin-top: 2px;
+  accent-color: #c084fc;
+}
+
+.ac-track-cta {
+  width: 100%;
+  padding: 11px;
+  border: 0;
+  border-radius: 11px;
+  background: linear-gradient(120deg, #ff4d6d, #c084fc);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 680;
+  color: #fff;
+  cursor: pointer;
+}
+
+.ac-since {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: var(--hu-ink-faint);
+}
+
+/* --- route + tracker side by side ---------------------------------------- */
+
+.hu-path-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+  gap: 26px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .hu-path-wrap {
+    grid-template-columns: 1fr;
+  }
+}

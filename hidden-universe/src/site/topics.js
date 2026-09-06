@@ -2,7 +2,7 @@
 // The topic catalogue behind the "what do you want to learn?" search.
 //
 // Each entry is a self-contained starting point: what the topic is, a short
-// ordered plan, and the specific links to begin with — so someone can go from
+// ordered plan, and the specific links to begin with, so someone can go from
 // typing a word to reading the right thing without wading through a library.
 //
 //   id      stable key
@@ -11,7 +11,7 @@
 //   level   Beginner | Intermediate | Advanced
 //   aliases extra search terms (abbreviations, synonyms, common misspellings)
 //   blurb   one or two sentences: what this actually is
-//   plan    ordered steps — the route through the topic
+//   plan    ordered steps, the route through the topic
 //   links   { t: title, s: source, u: url }
 //   sims    simulation keys on this site that show the topic in motion
 // ---------------------------------------------------------------------------
@@ -55,21 +55,21 @@ export const TOPICS = [
     level: 'Beginner',
     aliases: ['stargazing', 'asterism', 'star chart', 'naked eye', 'orion', 'ursa major', 'zodiac'],
     blurb:
-      'The 88 official constellations are bookkeeping — regions of sky, not physical groupings. Learning them is how you navigate everything else.',
+      'The 88 official constellations are bookkeeping. They are regions of sky, not physical groupings, and learning them is how you navigate everything else.',
     plan: [
       'Learn a dozen bright anchors first (Orion, the Big Dipper, Cassiopeia, the Summer Triangle) and star-hop from them.',
       'Get outside with a planetarium app and identify what is actually overhead tonight, not what is in the book.',
-      'Add the Messier objects once the patterns are automatic — that is where a small telescope starts paying off.',
+      'Add the Messier objects once the patterns are automatic. That is where a small telescope starts paying off.',
     ],
     courses: [
-      { id: 'openstax-astro', where: 'Ch. 2 — Observing the Sky; Ch. 1.6 for the tour of scales' },
-      { id: 'mit-8-282', where: 'Opening lectures on the celestial sphere and naked-eye astronomy' },
+      { id: 'openstax-astro', where: 'Ch. 2, Observing the Sky; §1.6 for the tour of scales' },
+      { id: 'mit-8-282', where: 'Ses 1–2, course intro and Greek astronomy' },
     ],
     prereqs: { math: [], physics: [] },
     links: [
       STELLARIUM,
-      { t: 'The Constellations — all 88, with boundaries', s: 'International Astronomical Union', u: 'https://www.iau.org/IAU/IAU/Astronomy-FAQs/Constellations.aspx' },
-      { t: 'Deep Sky Videos — every Messier object', s: 'YouTube', u: 'https://www.youtube.com/@DeepSkyVideos' },
+      { t: 'The Constellations, all 88, with boundaries', s: 'International Astronomical Union', u: 'https://www.iau.org/IAU/IAU/Astronomy-FAQs/Constellations.aspx' },
+      { t: 'Deep Sky Videos, every Messier object', s: 'YouTube', u: 'https://www.youtube.com/@DeepSkyVideos' },
       { t: "This week's sky at a glance", s: 'Sky & Telescope', u: 'https://skyandtelescope.org/observing/sky-at-a-glance/' },
     ],
   },
@@ -83,13 +83,13 @@ export const TOPICS = [
       'Right ascension, declination, hour angle, sidereal time. Unglamorous, and every observing or olympiad problem assumes you already have it.',
     plan: [
       'Nail the equatorial system (RA/dec) and why it is fixed to the sky rather than the ground.',
-      'Learn to convert to alt-az for a given time and latitude — this is the classic exam question.',
+      'Learn to convert to alt-az for a given time and latitude. It is the classic exam question.',
       'Understand precession and why coordinates carry an epoch like J2000.',
     ],
     courses: [
-      { id: 'openstax-astro', where: 'Ch. 2.1–2.3 (celestial sphere, coordinates); Ch. 4 for time and seasons' },
-      { id: 'mit-8-282', where: 'Lectures on coordinates, time and the celestial sphere' },
-      { id: 'khan-trig', where: 'Unit on the unit circle and spherical/angle relations' },
+      { id: 'openstax-astro', where: 'Ch. 2 (celestial sphere); Ch. 4, Earth, Moon, and Sky' },
+      { id: 'mit-8-282', where: 'Ses 3–7, Copernicus through the full Kepler orbit problem' },
+      { id: 'khan-trig', where: 'Units 1–2, right triangles, then trigonometric functions' },
     ],
     prereqs: { math: ['trigonometry'], physics: [] },
     links: [
@@ -105,22 +105,22 @@ export const TOPICS = [
     level: 'Beginner',
     aliases: ['refractor', 'reflector', 'aperture', 'focal length', 'resolving power', 'seeing', 'diffraction limit'],
     blurb:
-      'Aperture, focal ratio, magnification, and the diffraction limit — what a telescope can and cannot show you, and why bigger really is better.',
+      'Aperture, focal ratio, magnification, and the diffraction limit. Together they set what a telescope can and cannot show you, and why bigger really is better.',
     plan: [
       'Work out the relationships between aperture, focal length, magnification and field of view.',
       'Derive the Rayleigh criterion and compare it against real atmospheric seeing.',
-      'Compare designs — refractor, Newtonian, Cassegrain — and what each trades away.',
+      'Compare refractor, Newtonian and Cassegrain designs, and what each one trades away.',
     ],
     courses: [
-      { id: 'openstax-astro', where: 'Ch. 6 — Astronomical Instruments (all of it)' },
-      { id: 'khan-physics', where: 'Geometric optics: lenses, mirrors, diffraction' },
-      { id: 'mit-8-03', where: 'Lectures on optics, interference and diffraction' },
+      { id: 'openstax-astro', where: 'Ch. 6, Astronomical Instruments (all of it)' },
+      { id: 'khan-physics', where: 'Units 1–3, kinematics, dynamics, work and energy' },
+      { id: 'mit-8-03', where: 'Lectures 20–22, interference, diffraction and resolution' },
     ],
     prereqs: { math: ['algebra-2'], physics: ['conceptual-physics'] },
     links: [
       OPENSTAX,
       HYPERPHYSICS,
-      { t: 'How Webb works — optics and instruments', s: 'STScI', u: 'https://webbtelescope.org/contents/articles/how-does-webb-work' },
+      { t: 'How Webb works, optics and instruments', s: 'STScI', u: 'https://webbtelescope.org/contents/articles/how-does-webb-work' },
     ],
   },
   {
@@ -130,15 +130,15 @@ export const TOPICS = [
     level: 'Intermediate',
     aliases: ['imaging', 'stacking', 'dslr', 'ccd', 'cmos', 'dark frame', 'flat field', 'narrowband'],
     blurb:
-      'Long exposures, calibration frames, and stacking. The processing is where most of the signal comes from — and where most beginners go wrong.',
+      'Long exposures, calibration frames, and stacking. The processing is where most of the signal comes from, and where most beginners go wrong.',
     plan: [
       'Start untracked and wide-field: a tripod, a fast lens, and stacking software.',
-      'Learn the calibration frames — bias, dark, flat — and what artefact each one removes.',
+      'Learn the calibration frames (bias, dark, flat) and what artefact each one removes.',
       'Move to tracked, guided exposures and narrowband filters once the basics are boring.',
     ],
     courses: [
-      { id: 'openstax-astro', where: 'Ch. 6.3–6.5 — detectors, CCDs and observing conditions' },
-      { id: 'astropy-learn', where: 'The FITS-file and image-viewing tutorials' },
+      { id: 'openstax-astro', where: '§6.3–6.5, detectors, CCDs and observing conditions' },
+      { id: 'astropy-learn', where: 'The “FITS-images” and image-viewing tutorials' },
     ],
     prereqs: { math: ['algebra-2'], physics: ['conceptual-physics'] },
     links: [
@@ -161,9 +161,9 @@ export const TOPICS = [
       'Measure a Doppler shift yourself from archive data and turn it into a velocity.',
     ],
     courses: [
-      { id: 'openstax-astro', where: 'Ch. 5 — Radiation and Spectra; Ch. 17 — Analyzing Starlight' },
-      { id: 'openstax-physics-3', where: 'Chapters on atomic structure and photons' },
-      { id: 'mit-8-282', where: 'Lectures on radiation, spectra and stellar classification' },
+      { id: 'openstax-astro', where: 'Ch. 5, Radiation and Spectra; Ch. 17, Analyzing Starlight' },
+      { id: 'openstax-physics-3', where: 'Ch. 6, Photons and Matter Waves; Ch. 8, Atomic Structure' },
+      { id: 'mit-8-282', where: 'Ses 8, EM waves and the Doppler effect' },
     ],
     prereqs: { math: ['algebra-2'], physics: ['modern-physics'] },
     links: [
@@ -185,8 +185,8 @@ export const TOPICS = [
       'Build a colour–magnitude diagram from real cluster photometry.',
     ],
     courses: [
-      { id: 'openstax-astro', where: 'Ch. 17.1–17.3 (magnitudes, colour); Ch. 19 for distance modulus' },
-      { id: 'mit-8-282', where: 'Lectures on brightness, magnitudes and luminosity' },
+      { id: 'openstax-astro', where: 'Ch. 17 (magnitudes and colour); Ch. 19 for distance modulus' },
+      { id: 'mit-8-282', where: 'Ses 13–14, distances and magnitudes' },
     ],
     prereqs: { math: ['algebra-2'], physics: ['mechanics-algebra'] },
     links: [OPENSTAX, ASTROPY, SDSS],
@@ -200,14 +200,14 @@ export const TOPICS = [
     blurb:
       'Every cosmic distance is calibrated against the rung below it, starting from parallax. Understanding the ladder is understanding why the Hubble tension is hard.',
     plan: [
-      'Start with parallax and the definition of the parsec — the only rung measured geometrically.',
+      'Start with parallax and the definition of the parsec, the only rung measured geometrically.',
       'Work up through Cepheids and Type Ia supernovae as standard candles.',
       'Read about the Hubble tension and where in the ladder the disagreement could hide.',
     ],
     courses: [
-      { id: 'openstax-astro', where: 'Ch. 19 — Celestial Distances; Ch. 26.3 for the extragalactic rungs' },
-      { id: 'yale-astr160', where: 'Lectures on parallax, standard candles and the Hubble constant' },
-      { id: 'mit-8-282', where: 'Lectures on distance determination' },
+      { id: 'openstax-astro', where: 'Ch. 19, Celestial Distances; §26.3 for the extragalactic rungs' },
+      { id: 'yale-astr160', where: 'Lectures 16–18, Hubble’s law and the Big Bang' },
+      { id: 'mit-8-282', where: 'Ses 13–14 (distances); Ses 33, the distance ladder' },
     ],
     prereqs: { math: ['trigonometry'], physics: ['intro-astronomy'] },
     links: [
@@ -225,21 +225,21 @@ export const TOPICS = [
     level: 'Intermediate',
     aliases: ['planetary science', 'planets', 'terrestrial', 'gas giant', 'interior structure', 'differentiation'],
     blurb:
-      'How planets form, differentiate, and hold onto atmospheres — and why the same physics produces Mercury and Jupiter from one disk.',
+      'How planets form, differentiate, and hold onto atmospheres, and why the same physics produces Mercury and Jupiter from one disk.',
     plan: [
-      'Learn core accretion and the frost line — why rocky planets are inside and giants outside.',
+      'Learn core accretion and the frost line, which is why rocky planets sit inside and giants outside.',
       'Work through hydrostatic equilibrium and interior structure for a rocky vs. gaseous body.',
       'Compare escape velocity against thermal velocity to predict which atmospheres survive.',
     ],
     courses: [
-      { id: 'mit-8-901', where: 'Lectures on planetary interiors and atmospheres' },
-      { id: 'yale-astr160', where: 'Early lectures on planetary formation and structure' },
-      { id: 'openstax-astro', where: 'Ch. 7–12 (solar system survey); Ch. 14 for formation' },
+      { id: 'mit-8-901', where: 'Ses 2, the Kepler problem and binaries' },
+      { id: 'yale-astr160', where: 'Lectures 2–3, planetary orbits and the solar system' },
+      { id: 'openstax-astro', where: 'Ch. 7–12 (solar-system survey); Ch. 14 for formation' },
     ],
     prereqs: { math: ['calculus-2'], physics: ['mechanics-calculus', 'thermodynamics'] },
     links: [
       OPENSTAX,
-      { t: 'NASA Science — planets', s: 'NASA', u: 'https://science.nasa.gov/solar-system/planets/' },
+      { t: 'NASA Science, planets', s: 'NASA', u: 'https://science.nasa.gov/solar-system/planets/' },
       YALE,
     ],
   },
@@ -252,20 +252,20 @@ export const TOPICS = [
     blurb:
       "Kepler's laws, the vis-viva equation, and transfer orbits. The most directly useful maths in all of astronomy, and a guaranteed olympiad topic.",
     plan: [
-      "Derive Kepler's three laws from the inverse-square force — do not just memorise them.",
+      "Derive Kepler's three laws from the inverse-square force rather than memorising them.",
       'Learn the vis-viva equation and use it for Hohmann transfers and escape trajectories.',
       'Simulate a system numerically and watch the orbital elements drift under perturbation.',
     ],
     courses: [
-      { id: 'mit-8-01', where: 'Units on central forces, angular momentum and gravitation' },
-      { id: 'mit-8-223', where: 'The whole course — Lagrangian treatment of orbits' },
-      { id: 'susskind', where: 'Classical Mechanics — the central-force and orbit lectures' },
-      { id: 'yale-phys200', where: 'Lectures on Newtonian gravity and Kepler’s laws' },
+      { id: 'mit-8-01', where: 'Readings 4–10 (Newton’s laws, gravity, circular motion); 32–33 for angular momentum' },
+      { id: 'mit-8-223', where: 'Lectures 1–8, the action principle through Kepler’s laws' },
+      { id: 'susskind', where: 'Classical Mechanics, the central-force and orbit lectures' },
+      { id: 'yale-phys200', where: 'Lectures 1–11, Newtonian mechanics through torque' },
     ],
     prereqs: { math: ['calculus-2'], physics: ['mechanics-calculus'] },
     links: [
       SUSSKIND,
-      { t: 'REBOUND — N-body integrator', s: 'Rein & Liu', u: 'https://rebound.readthedocs.io/' },
+      { t: 'REBOUND, N-body integrator', s: 'Rein & Liu', u: 'https://rebound.readthedocs.io/' },
       { t: 'JPL Horizons ephemerides', s: 'NASA/JPL', u: 'https://ssd.jpl.nasa.gov/horizons/' },
       { t: 'Eyes on the Solar System', s: 'NASA/JPL', u: 'https://eyes.nasa.gov/apps/solar-system/' },
     ],
@@ -280,13 +280,13 @@ export const TOPICS = [
       'Nearly 6,000 confirmed planets, almost all found by two techniques. Both are simple enough to work through by hand and then repeat on real data.',
     plan: [
       'Understand transit and radial-velocity detection, and what each one measures (radius vs. minimum mass).',
-      'Learn the selection biases — why we found hot Jupiters first, and what we are still blind to.',
+      'Learn the selection biases, which explain why we found hot Jupiters first and what we are still blind to.',
       'Pull a real TESS light curve and fit the transit depth yourself.',
     ],
     courses: [
-      { id: 'mit-12-425', where: 'The whole course; start with the transit and radial-velocity lectures' },
-      { id: 'yale-astr160', where: 'The first third — exoplanet detection methods' },
-      { id: 'openstax-astro', where: 'Ch. 21.4–21.6 — planets outside the solar system' },
+      { id: 'mit-12-425', where: 'Lectures 1–6, overview, transits and radial velocities' },
+      { id: 'yale-astr160', where: 'Lectures 4–7, hot Jupiters, transits, microlensing, direct imaging' },
+      { id: 'openstax-astro', where: '§21.4–21.6, planets outside the solar system' },
     ],
     prereqs: { math: ['calculus-1'], physics: ['mechanics-calculus'] },
     links: [
@@ -305,18 +305,18 @@ export const TOPICS = [
     blurb:
       'The leftovers of planet formation, and the only samples of the early solar system we can actually get our hands on.',
     plan: [
-      'Map the populations — main belt, Trojans, Kuiper belt, Oort cloud — and what dynamically separates them.',
+      'Map the populations (main belt, Trojans, Kuiper belt, Oort cloud) and what dynamically separates them.',
       'Learn how orbits are determined from a handful of observations.',
       'Follow a current sample-return mission and what its results changed.',
     ],
     courses: [
-      { id: 'openstax-astro', where: 'Ch. 13 — Comets and Asteroids; Ch. 14 for meteorites' },
-      { id: 'mit-8-282', where: 'Lectures on solar-system debris' },
+      { id: 'openstax-astro', where: 'Ch. 13, Comets and Asteroids; Ch. 14 for meteorites' },
+      { id: 'mit-8-282', where: 'Ses 5–7, orbits, which is what small-body work rests on' },
     ],
     prereqs: { math: ['trigonometry'], physics: ['mechanics-algebra'] },
     links: [
       { t: 'Minor Planet Center', s: 'IAU', u: 'https://www.minorplanetcenter.net/' },
-      { t: 'NASA Science — asteroids, comets & meteors', s: 'NASA', u: 'https://science.nasa.gov/solar-system/asteroids/' },
+      { t: 'NASA Science, asteroids, comets & meteors', s: 'NASA', u: 'https://science.nasa.gov/solar-system/asteroids/' },
       OPENSTAX,
     ],
   },
@@ -334,8 +334,8 @@ export const TOPICS = [
       'Work through the Drake equation as a way of organising ignorance, not predicting an answer.',
     ],
     courses: [
-      { id: 'openstax-astro', where: 'Ch. 30 — Life in the Universe (all of it)' },
-      { id: 'yale-astr160', where: 'The lectures on habitability and the Drake equation' },
+      { id: 'openstax-astro', where: 'Ch. 30, Life in the Universe (all of it)' },
+      { id: 'yale-astr160', where: 'Lectures 4–7, exoplanet detection, the basis for habitability searches' },
     ],
     prereqs: { math: [], physics: ['conceptual-physics'] },
     links: [
@@ -360,9 +360,9 @@ export const TOPICS = [
       'Trace a 1 M☉ and a 20 M☉ star across the HR diagram and compare their endings.',
     ],
     courses: [
-      { id: 'mit-8-901', where: 'Lectures on stellar structure equations and the HR diagram' },
-      { id: 'openstax-astro', where: 'Ch. 15–16 (the Sun); Ch. 18 and Ch. 22 for the HR diagram and evolution' },
-      { id: 'tong-notes', where: 'Astrophysics / Statistical Physics notes for the equation of state' },
+      { id: 'mit-8-901', where: 'Ses 6–8, radiation, opacity, and the equations of stellar structure' },
+      { id: 'openstax-astro', where: 'Ch. 15–16 (the Sun); Ch. 18 and Ch. 22 for the HR diagram' },
+      { id: 'tong-notes', where: 'Statistical Physics, Ch. 2–3, classical and quantum gases' },
     ],
     prereqs: { math: ['differential-equations'], physics: ['mechanics-calculus', 'thermodynamics'] },
     links: [OPENSTAX, YALE, TONG],
@@ -374,15 +374,15 @@ export const TOPICS = [
     level: 'Intermediate',
     aliases: ['molecular cloud', 'jeans mass', 'protostar', 'imf', 'nebula', 'accretion disk', 'protoplanetary'],
     blurb:
-      'Collapse, fragmentation, and the initial mass function — how a cold cloud becomes a cluster of stars, and why it makes so many more small ones than large.',
+      'Collapse, fragmentation, and the initial mass function. This is how a cold cloud becomes a cluster of stars, and why it makes so many more small ones than large.',
     plan: [
       'Derive the Jeans criterion and see what it takes to make a cloud unstable.',
       'Follow the protostellar stages from collapse through the pre-main-sequence.',
       'Look at real star-forming regions in infrared imagery and identify the stages.',
     ],
     courses: [
-      { id: 'mit-8-901', where: 'Lectures on the interstellar medium and collapse' },
-      { id: 'openstax-astro', where: 'Ch. 20 — Between the Stars; Ch. 21 — The Birth of Stars' },
+      { id: 'mit-8-901', where: 'Ses 24–26, star formation, the Jeans criterion, IMF and shocks' },
+      { id: 'openstax-astro', where: 'Ch. 20, Between the Stars; Ch. 21, The Birth of Stars' },
     ],
     prereqs: { math: ['differential-equations'], physics: ['thermodynamics'] },
     links: [
@@ -398,16 +398,16 @@ export const TOPICS = [
     level: 'Advanced',
     aliases: ['fusion', 'pp chain', 'cno cycle', 'triple alpha', 's-process', 'r-process', 'origin of elements'],
     blurb:
-      'Where the elements come from — the pp chain, the CNO cycle, the triple-alpha bottleneck, and the neutron-capture processes that build everything past iron.',
+      'Where the elements come from: the pp chain, the CNO cycle, the triple-alpha bottleneck, and the neutron-capture processes that build everything past iron.',
     plan: [
       'Work through the pp chain and CNO cycle and what temperature selects between them.',
       'Understand why fusion stops at iron and what that means for massive stars.',
       'Learn the s- and r-processes, and the neutron-star merger evidence for the r-process.',
     ],
     courses: [
-      { id: 'mit-8-901', where: 'Lectures on nuclear burning and stellar energy generation' },
-      { id: 'mit-8-04', where: 'Barrier tunnelling — the mechanism behind the Gamow factor' },
-      { id: 'openstax-physics-3', where: 'Chapters on nuclear physics and binding energy' },
+      { id: 'mit-8-901', where: 'Ses 9–10, nuclear reaction rates, pp and CNO burning' },
+      { id: 'mit-8-04', where: 'Lecture notes 1–8, the quantum machinery behind barrier tunnelling' },
+      { id: 'openstax-physics-3', where: 'Ch. 10, Nuclear Physics' },
     ],
     prereqs: { math: ['calculus-2'], physics: ['quantum-mechanics'] },
     links: [
@@ -423,20 +423,20 @@ export const TOPICS = [
     level: 'Intermediate',
     aliases: ['cepheid', 'rr lyrae', 'eclipsing binary', 'light curve', 'period luminosity', 'cataclysmic variable', 'aavso'],
     blurb:
-      'Stars that change, and stars in pairs. Between them they give us stellar masses and the distance ladder — and amateurs still contribute real data.',
+      'Stars that change, and stars in pairs. Between them they give us stellar masses and the distance ladder, and amateurs still contribute real data.',
     plan: [
       'Learn the main variability classes and what physically drives each one.',
       'Use an eclipsing binary light curve to extract masses and radii.',
       'Submit or analyse real observations through the AAVSO archive.',
     ],
     courses: [
-      { id: 'openstax-astro', where: 'Ch. 19.3 — variable stars as distance indicators' },
-      { id: 'mit-8-901', where: 'Lectures on pulsation and stellar instability' },
-      { id: 'astropy-learn', where: 'The light-curve and time-series tutorials' },
+      { id: 'openstax-astro', where: '§19.3, variable stars as distance indicators' },
+      { id: 'mit-8-901', where: 'Ses 15 and 22, intrinsically variable stars and Cepheids' },
+      { id: 'astropy-learn', where: 'The light-curve / time-series tutorials' },
     ],
     prereqs: { math: ['calculus-1'], physics: ['mechanics-calculus'] },
     links: [
-      { t: 'AAVSO — variable star observing & data', s: 'AAVSO', u: 'https://www.aavso.org/' },
+      { t: 'AAVSO, variable star observing & data', s: 'AAVSO', u: 'https://www.aavso.org/' },
       MAST,
       ASTROPY,
     ],
@@ -455,9 +455,9 @@ export const TOPICS = [
       'Follow how Type Ia became the standard candle behind dark energy.',
     ],
     courses: [
-      { id: 'mit-8-901', where: 'Lectures on late stellar evolution and core collapse' },
-      { id: 'mit-8-902', where: 'Lectures on supernovae and compact remnants' },
-      { id: 'openstax-physics-3', where: 'Chapters on nuclear binding and degenerate matter' },
+      { id: 'mit-8-901', where: 'Ses 12–17, degenerate matter, Chandrasekhar mass, supernovae' },
+      { id: 'mit-8-902', where: 'L1–L3 for galactic context after the explosion' },
+      { id: 'openstax-physics-3', where: 'Ch. 10, Nuclear Physics (binding energy and the iron peak)' },
     ],
     prereqs: { math: ['calculus-2'], physics: ['modern-physics', 'statistical-mechanics'] },
     links: [OPENSTAX, ARXIV, SPACETIME],
@@ -477,9 +477,9 @@ export const TOPICS = [
       'Understand the light cylinder and why the beam produces a pulse.',
     ],
     courses: [
-      { id: 'mit-8-902', where: 'Lectures on neutron stars, pulsars and compact objects' },
-      { id: 'carroll-gr', where: 'The Schwarzschild and black holes chapter — for the metric outside a compact star' },
-      { id: 'tong-notes', where: 'General Relativity notes on stellar interiors and the TOV equation' },
+      { id: 'mit-8-902', where: 'L4–L10, gravitational potentials and stellar dynamics' },
+      { id: 'carroll-gr', where: 'Ch. 7, The Schwarzschild Solution and Black Holes' },
+      { id: 'tong-notes', where: 'General Relativity, Ch. 4, the Einstein equations and energy conditions' },
     ],
     prereqs: { math: ['differential-equations'], physics: ['quantum-mechanics', 'special-relativity'] },
     links: [
@@ -498,22 +498,22 @@ export const TOPICS = [
     level: 'Beginner',
     aliases: ['galactic centre', 'sagittarius a', 'spiral arms', 'galactic structure', 'globular cluster', 'halo'],
     blurb:
-      'The galaxy we live inside and therefore see edge-on and from within — which makes mapping it far harder than mapping any other.',
+      'The galaxy we live inside and therefore see edge-on and from within, which makes mapping it far harder than mapping any other.',
     plan: [
       'Learn the components: thin disk, thick disk, bulge, bar, halo, and where the Sun sits.',
       'Follow how the spiral structure was mapped despite our position inside it.',
       'Study Sgr A* and the stellar orbits that proved it is a supermassive black hole.',
     ],
     courses: [
-      { id: 'openstax-astro', where: 'Ch. 25 — The Milky Way Galaxy (all of it)' },
-      { id: 'yale-astr160', where: 'Lectures on the galactic centre and Sgr A*' },
-      { id: 'mit-8-902', where: 'Lectures on galactic structure and dynamics' },
+      { id: 'openstax-astro', where: 'Ch. 25, The Milky Way Galaxy (all of it)' },
+      { id: 'yale-astr160', where: 'Lecture 15, supermassive black holes and the galactic centre' },
+      { id: 'mit-8-902', where: 'L1–L7, what a galaxy is, and orbits within it' },
     ],
     prereqs: { math: ['calculus-1'], physics: ['intro-astronomy'] },
     links: [
       OPENSTAX,
-      { t: 'Event Horizon Telescope — Sgr A*', s: 'EHT Collaboration', u: 'https://eventhorizontelescope.org/' },
-      { t: 'Gaia — mapping the galaxy', s: 'ESA', u: 'https://www.esa.int/Science_Exploration/Space_Science/Gaia' },
+      { t: 'Event Horizon Telescope, Sgr A*', s: 'EHT Collaboration', u: 'https://eventhorizontelescope.org/' },
+      { t: 'Gaia, mapping the galaxy', s: 'ESA', u: 'https://www.esa.int/Science_Exploration/Space_Science/Gaia' },
     ],
   },
   {
@@ -530,8 +530,8 @@ export const TOPICS = [
       'Read what JWST found at high redshift and why early massive galaxies are a problem.',
     ],
     courses: [
-      { id: 'mit-8-902', where: 'Lectures on galaxy formation, mergers and feedback' },
-      { id: 'tong-notes', where: 'Cosmology notes on structure formation' },
+      { id: 'mit-8-902', where: 'L1–L3 and L21, building galaxies, the Press–Schechter recipe' },
+      { id: 'tong-notes', where: 'Cosmology, Ch. 3, Structure Formation' },
     ],
     prereqs: { math: ['calculus-2'], physics: ['classical-mechanics'] },
     links: [
@@ -550,13 +550,13 @@ export const TOPICS = [
       'Galaxies rotate far too fast at their edges for the matter we can see. Five times more mass than we can account for, detected only by its gravity.',
     plan: [
       'Derive the Keplerian falloff you would expect, then look at a real rotation curve.',
-      'Compare halo profiles — NFW vs. pseudo-isothermal — and the core–cusp problem between them.',
+      'Compare halo profiles, NFW against pseudo-isothermal, and the core-cusp problem between them.',
       'Weigh the evidence beyond rotation curves: lensing, the CMB, and the Bullet Cluster.',
     ],
     courses: [
-      { id: 'mit-8-902', where: 'Lectures on galactic dynamics and rotation curves' },
-      { id: 'yale-astr160', where: 'The dark-matter lectures — rotation curves and evidence' },
-      { id: 'mit-8-286', where: 'Lectures on the matter budget of the universe' },
+      { id: 'mit-8-902', where: 'L8–L11, Jeans equations, stellar dynamics and stability' },
+      { id: 'yale-astr160', where: 'Lecture 20, Dark Matter' },
+      { id: 'mit-8-286', where: 'Lectures 5–9, the dynamics of homogeneous expansion' },
     ],
     prereqs: { math: ['calculus-2'], physics: ['mechanics-calculus'] },
     links: [SDSS, ARXIV, SPACETIME, ASTROBITES],
@@ -572,16 +572,16 @@ export const TOPICS = [
       'Supermassive black holes accreting hard enough to outshine their entire host galaxy, and the unified model that ties the zoo of names together.',
     plan: [
       'Learn the Eddington limit and what sets the maximum steady accretion luminosity.',
-      'Work through the unified model — one object, different viewing angles.',
+      'Work through the unified model: one object seen from different viewing angles.',
       'Study relativistic jets and how beaming produces apparent superluminal motion.',
     ],
     courses: [
-      { id: 'mit-8-902', where: 'Lectures on accretion, AGN and jets' },
-      { id: 'carroll-gr', where: 'The black holes chapter — horizons, ISCO and the ergosphere' },
+      { id: 'mit-8-902', where: 'L15–L17, clusters, cluster physics and the Sunyaev–Zeldovich effect' },
+      { id: 'carroll-gr', where: 'Ch. 7, Schwarzschild, horizons and the Kerr black hole' },
     ],
     prereqs: { math: ['multivariable-calculus'], physics: ['special-relativity', 'electrodynamics'] },
     links: [
-      { t: 'Event Horizon Telescope — M87*', s: 'EHT Collaboration', u: 'https://eventhorizontelescope.org/' },
+      { t: 'Event Horizon Telescope, M87*', s: 'EHT Collaboration', u: 'https://eventhorizontelescope.org/' },
       ARXIV,
       SPACETIME,
     ],
@@ -596,14 +596,14 @@ export const TOPICS = [
     blurb:
       'Mass bends light, so galaxies act as telescopes. It is how we weigh dark matter and how we see galaxies that would otherwise be far too faint.',
     plan: [
-      'Derive the deflection angle in the weak-field limit — note the factor of two over the Newtonian answer.',
+      'Derive the deflection angle in the weak-field limit, and note the factor of two over the Newtonian answer.',
       'Learn strong, weak and microlensing regimes and what each is used to measure.',
       'Look at real JWST cluster lenses and identify the multiple images.',
     ],
     courses: [
-      { id: 'carroll-gr', where: 'The weak fields chapter (deflection of light) and the Schwarzschild chapter' },
-      { id: 'mit-8-962', where: 'Lectures on the weak-field limit and light bending' },
-      { id: 'tong-notes', where: 'General Relativity notes — the geodesic and weak-field sections' },
+      { id: 'carroll-gr', where: 'Ch. 6 (weak fields, light deflection) and Ch. 7' },
+      { id: 'mit-8-962', where: 'Ses 14–15, linearised gravity and the static limit' },
+      { id: 'tong-notes', where: 'General Relativity, Ch. 1 (light bending) and Ch. 5' },
     ],
     prereqs: { math: ['tensor-calculus'], physics: ['general-relativity'] },
     links: [CARROLL_GR, { t: 'JWST lensing cluster images', s: 'ESA/Webb', u: 'https://esawebb.org/images/' }, ARXIV],
@@ -618,20 +618,20 @@ export const TOPICS = [
     level: 'Intermediate',
     aliases: ['hubble law', 'expansion', 'redshift', 'scale factor', 'friedmann', 'age of the universe', 'lambda cdm'],
     blurb:
-      'The expansion, its history, and the Friedmann equations that govern it. Note that space expands — galaxies are not flying through it.',
+      'The expansion, its history, and the Friedmann equations that govern it. Note that space itself expands; galaxies are not flying through it.',
     plan: [
       "Get Hubble's law and the scale factor straight, including why cosmological redshift is not Doppler.",
       'Work through the Friedmann equations and what each density component does to the expansion.',
       'Trace the thermal history from the first second to recombination.',
     ],
     courses: [
-      { id: 'mit-8-286', where: 'Lectures 1–8 — expansion, the Friedmann equations and thermal history' },
-      { id: 'tong-notes', where: 'Cosmology notes, opening chapters on the expanding universe' },
-      { id: 'yale-astr160', where: 'The final third — cosmology and the expanding universe' },
+      { id: 'mit-8-286', where: 'Lectures 4–9, kinematics and dynamics of homogeneous expansion' },
+      { id: 'tong-notes', where: 'Cosmology, Ch. 1, The Expanding Universe' },
+      { id: 'yale-astr160', where: 'Lectures 16–19, Hubble’s law, Omega and the fate of the universe' },
     ],
     prereqs: { math: ['differential-equations'], physics: ['special-relativity'] },
     links: [
-      { t: 'MIT 8.286 — The Early Universe', s: 'MIT OpenCourseWare', u: 'https://ocw.mit.edu/courses/8-286-the-early-universe-fall-2013/' },
+      { t: 'MIT 8.286, The Early Universe', s: 'MIT OpenCourseWare', u: 'https://ocw.mit.edu/courses/8-286-the-early-universe-fall-2013/' },
       { t: 'Cosmology tutorial', s: 'Ned Wright, UCLA', u: 'https://www.astro.ucla.edu/~wright/cosmolog.htm' },
       TONG,
     ],
@@ -650,13 +650,13 @@ export const TOPICS = [
       'See how the CMB independently confirms the dark matter and dark energy densities.',
     ],
     courses: [
-      { id: 'mit-8-286', where: 'Lectures on recombination, decoupling and the CMB' },
-      { id: 'tong-notes', where: 'Cosmology notes on recombination and CMB anisotropies' },
+      { id: 'mit-8-286', where: 'Lectures 15–19, black-body radiation and the CMB spectrum' },
+      { id: 'tong-notes', where: 'Cosmology, Ch. 2, The Hot Universe' },
     ],
     prereqs: { math: ['fourier-analysis'], physics: ['statistical-mechanics', 'special-relativity'] },
     links: [
       { t: 'Planck mission results', s: 'ESA', u: 'https://www.esa.int/Science_Exploration/Space_Science/Planck' },
-      { t: 'MIT 8.286 — The Early Universe', s: 'MIT OpenCourseWare', u: 'https://ocw.mit.edu/courses/8-286-the-early-universe-fall-2013/' },
+      { t: 'MIT 8.286, The Early Universe', s: 'MIT OpenCourseWare', u: 'https://ocw.mit.edu/courses/8-286-the-early-universe-fall-2013/' },
       TONG,
     ],
   },
@@ -674,13 +674,13 @@ export const TOPICS = [
       'Compare the cosmological constant against the alternatives, and the fine-tuning problem.',
     ],
     courses: [
-      { id: 'mit-8-286', where: 'Lectures on the cosmological constant and acceleration' },
-      { id: 'carroll-gr', where: 'The cosmology chapter — the Friedmann equations with Λ' },
-      { id: 'tong-notes', where: 'Cosmology notes on the dark-energy equation of state' },
+      { id: 'mit-8-286', where: 'Lectures 18–20, the cosmological constant and Type Ia supernovae' },
+      { id: 'carroll-gr', where: 'Ch. 8, Cosmology' },
+      { id: 'tong-notes', where: 'Cosmology, Ch. 1, the Friedmann equations and Λ' },
     ],
     prereqs: { math: ['differential-equations'], physics: ['general-relativity'] },
     links: [
-      { t: 'MIT 8.286 — The Early Universe', s: 'MIT OpenCourseWare', u: 'https://ocw.mit.edu/courses/8-286-the-early-universe-fall-2013/' },
+      { t: 'MIT 8.286, The Early Universe', s: 'MIT OpenCourseWare', u: 'https://ocw.mit.edu/courses/8-286-the-early-universe-fall-2013/' },
       ARXIV,
       SPACETIME,
     ],
@@ -699,12 +699,12 @@ export const TOPICS = [
       'Follow the search for primordial B-mode polarisation and why it is so hard.',
     ],
     courses: [
-      { id: 'mit-8-286', where: 'Guth’s own lectures on inflation, near the end of the course' },
-      { id: 'tong-notes', where: 'Cosmology notes — the inflation chapter' },
+      { id: 'mit-8-286', where: 'Lectures 21–23, problems of the hot Big Bang, then inflation (Guth’s own)' },
+      { id: 'tong-notes', where: 'Cosmology, Ch. 1–2, the horizon and flatness problems' },
     ],
     prereqs: { math: ['partial-differential-equations'], physics: ['general-relativity', 'quantum-mechanics'] },
     links: [
-      { t: 'MIT 8.286 — Alan Guth on inflation', s: 'MIT OpenCourseWare', u: 'https://ocw.mit.edu/courses/8-286-the-early-universe-fall-2013/' },
+      { t: 'MIT 8.286, Alan Guth on inflation', s: 'MIT OpenCourseWare', u: 'https://ocw.mit.edu/courses/8-286-the-early-universe-fall-2013/' },
       TONG,
       ARXIV,
     ],
@@ -723,8 +723,8 @@ export const TOPICS = [
       'Query a real galaxy redshift survey and plot the structure yourself.',
     ],
     courses: [
-      { id: 'mit-8-286', where: 'Lectures on perturbation growth and structure formation' },
-      { id: 'tong-notes', where: 'Cosmology notes on structure formation and the power spectrum' },
+      { id: 'mit-8-286', where: 'Lectures 20–23, vacuum energy and the origin of structure' },
+      { id: 'tong-notes', where: 'Cosmology, Ch. 3, Structure Formation' },
     ],
     prereqs: { math: ['fourier-analysis'], physics: ['statistical-mechanics'] },
     links: [SDSS, ARXIV, ASTROBITES],
@@ -740,15 +740,15 @@ export const TOPICS = [
     blurb:
       'Forces, energy, angular momentum, and the inverse-square law. Everything else on this page is built on top of it.',
     plan: [
-      'Get conservation of energy and angular momentum solid — most orbital problems are one of the two in disguise.',
+      'Get conservation of energy and angular momentum solid. Most orbital problems are one of the two in disguise.',
       'Learn the Lagrangian formulation; it makes the hard problems tractable.',
       'Apply it to the two-body problem and recover Kepler.',
     ],
     courses: [
-      { id: 'mit-8-01', where: 'The whole course; units on energy, momentum and rotation are the core' },
-      { id: 'yale-phys200', where: 'Lectures 1–12 — Newtonian mechanics through rigid bodies' },
-      { id: 'openstax-physics-1', where: 'Ch. 1–14 (mechanics); Ch. 13 for gravitation' },
-      { id: 'susskind', where: 'Classical Mechanics — the Lagrangian and Hamiltonian lectures' },
+      { id: 'mit-8-01', where: 'Readings 0–37; 20–27 (energy, collisions) and 28–37 (rotation) are the core' },
+      { id: 'yale-phys200', where: 'Lectures 1–11, Newton’s laws through torque' },
+      { id: 'openstax-physics-1', where: 'Ch. 5–9 (laws, energy, momentum); Ch. 13, Gravitation' },
+      { id: 'susskind', where: 'Classical Mechanics, the Lagrangian and Hamiltonian lectures' },
     ],
     prereqs: { math: ['calculus-1'], physics: ['mechanics-algebra'] },
     links: [FEYNMAN, SUSSKIND, HYPERPHYSICS],
@@ -762,14 +762,14 @@ export const TOPICS = [
     blurb:
       'Light is the only messenger for almost everything in astronomy. Blackbody radiation, radiative transfer, and the emission mechanisms behind what telescopes see.',
     plan: [
-      "Learn the blackbody laws — Planck, Wien, Stefan–Boltzmann — and apply them to stars.",
+      "Learn the blackbody laws (Planck, Wien, Stefan-Boltzmann) and apply them to stars.",
       'Understand optical depth and radiative transfer well enough to explain absorption lines.',
       'Study non-thermal emission: synchrotron and bremsstrahlung, and where each dominates.',
     ],
     courses: [
-      { id: 'mit-8-02', where: 'The whole course; the radiation and Maxwell lectures matter most here' },
-      { id: 'openstax-physics-2', where: 'The electromagnetism half — fields through Maxwell’s equations' },
-      { id: 'feynman', where: 'Volume II — the electromagnetism volume, especially radiation' },
+      { id: 'mit-8-02', where: 'Sessions 2–11 (fields, Gauss, potential) and 31–32 (Maxwell, EM radiation)' },
+      { id: 'openstax-physics-2', where: 'Ch. 5–8 (charges, Gauss, potential); Ch. 16, Electromagnetic Waves' },
+      { id: 'feynman', where: 'Volume II, the electromagnetism volume; Ch. 18 for Maxwell’s equations' },
     ],
     prereqs: { math: ['vector-calculus'], physics: ['mechanics-calculus'] },
     links: [FEYNMAN, TONG, HYPERPHYSICS],
@@ -785,12 +785,12 @@ export const TOPICS = [
     plan: [
       'Get the kinetic theory and Maxwell–Boltzmann distribution down.',
       'Learn the Saha equation and use it to explain why hydrogen lines peak in A stars.',
-      'Study degeneracy pressure — it is what holds up white dwarfs and neutron stars.',
+      'Study degeneracy pressure, which is what holds up white dwarfs and neutron stars.',
     ],
     courses: [
-      { id: 'mit-8-044', where: 'Lectures on kinetic theory, distributions and thermodynamic potentials' },
-      { id: 'openstax-physics-2', where: 'The opening thermodynamics chapters — kinetic theory and the laws' },
-      { id: 'tong-notes', where: 'Statistical Physics notes — kinetic theory and the partition function' },
+      { id: 'mit-8-044', where: 'Lectures 5–11 (laws, entropy, engines) and 15 for black-body radiation' },
+      { id: 'openstax-physics-2', where: 'Ch. 1–4, heat, kinetic theory, and the two laws' },
+      { id: 'tong-notes', where: 'Statistical Physics, Ch. 1–2 and Ch. 4, Classical Thermodynamics' },
     ],
     prereqs: { math: ['multivariable-calculus'], physics: ['mechanics-calculus'] },
     links: [TONG, FEYNMAN, HYPERPHYSICS],
@@ -805,14 +805,14 @@ export const TOPICS = [
       'Atomic structure explains every spectral line; the exclusion principle explains degeneracy pressure; tunnelling is why the Sun fuses at all.',
     plan: [
       'Solve the hydrogen atom and connect the energy levels to observed spectral series.',
-      'Learn selection rules and why some transitions are forbidden — and what "forbidden" lines mean in nebulae.',
+      'Learn selection rules and why some transitions are forbidden, and what "forbidden" lines actually mean in nebulae.',
       'Study tunnelling and the Gamow factor behind stellar fusion rates.',
     ],
     courses: [
-      { id: 'mit-8-04', where: 'The whole course; wavefunctions through the hydrogen atom' },
-      { id: 'openstax-physics-3', where: 'The quantum chapters — photons, wavefunctions, atomic structure' },
-      { id: 'tong-notes', where: 'Quantum Mechanics notes' },
-      { id: 'feynman', where: 'Volume III — the quantum mechanics volume' },
+      { id: 'mit-8-04', where: 'Lecture notes 1–8, superposition through the harmonic oscillator' },
+      { id: 'openstax-physics-3', where: 'Ch. 6–8, photons, quantum mechanics, atomic structure' },
+      { id: 'tong-notes', where: 'Quantum Mechanics, Ch. 1–4' },
+      { id: 'feynman', where: 'Volume III, the quantum mechanics volume' },
     ],
     prereqs: { math: ['linear-algebra', 'partial-differential-equations'], physics: ['modern-physics'] },
     links: [FEYNMAN, TONG, HYPERPHYSICS],
@@ -824,15 +824,15 @@ export const TOPICS = [
     level: 'Advanced',
     aliases: ['hydrodynamics', 'magnetohydrodynamics', 'shock', 'turbulence', 'jeans instability', 'accretion', 'plasma'],
     blurb:
-      'Stars, disks, jets and the interstellar medium are all fluids — usually magnetised ones. Shocks and instabilities do most of the interesting work.',
+      'Stars, disks, jets and the interstellar medium are all fluids, usually magnetised ones. Shocks and instabilities do most of the interesting work.',
     plan: [
       'Learn the Euler equations and the conditions for hydrostatic equilibrium.',
       'Study shocks and the Rankine–Hugoniot jump conditions, then apply them to supernova remnants.',
       'Add magnetic fields and see how MHD changes accretion and jet launching.',
     ],
     courses: [
-      { id: 'tong-notes', where: 'Fluid Mechanics and Kinetic Theory notes' },
-      { id: 'mit-18-303', where: 'Lectures on the wave and diffusion equations, then shocks' },
+      { id: 'tong-notes', where: 'Fluid Mechanics, Ch. 1–2 (inviscid flow, Navier–Stokes); Ch. 4–5 for instabilities' },
+      { id: 'mit-18-303', where: 'The lectures on the wave and diffusion equations' },
     ],
     prereqs: { math: ['partial-differential-equations', 'vector-calculus'], physics: ['classical-mechanics'] },
     links: [TONG, ARXIV, ASTROBITES],
@@ -849,14 +849,14 @@ export const TOPICS = [
       'Two postulates, and everything else follows: time dilation, length contraction, and mass–energy equivalence. The prerequisite for general relativity.',
     plan: [
       'Derive the Lorentz transformation from the two postulates rather than memorising the results.',
-      'Get comfortable with spacetime diagrams and invariant intervals — they make the paradoxes evaporate.',
+      'Get comfortable with spacetime diagrams and invariant intervals. They make the paradoxes evaporate.',
       'Learn four-vectors and relativistic Doppler, then apply them to jets and beaming.',
     ],
     courses: [
-      { id: 'mit-8-20', where: 'The whole course — it is a short, focused IAP course' },
-      { id: 'susskind', where: 'Special Relativity and Classical Field Theory — the first lectures' },
-      { id: 'yale-phys200', where: 'The relativity lectures near the end of the series' },
-      { id: 'feynman', where: 'Volume I, Ch. 15–17 — relativity and spacetime' },
+      { id: 'mit-8-20', where: 'The whole course, a short, focused IAP course' },
+      { id: 'susskind', where: 'Special Relativity and Electrodynamics, the opening lectures' },
+      { id: 'yale-phys200', where: 'Lectures 12–15, relativity, Lorentz transformation and four-vectors' },
+      { id: 'feynman', where: 'Volume I, Ch. 15–17, special relativity, relativistic energy, space-time' },
     ],
     prereqs: { math: ['algebra-2'], physics: ['mechanics-calculus'] },
     links: [SUSSKIND, FEYNMAN, TONG, SPACETIME],
@@ -871,15 +871,15 @@ export const TOPICS = [
     blurb:
       'Gravity as the curvature of spacetime. Hard going, and the payoff is that black holes, lensing and cosmology all become one subject.',
     plan: [
-      'Build up the tensor calculus first — most people who bounce off GR bounced off this.',
+      'Build up the tensor calculus first. Most people who bounce off GR bounced off this.',
       'Get to the Schwarzschild solution and derive the event horizon and photon sphere.',
       'Work through the classic tests: perihelion precession, light deflection, gravitational redshift.',
     ],
     courses: [
-      { id: 'mit-8-962', where: 'The whole course; manifolds and curvature first' },
-      { id: 'carroll-gr', where: 'Ch. 1–4: special relativity, manifolds, curvature, gravitation' },
-      { id: 'susskind', where: 'General Relativity — the full course' },
-      { id: 'tong-notes', where: 'General Relativity notes' },
+      { id: 'mit-8-962', where: 'Ses 1–13, tensors, equivalence, geodesics, curvature, field equations' },
+      { id: 'carroll-gr', where: 'Ch. 1–4, special relativity, manifolds, curvature, gravitation' },
+      { id: 'susskind', where: 'General Relativity, the full course' },
+      { id: 'tong-notes', where: 'General Relativity, Ch. 1–4' },
     ],
     prereqs: { math: ['tensor-calculus', 'differential-geometry'], physics: ['special-relativity', 'classical-mechanics'] },
     links: [CARROLL_GR, SUSSKIND, TONG, SPACETIME],
@@ -899,9 +899,9 @@ export const TOPICS = [
       'Compare your understanding against the EHT images of M87* and Sgr A*.',
     ],
     courses: [
-      { id: 'mit-8-962', where: 'The Schwarzschild and Kerr lectures' },
-      { id: 'carroll-gr', where: 'The Schwarzschild solution and black holes chapter' },
-      { id: 'susskind', where: 'General Relativity — the black-hole lectures' },
+      { id: 'mit-8-962', where: 'Ses 20–23, spherical compact sources, then Black Holes I and II' },
+      { id: 'carroll-gr', where: 'Ch. 7, The Schwarzschild Solution and Black Holes' },
+      { id: 'susskind', where: 'General Relativity, the black-hole lectures' },
     ],
     prereqs: { math: ['multivariable-calculus'], physics: ['special-relativity'] },
     links: [
@@ -926,8 +926,8 @@ export const TOPICS = [
       'Look at how lensing through a throat differs from lensing around a black hole.',
     ],
     courses: [
-      { id: 'carroll-gr', where: 'The Schwarzschild chapter (maximal extension) plus the energy-conditions discussion' },
-      { id: 'mit-8-962', where: 'Lectures on energy conditions and exotic solutions' },
+      { id: 'carroll-gr', where: 'Ch. 7 (maximal extension of Schwarzschild) with Ch. 4 on energy conditions' },
+      { id: 'mit-8-962', where: 'Ses 20–23, compact sources and black holes' },
     ],
     prereqs: { math: ['tensor-calculus'], physics: ['general-relativity'] },
     links: [CARROLL_GR, SPACETIME, ARXIV],
@@ -947,9 +947,9 @@ export const TOPICS = [
       'Download real strain data from GWOSC and work through their tutorial.',
     ],
     courses: [
-      { id: 'mit-8-962', where: 'The lectures on linearised gravity and radiation' },
-      { id: 'carroll-gr', where: 'The weak fields and gravitational radiation chapter' },
-      { id: 'tong-notes', where: 'General Relativity notes — the gravitational-waves chapter' },
+      { id: 'mit-8-962', where: 'Ses 14–17, linearised gravity and Gravitational Radiation I & II' },
+      { id: 'carroll-gr', where: 'Ch. 6, Weak Fields and Gravitational Radiation' },
+      { id: 'tong-notes', where: 'General Relativity, Ch. 5, When Gravity is Weak' },
     ],
     prereqs: { math: ['tensor-calculus'], physics: ['general-relativity'] },
     links: [
@@ -970,18 +970,18 @@ export const TOPICS = [
       'The working language of the field. Astropy handles units, coordinates, cosmology and FITS files so you are not reinventing them.',
     plan: [
       'Get comfortable with NumPy and Matplotlib before anything astronomy-specific.',
-      'Work through the Astropy tutorials — units and coordinates first, then FITS.',
+      'Work through the Astropy tutorials, units and coordinates first, then FITS.',
       'Reproduce a plot from a real paper using archive data.',
     ],
     courses: [
-      { id: 'mit-6-0001', where: 'Lectures 1–6 for the language; the rest is optional here' },
+      { id: 'mit-6-0001', where: 'Lectures 1–6, through recursion and dictionaries; the rest is optional here' },
       { id: 'astropy-learn', where: 'Start with the units and coordinates tutorials, then FITS' },
     ],
     prereqs: { math: ['algebra-2'], physics: [] },
     links: [
       ASTROPY,
       { t: 'Astropy documentation', s: 'Astropy Project', u: 'https://www.astropy.org/' },
-      { t: 'Skyfield — precise positions in Python', s: 'Brandon Rhodes', u: 'https://rhodesmill.org/skyfield/' },
+      { t: 'Skyfield, precise positions in Python', s: 'Brandon Rhodes', u: 'https://rhodesmill.org/skyfield/' },
       MAST,
     ],
   },
@@ -999,9 +999,9 @@ export const TOPICS = [
       'Move to Bayesian inference and MCMC once the frequentist tools feel natural.',
     ],
     courses: [
-      { id: 'khan-stats', where: 'Units on distributions, sampling and inference' },
-      { id: 'openstax-stats', where: 'Ch. 1–3 (descriptive stats) and the hypothesis-testing chapters' },
-      { id: 'mit-18-085', where: 'The least-squares and data-fitting lectures' },
+      { id: 'khan-stats', where: 'Units 3 and 11–12, summarising data, confidence intervals, significance tests' },
+      { id: 'openstax-stats', where: 'Ch. 1–2 (sampling, descriptive); Ch. 8–10 (intervals, hypothesis testing)' },
+      { id: 'mit-18-085', where: 'Lectures 10–11, least squares' },
     ],
     prereqs: { math: ['probability-statistics'], physics: [] },
     links: [ASTROPY, ASTROBITES, SDSS],
@@ -1013,21 +1013,21 @@ export const TOPICS = [
     level: 'Advanced',
     aliases: ['n-body', 'integrator', 'leapfrog', 'runge kutta', 'smoothed particle hydrodynamics', 'sph', 'computational astrophysics'],
     blurb:
-      'When the equations have no closed-form solution — which is most of the time — you integrate them. Symplectic integrators are why orbits stay stable.',
+      'When the equations have no closed-form solution, which is most of the time, you integrate them. Symplectic integrators are why orbits stay stable.',
     plan: [
       'Write a two-body integrator yourself and watch a naive Euler method lose energy.',
       'Learn leapfrog and why symplectic integrators conserve energy over long runs.',
       'Move to an established N-body or hydrodynamics code for real problems.',
     ],
     courses: [
-      { id: 'mit-18-085', where: 'The lectures on ODE integration and finite differences' },
-      { id: 'mit-18-03', where: 'The numerical methods and stability lectures' },
-      { id: 'mit-6-0001', where: 'Lectures 1–6 — enough Python to write an integrator' },
+      { id: 'mit-18-085', where: 'Lectures 2–3 (difference equations) and 10, finite differences in time' },
+      { id: 'mit-18-03', where: 'Lecture 2, numerical methods; Lectures 32–39 for systems and stability' },
+      { id: 'mit-6-0001', where: 'Lectures 1–6, enough Python to write an integrator' },
     ],
     prereqs: { math: ['numerical-methods'], physics: ['computational-physics'] },
     links: [
-      { t: 'REBOUND — N-body integrator', s: 'Rein & Liu', u: 'https://rebound.readthedocs.io/' },
-      { t: 'Einstein Toolkit — numerical relativity', s: 'Einstein Toolkit', u: 'https://einsteintoolkit.org/' },
+      { t: 'REBOUND, N-body integrator', s: 'Rein & Liu', u: 'https://rebound.readthedocs.io/' },
+      { t: 'Einstein Toolkit, numerical relativity', s: 'Einstein Toolkit', u: 'https://einsteintoolkit.org/' },
       ARXIV,
     ],
     sims: ['darkMatter'],
@@ -1042,18 +1042,18 @@ export const TOPICS = [
       'Every waveband shows a different physical process. Radio interferometry in particular is how a telescope the size of Earth becomes possible.',
     plan: [
       'Learn what emission mechanism dominates in each band and what it reveals.',
-      'Understand aperture synthesis — why the EHT works at all.',
+      'Understand aperture synthesis, which is why the EHT works at all.',
       'Compare the same object across bands using real archive imagery.',
     ],
     courses: [
-      { id: 'mit-8-902', where: 'Lectures on radiative processes and high-energy astrophysics' },
-      { id: 'mit-8-02', where: 'The radiation lectures — how emission actually works' },
+      { id: 'mit-8-902', where: 'L16–L17, cluster physics and the Sunyaev–Zeldovich effect' },
+      { id: 'mit-8-02', where: 'Sessions 31–32, Maxwell’s equations and EM radiation' },
     ],
     prereqs: { math: ['fourier-analysis'], physics: ['electrodynamics'] },
     links: [
-      { t: 'NRAO — radio astronomy', s: 'NRAO', u: 'https://public.nrao.edu/' },
+      { t: 'NRAO, radio astronomy', s: 'NRAO', u: 'https://public.nrao.edu/' },
       { t: 'Chandra X-ray Observatory', s: 'Harvard/CfA', u: 'https://chandra.harvard.edu/' },
-      { t: 'Aladin Sky Atlas — overlay any survey', s: 'CDS Strasbourg', u: 'https://aladin.cds.unistra.fr/AladinLite/' },
+      { t: 'Aladin Sky Atlas, overlay any survey', s: 'CDS Strasbourg', u: 'https://aladin.cds.unistra.fr/AladinLite/' },
       MAST,
     ],
   },
@@ -1064,14 +1064,14 @@ export const TOPICS = [
     level: 'Intermediate',
     aliases: ['arxiv', 'literature', 'ads', 'preprint', 'citation', 'journal club', 'research'],
     blurb:
-      'The skill that separates people who follow astronomy from people who do it. Nobody reads a paper linearly — learn the order that works.',
+      'The skill that separates people who follow astronomy from people who do it. Nobody reads a paper linearly, so learn the order that works.',
     plan: [
       'Read abstract → figures → conclusions first; only then decide if the methods matter to you.',
       'Use Astrobites to get a guided summary before attempting the paper itself.',
       'Follow citations backwards through ADS to find the paper an idea actually came from.',
     ],
     courses: [
-      { id: 'astropy-learn', where: 'Work a tutorial alongside a paper that used the same data' },
+      { id: 'astropy-learn', where: 'Work a tutorial alongside the paper that used the same data' },
     ],
     prereqs: { math: [], physics: [] },
     links: [ASTROBITES, ARXIV, ADS],
@@ -1089,23 +1089,23 @@ export const TOPICS = [
       'astronomy olympiad usa', 'national astronomy competition', 'olympiad',
     ],
     blurb:
-      'The United States Astronomy and Astrophysics Olympiad — the national selection route to the IOAA. First round is an open written exam; top scorers advance to the national exam and then team selection.',
+      'The United States Astronomy and Astrophysics Olympiad, the national selection route to the IOAA. First round is an open written exam; top scorers advance to the national exam and then team selection.',
     plan: [
       'Read the official syllabus first so you know the actual scope, then take a past exam cold to find your gaps.',
-      'Work through the USAAAO Guide handouts — they are written by past USAAAO and IOAA participants and target exactly this exam.',
+      'Work through the USAAAO Guide handouts. They are written by past USAAAO and IOAA participants and target exactly this exam.',
       'Drill past USAAAO and IOAA papers under time. Coordinates, photometry and orbital mechanics come up relentlessly.',
     ],
     courses: [
-      { id: 'openstax-astro', where: 'Ch. 2–6 and 15–29 track the syllabus closely; Ch. 3, 17 and 19 are highest-yield' },
-      { id: 'mit-8-282', where: 'Use as the problem-solving companion to the textbook chapters' },
-      { id: 'yale-astr160', where: 'Good for the conceptual half — black holes, exoplanets, cosmology' },
+      { id: 'openstax-astro', where: 'Ch. 2–6 and 15–29; Ch. 3, 17 and 19 are the highest-yield' },
+      { id: 'mit-8-282', where: 'Ses 5–7 (orbits), 13–14 (magnitudes), 21–26 (stellar structure and death)' },
+      { id: 'yale-astr160', where: 'Lectures 8–15 (black holes) and 16–23 (cosmology)' },
     ],
     prereqs: { math: ['precalculus'], physics: ['mechanics-algebra'] },
     links: [
-      { t: 'USAAAO Guide — handouts by past USAAAO/IOAA alumni', s: 'usaaao.guide', u: 'https://www.usaaao.guide/' },
+      { t: 'USAAAO Guide, handouts by past USAAAO/IOAA alumni', s: 'usaaao.guide', u: 'https://www.usaaao.guide/' },
       { t: 'Official site, syllabus & registration', s: 'USAAAO', u: 'https://usaaao.org/' },
       { t: 'Past exams', s: 'USAAAO', u: 'https://usaaao.org/resources/past-exams/' },
-      { t: 'USAAAO prep guide — books, handouts, format', s: 'Omega Learn', u: 'https://www.omegalearn.org/usaaao' },
+      { t: 'USAAAO prep guide, books, handouts, format', s: 'Omega Learn', u: 'https://www.omegalearn.org/usaaao' },
     ],
   },
   {
@@ -1119,21 +1119,21 @@ export const TOPICS = [
       'world olympiad', 'ioaa exam',
     ],
     blurb:
-      'The international olympiad, hosted in a different country each year. Three papers — theory, data analysis, and observation — with 40+ national teams competing.',
+      'The international olympiad, hosted in a different country each year. Three papers (theory, data analysis, and observation) with 40+ national teams competing.',
     plan: [
       'Qualify through your national olympiad first (USAAAO in the US, BAAO in the UK).',
-      'Past IOAA papers are the single best preparation resource in existence for this level — work every one.',
+      'Past IOAA papers are the single best preparation resource at this level. Work every one.',
       'Do not neglect the data-analysis and observational papers; they are where prepared candidates gain the most ground.',
     ],
     courses: [
-      { id: 'mit-8-901', where: 'Graduate-level, but the stellar-structure lectures match IOAA theory' },
-      { id: 'openstax-astro', where: 'Ch. 17–19 and 25–29 for the observational and cosmology rounds' },
-      { id: 'yale-astr160', where: 'Background for the conceptual questions' },
+      { id: 'mit-8-901', where: 'Ses 3–8 (distances, magnitudes, stellar structure) map to IOAA theory' },
+      { id: 'openstax-astro', where: 'Ch. 17–19 for the data round; Ch. 25–29 for cosmology' },
+      { id: 'yale-astr160', where: 'Lectures 1–7 for the observational half' },
     ],
     prereqs: { math: ['calculus-1'], physics: ['mechanics-calculus'] },
     links: [
       { t: 'Official site & past papers', s: 'IOAA', u: 'https://ioaastrophysics.org/' },
-      { t: 'USAAAO Guide — IOAA-level handouts', s: 'usaaao.guide', u: 'https://www.usaaao.guide/' },
+      { t: 'USAAAO Guide, IOAA-level handouts', s: 'usaaao.guide', u: 'https://www.usaaao.guide/' },
       { t: 'Data analysis with Astropy', s: 'Astropy Project', u: 'https://learn.astropy.org/' },
     ],
   },
@@ -1148,15 +1148,15 @@ export const TOPICS = [
       'iaac space', 'heidelberg',
     ],
     blurb:
-      'A fully online international competition open to students in any country, with no national qualification required. Deliberately more accessible than IOAA — a good first competition.',
+      'A fully online international competition open to students in any country, with no national qualification required. Deliberately more accessible than IOAA, and a good first competition.',
     plan: [
-      'Enter the qualification round — it is open to anyone and can be done from home.',
+      'Enter the qualification round. It is open to anyone and can be done from home.',
       'Problems reward clear physical reasoning over obscure knowledge; practise writing full solutions.',
       'Use it as a low-stakes ramp toward USAAAO or IOAA rather than an endpoint.',
     ],
     courses: [
       { id: 'openstax-astro', where: 'Ch. 1–6 for the qualification round; Ch. 15–24 for the final' },
-      { id: 'khan-physics', where: 'Mechanics and gravitation units' },
+      { id: 'khan-physics', where: 'Units 1–2, kinematics, force and translational dynamics' },
     ],
     prereqs: { math: ['algebra-2'], physics: ['conceptual-physics'] },
     links: [
@@ -1177,25 +1177,25 @@ export const TOPICS = [
     blurb:
       "The UK route to the IOAA. The one-hour Astro Challenge sits below it as an entry point, mixing observational astronomy with applied physics.",
     plan: [
-      'Start with the Astro Challenge paper in the autumn term — it is short and a fair difficulty gauge.',
+      'Start with the Astro Challenge paper in the autumn term. It is short and a fair difficulty gauge.',
       'Sit BPhO Round 1 or BAAO Round 1, then Round 2 if invited.',
       'Past papers with full solutions are published; they are the core of any sensible preparation.',
     ],
     courses: [
-      { id: 'openstax-astro', where: 'Ch. 2–6 (observational) and Ch. 17–19 (photometry) map to the Astro Challenge' },
-      { id: 'mit-8-282', where: 'For the applied-physics half of the paper' },
-      { id: 'yale-phys200', where: 'Mechanics lectures — the physics the paper assumes' },
+      { id: 'openstax-astro', where: 'Ch. 2–6 (observational) and Ch. 17–19 (photometry)' },
+      { id: 'mit-8-282', where: 'Ses 8–12, EM waves, optics and telescopes' },
+      { id: 'yale-phys200', where: 'Lectures 1–11, the mechanics the paper assumes' },
     ],
     prereqs: { math: ['precalculus'], physics: ['mechanics-algebra'] },
     links: [
-      { t: 'BAAO — papers, solutions & structure', s: 'British Physics Olympiad', u: 'https://www.bpho.org.uk/baao/' },
+      { t: 'BAAO, papers, solutions & structure', s: 'British Physics Olympiad', u: 'https://www.bpho.org.uk/baao/' },
       { t: 'Astro Challenge', s: 'British Physics Olympiad', u: 'https://www.bpho.org.uk/baao/astro-challenge/' },
-      { t: 'IOAA — where BAAO leads', s: 'IOAA', u: 'https://ioaastrophysics.org/' },
+      { t: 'IOAA, where BAAO leads', s: 'IOAA', u: 'https://ioaastrophysics.org/' },
     ],
   },
   {
     id: 'science-olympiad-astronomy',
-    name: 'Science Olympiad — Astronomy',
+    name: 'Science Olympiad: Astronomy',
     group: 'Competitions',
     kind: 'competition',
     level: 'Intermediate',
@@ -1204,17 +1204,17 @@ export const TOPICS = [
       'A US team event with a rotating annual topic (stellar evolution, variable stars, galaxies). Notes and calculators are permitted, so preparation is about building a good binder.',
     plan: [
       'Read the current rules to find this year’s specific topic and deep-sky object list.',
-      'Build a well-indexed binder — the exam is timed and lookup speed is the real constraint.',
+      'Build a well-indexed binder. The exam is timed and lookup speed is the real constraint.',
       'Practise image identification and light-curve interpretation, which carry heavy weight.',
     ],
     courses: [
-      { id: 'openstax-astro', where: 'Ch. 18–24 (stars and their deaths) and Ch. 26–28 — check this year’s topic' },
+      { id: 'openstax-astro', where: 'Ch. 18–24 (stars and their deaths) and Ch. 26–28, check this year’s topic' },
     ],
     prereqs: { math: ['algebra-1'], physics: ['conceptual-physics'] },
     links: [
       { t: 'Official rules & event info', s: 'Science Olympiad', u: 'https://www.soinc.org/' },
       { t: 'JWST & Hubble imagery for DSO study', s: 'ESA/Webb', u: 'https://esawebb.org/images/' },
-      { t: 'AAVSO — variable star light curves', s: 'AAVSO', u: 'https://www.aavso.org/' },
+      { t: 'AAVSO, variable star light curves', s: 'AAVSO', u: 'https://www.aavso.org/' },
     ],
   },
   {
@@ -1227,19 +1227,19 @@ export const TOPICS = [
     blurb:
       'Not astronomy, but the mechanics and E&M it drills are exactly what astrophysics olympiads assume you already have. Many USAAAO competitors come through here.',
     plan: [
-      'Start with the F=ma exam — mechanics only, and the entry point to the US Physics Team.',
+      'Start with the F=ma exam, which is mechanics only and the entry point to the US Physics Team.',
       'Move to USAPhO semifinals: full-length problems on mechanics, E&M, thermodynamics and modern physics.',
       'Past IPhO problems are the best available practice above that level.',
     ],
     courses: [
-      { id: 'mit-8-01', where: 'The whole course — F=ma is entirely this material' },
-      { id: 'mit-8-02', where: 'For the USAPhO semifinal E&M problems' },
-      { id: 'yale-phys200', where: 'Lectures 1–12 for mechanics, then thermodynamics' },
+      { id: 'mit-8-01', where: 'Readings 0–37, F=ma is entirely this material' },
+      { id: 'mit-8-02', where: 'Sessions 2–32, the full E&M sweep for the USAPhO semifinal' },
+      { id: 'yale-phys200', where: 'Lectures 1–11 (mechanics), 21–24 (thermodynamics)' },
       { id: 'feynman', where: 'Volume I for mechanics; Volume II for E&M' },
     ],
     prereqs: { math: ['calculus-1'], physics: ['mechanics-calculus'] },
     links: [
-      { t: 'US Physics Team — exams & resources', s: 'AAPT', u: 'https://www.aapt.org/physicsteam/' },
+      { t: 'US Physics Team, exams & resources', s: 'AAPT', u: 'https://www.aapt.org/physicsteam/' },
       FEYNMAN,
       HYPERPHYSICS,
     ],
@@ -1254,12 +1254,12 @@ export const TOPICS = [
     blurb:
       'Original research rather than exams. Astronomy is unusually friendly here because so much professional-grade data is public and free.',
     plan: [
-      'Pick a question answerable with public archive data — MAST, SDSS and the Exoplanet Archive are all open.',
+      'Pick a question answerable with public archive data. MAST, SDSS and the Exoplanet Archive are all open.',
       'Learn enough Python and statistics to do the analysis defensibly.',
       'Write it up properly, citing through ADS, and enter it somewhere.',
     ],
     courses: [
-      { id: 'khan-stats', where: 'Units on inference — enough to defend your error bars' },
+      { id: 'khan-stats', where: 'Units 11–12, confidence intervals and significance tests' },
       { id: 'mit-6-0001', where: 'Lectures 1–6 for the analysis code' },
       { id: 'astropy-learn', where: 'The tutorials matching your data source' },
     ],
@@ -1281,18 +1281,18 @@ export const TOPICS = [
     blurb:
       'Contribute real observations or classifications to published research, with no competition and no entry requirements. The fastest route from interest to genuine participation.',
     plan: [
-      'Start classifying on Zooniverse — Galaxy Zoo takes minutes and feeds real papers.',
+      'Start classifying on Zooniverse. Galaxy Zoo takes minutes and feeds real papers.',
       'If you own a telescope, submit variable-star observations to the AAVSO.',
       'Work through an Astronomy League observing program for structure and recognition.',
     ],
     courses: [
-      { id: 'openstax-astro', where: 'Ch. 26 for galaxy morphology before classifying on Galaxy Zoo' },
+      { id: 'openstax-astro', where: 'Ch. 26, Galaxies, for morphology before classifying on Galaxy Zoo' },
     ],
     prereqs: { math: [], physics: [] },
     links: [
-      { t: 'Zooniverse — real research projects', s: 'Zooniverse', u: 'https://www.zooniverse.org/' },
+      { t: 'Zooniverse, real research projects', s: 'Zooniverse', u: 'https://www.zooniverse.org/' },
       { t: 'Observing programs', s: 'Astronomy League', u: 'https://www.astroleague.org/' },
-      { t: 'AAVSO — submit observations', s: 'AAVSO', u: 'https://www.aavso.org/' },
+      { t: 'AAVSO, submit observations', s: 'AAVSO', u: 'https://www.aavso.org/' },
     ],
   },
 ]
