@@ -8,10 +8,13 @@ import { useEffect, useRef } from 'react'
 // from the centre to that same resting position, so the explosion resolves
 // into exactly the field the page would have shown anyway.
 
+// speed is px per frame; at 60fps 0.12 is ~7 px/s. The previous values
+// (0.006-0.026) worked out to 4-16 px in ten seconds, which reads as a still
+// image. `depth` drives scroll parallax: nearer layers lag further behind.
 const LAYERS = [
-  { count: 130, speed: 0.006, size: [0.4, 0.9], alpha: [0.25, 0.5] },
-  { count: 70, speed: 0.014, size: [0.7, 1.5], alpha: [0.4, 0.75] },
-  { count: 26, speed: 0.026, size: [1.2, 2.3], alpha: [0.65, 1] },
+  { count: 130, speed: 0.22, size: [0.4, 0.9], alpha: [0.25, 0.5], depth: 0.16 },
+  { count: 70, speed: 0.45, size: [0.7, 1.5], alpha: [0.4, 0.75], depth: 0.36 },
+  { count: 26, speed: 0.8, size: [1.2, 2.3], alpha: [0.65, 1], depth: 0.62 },
 ]
 
 const TINTS = ['#ffffff', '#dfe6ff', '#ffe4ec', '#d8f4ff', '#fff3d6']
@@ -65,7 +68,8 @@ export default function Starfield({ className = '', burstAt = null }) {
             r: rand(layer.size[0], layer.size[1]),
             a: rand(layer.alpha[0], layer.alpha[1]),
             vx: layer.speed * rand(0.6, 1.4),
-            vy: layer.speed * rand(-0.35, 0.35),
+            vy: layer.speed * rand(-0.3, 0.3),
+            depth: layer.depth * rand(0.75, 1.25),
             phase: Math.random() * Math.PI * 2,
             twinkle: rand(0.0006, 0.0022),
             tint: TINTS[(Math.random() * TINTS.length) | 0],
@@ -83,7 +87,8 @@ export default function Starfield({ className = '', burstAt = null }) {
           tint: DUST_TINTS[(Math.random() * DUST_TINTS.length) | 0],
           delay: Math.random() * SPREAD_MS,
           dur: rand(1250, BURST_MS - SPREAD_MS),
-          drift: rand(0.004, 0.012),
+          drift: rand(0.16, 0.42),
+          depth: rand(0.08, 0.2),
         })
       }
       // Resting positions are wherever the drift would have put them.
@@ -112,7 +117,8 @@ export default function Starfield({ className = '', burstAt = null }) {
       // stretch of scroll. Together they hand the background over smoothly
       // instead of one section cutting to the next.
       const vh = window.innerHeight || 1
-      const scrollFade = Math.max(0, 1 - Math.max(0, window.scrollY) / (vh * 0.75))
+      const sy = Math.max(0, window.scrollY)
+      const scrollFade = Math.max(0, 1 - sy / (vh * 0.75))
       if (scrollFade <= 0.004) return
       const cx = w / 2
       const cy = h / 2
@@ -147,6 +153,7 @@ export default function Starfield({ className = '', burstAt = null }) {
           d.x += d.drift
           if (d.x > w + d.r) d.x = -d.r
           x = d.x
+          y = d.y + sy * d.depth
         }
         if (k <= 0.02) continue
         const g = ctx.createRadialGradient(x, y, 0, x, y, d.r)
@@ -204,7 +211,9 @@ export default function Starfield({ className = '', burstAt = null }) {
             if (s.y < -2) s.y = h + 2
           }
           x = s.x
-          y = s.y
+          // Parallax: each layer lags the scroll by its own depth, so the field
+          // visibly separates as the hero leaves rather than moving as one sheet.
+          y = s.y + sy * s.depth
           const flicker = reduced ? 1 : 0.72 + 0.28 * Math.sin(t * s.twinkle + s.phase)
           alpha = s.a * flicker
         }

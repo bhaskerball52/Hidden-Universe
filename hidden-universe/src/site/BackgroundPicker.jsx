@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
 import {
   MATH_COURSES,
   MATH_TIERS,
@@ -145,20 +145,37 @@ function LadderPicker({ label, placeholder, courses, tiers, selected, onChange }
 
 export default function BackgroundPicker({ math, physics, onChangeMath, onChangePhysics, onReset }) {
   const any = math.length || physics.length
+  const [showInfo, setShowInfo] = useState(false)
+  const infoId = useId()
   return (
     <div className="bp">
       <div className="bp-head">
-        <p className="bp-intro">
-          <strong>Optional:</strong> tell us how far you have got in maths and physics, and every
-          topic will show whether you are ready for it, and exactly what to learn first if not.
-          Picking your highest course fills in everything below it.
-        </p>
+        {/* The explanation was four lines of standing text for something
+            optional. It is now on demand behind an info button, so the two
+            inputs sit directly under the search where they belong. */}
+        <button
+          type="button"
+          className={`bp-info${showInfo ? ' bp-info-on' : ''}`}
+          aria-expanded={showInfo}
+          aria-controls={infoId}
+          onClick={() => setShowInfo((v) => !v)}
+        >
+          <span aria-hidden="true">i</span>
+          <span className="bp-info-label">What is this for?</span>
+        </button>
         {any ? (
           <button type="button" className="bp-reset" onClick={onReset}>
             Reset
           </button>
         ) : null}
       </div>
+      {showInfo ? (
+        <p className="bp-intro" id={infoId} role="note">
+          Tell us how far you have got in maths and physics and every topic will show whether you
+          are ready for it, and exactly what to learn first if not. Picking your highest course
+          fills in everything below it.
+        </p>
+      ) : null}
       <div className="bp-row">
         <LadderPicker
           label="Maths you have taken"

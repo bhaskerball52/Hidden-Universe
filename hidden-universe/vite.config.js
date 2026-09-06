@@ -1,8 +1,15 @@
+import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Kept in step with jsconfig.json so "@/..." resolves the same in the editor
+  // and at build time. React Bits' JS-CSS components use relative imports, but
+  // some registry items do reach for "@/".
+  resolve: {
+    alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
+  },
   plugins: [react()],
   build: {
     // The WebGL stack is genuinely large, but it is only fetched when a

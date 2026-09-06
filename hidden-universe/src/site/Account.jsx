@@ -45,9 +45,11 @@ export function ProgressTracker({ progress, onToggleStage, onSetNotify }) {
   const pct = signedIn ? Math.round((count / PATH.length) * 100) : 0
 
   return (
-    <aside className="ac-track" aria-label="Your progress">
+    <aside className="ac-track" aria-labelledby="ac-track-title">
       <div className="ac-track-top">
-        <span className="hu-eyebrow">Your progress</span>
+        {/* A real heading, not an uppercase eyebrow: it names the card for
+            screen readers and does not add to the page's label noise. */}
+        <h3 className="ac-track-title" id="ac-track-title">Your progress</h3>
         <Ring pct={pct} muted={!signedIn} />
       </div>
 

@@ -44,3 +44,39 @@ assert.ok(magMinus(120) < magMinus(10), '|µ-| must fall off with distance')
 // At the ring both images are strongly magnified.
 assert.ok(magPlus(0.01) > 5 && magMinus(0.01) > 5, 'both images blow up at b=0')
 console.log('LensField magnification law: all assertions passed')
+
+// --- drift speeds must stay in a range a person can actually see -------------
+// This exists because the fields once drifted at 0.006-0.03 px/frame, which is
+// 4-16 px in TEN seconds: pixel-diff tests passed while the background looked
+// completely frozen. Speeds are px/frame; the site runs at 60fps.
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
+
+const here = dirname(fileURLToPath(import.meta.url))
+const num = (src, re) => [...src.matchAll(re)].map((m) => parseFloat(m[1]))
+
+const VISIBLE_MIN = 0.1 // 6 px/s, the floor for "this is moving"
+const VISIBLE_MAX = 1.2 // 72 px/s, above this it distracts from the content
+
+const starfield = readFileSync(join(here, 'Starfield.jsx'), 'utf8')
+const speeds = num(starfield, /speed: ([\d.]+)/g)
+assert.ok(speeds.length >= 3, 'expected three hero layers')
+for (const v of speeds) {
+  assert.ok(v >= VISIBLE_MIN, `hero drift ${v} px/frame (${(v * 60).toFixed(0)} px/s) is too slow to see`)
+  assert.ok(v <= VISIBLE_MAX, `hero drift ${v} px/frame is distractingly fast`)
+}
+
+const lens = readFileSync(join(here, 'LensField.jsx'), 'utf8')
+const vxm = [...lens.matchAll(/vx: rand\(([\d.]+), ([\d.]+)\)/g)][0]
+const vx = vxm ? [parseFloat(vxm[1]), parseFloat(vxm[2])] : []
+assert.ok(vx.length && vx[0] >= VISIBLE_MIN, `lens drift ${vx[0]} px/frame is too slow to see`)
+
+// Parallax must be strong enough that scrolling itself reads as movement.
+const depths = num(starfield, /depth: ([\d.]+)/g)
+assert.ok(depths.length >= 3, 'expected per-layer parallax depths')
+assert.ok(Math.max(...depths) >= 0.25,
+  `deepest hero parallax ${Math.max(...depths)} moves only ${(Math.max(...depths) * 285).toFixed(0)}px over a 285px scroll`)
+
+console.log(`Drift speeds: hero ${speeds.map((v) => (v * 60).toFixed(0)).join('/')} px/s, ` +
+  `lens ${(vx[0] * 60).toFixed(0)}-${(vx[1] * 60).toFixed(0)} px/s, parallax up to ${Math.max(...depths)}x - all visible`)

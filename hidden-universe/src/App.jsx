@@ -12,6 +12,8 @@ const COMPONENTS = {
   wormhole: lazy(() => import('./simulations/Wormhole/Wormhole')),
 }
 
+const StudyPlan = lazy(() => import('./site/StudyPlan'))
+
 const SLUG_BY_KEY = Object.fromEntries(SIMULATIONS.map((s) => [s.key, s.route]))
 const KEY_BY_SLUG = Object.fromEntries(SIMULATIONS.map((s) => [s.route, s.key]))
 const SIM_BY_KEY = Object.fromEntries(SIMULATIONS.map((s) => [s.key, s]))
@@ -19,8 +21,13 @@ const SIM_BY_KEY = Object.fromEntries(SIMULATIONS.map((s) => [s.key, s]))
 // Hash routing keeps deep links to individual simulations shareable, which
 // matters when a social post points straight at one, without pulling in a
 // router dependency or needing server-side rewrites on a static host.
+// 'plan' is a page rather than a simulation, so it sits outside SIM_ROUTES but
+// rides the same hash router.
+const PLAN_SLUG = 'plan'
+
 function readHash() {
   const slug = window.location.hash.replace(/^#\/?/, '').split('?')[0]
+  if (slug === PLAN_SLUG) return 'plan'
   return KEY_BY_SLUG[slug] ?? 'home'
 }
 
@@ -47,21 +54,32 @@ export default function App() {
   // Simulations run full-bleed with the page scroll locked; the hub scrolls.
   // Both are driven off this attribute so the two stylesheets can't fight.
   useEffect(() => {
-    document.body.dataset.mode = sim === 'home' ? 'home' : 'sim'
+    // The plan page scrolls like the hub, so it shares the 'home' body mode.
+    document.body.dataset.mode = sim === 'home' || sim === 'plan' ? 'home' : 'sim'
     document.title =
       sim === 'home'
-        ? `${SITE.name}, Interactive Astrophysics`
-        : `${SIM_BY_KEY[sim].name} · ${SITE.name}`
+        ? `${SITE.name}: Interactive Astrophysics`
+        : sim === 'plan'
+          ? `Study plan · ${SITE.name}`
+          : `${SIM_BY_KEY[sim].name} · ${SITE.name}`
   }, [sim])
 
   const go = useCallback((next) => {
-    const slug = SLUG_BY_KEY[next]
+    const slug = next === 'plan' ? PLAN_SLUG : SLUG_BY_KEY[next]
     window.location.hash = slug ? `/${slug}` : '/'
-    setSim(slug ? next : 'home')
+    setSim(slug ? (next === 'plan' ? 'plan' : next) : 'home')
     window.scrollTo(0, 0)
   }, [])
 
   if (sim === 'home') return <Home onLaunch={go} />
+
+  if (sim === 'plan') {
+    return (
+      <Suspense fallback={<div className="sp-shell" />}>
+        <StudyPlan onLaunch={go} onHome={(e) => { e?.preventDefault?.(); go('home') }} />
+      </Suspense>
+    )
+  }
 
   const Sim = COMPONENTS[sim]
   return (

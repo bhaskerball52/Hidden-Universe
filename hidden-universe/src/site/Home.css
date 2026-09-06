@@ -594,7 +594,10 @@
 
 .hu-path {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  /* One column: this is a route, and three stages read as a sequence going
+     down the page rather than a grid of peers. It also stops stage 03
+     orphaning next to the progress tracker. */
+  grid-template-columns: 1fr;
   gap: 18px;
   margin: 0;
   padding: 0;
@@ -1411,5 +1414,159 @@
   .hu-btn-sim::before,
   .hu-btn-primary:hover::after {
     animation: none;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------
+   React Bits SpotlightCard, adapted to this site's card material.
+
+   The component ships its own border, radius, background and 2rem padding.
+   These overrides are two classes deep so they beat .card-spotlight without
+   editing the vendored file, which would be lost on the next update.
+--------------------------------------------------------------------------- */
+
+.hu-sim-card.card-spotlight {
+  border-radius: 20px;
+  border: 1px solid var(--hu-line);
+  background: var(--hu-panel);
+  padding: 0;
+}
+
+/* Lift the spotlight above the card art but below the text. */
+.hu-sim-card.card-spotlight::before {
+  z-index: 1;
+}
+
+.hu-sim-card.card-spotlight > * {
+  position: relative;
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hu-sim-card.card-spotlight::before {
+    transition: none;
+  }
+}
+
+
+/* React Bits Noise overlay. The component ships position:absolute at
+   100vw/100vh; pinning it to the viewport keeps the grain still while the page
+   scrolls and stops it repainting the full document height. */
+
+.hu-grain {
+  position: fixed;
+  inset: 0;
+  /* 40 is taken; sit above page content but below the skip control at 60. */
+  z-index: 45;
+  pointer-events: none;
+  opacity: 0.55;
+  mix-blend-mode: overlay;
+}
+
+.hu-grain canvas {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The grain animates; hold it still rather than removing the texture. */
+  .hu-grain {
+    display: none;
+  }
+}
+
+
+/* Info button that replaced the standing "Optional:" paragraph. */
+
+.bp-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 11px 5px 6px;
+  border: 1px solid var(--hu-line-strong);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--hu-ink-dim);
+  cursor: pointer;
+  transition: color 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.bp-info > span:first-child {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1;
+  color: #e6e3f2;
+}
+
+.bp-info:hover,
+.bp-info-on {
+  border-color: rgba(192, 132, 252, 0.5);
+  background: rgba(192, 132, 252, 0.1);
+  color: #fff;
+}
+
+.bp-info-on > span:first-child {
+  background: #c084fc;
+  color: #14101f;
+}
+
+@media (max-width: 560px) {
+  .bp-info-label {
+    display: none;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------
+   React Bits ParticleCard around each library card.
+
+   The component only sets position/overflow inline, so the card keeps its own
+   look. These rules make the wrapper transparent to the grid: it must be the
+   grid item, and the link inside must fill it or short cards would leave the
+   particle area dead.
+--------------------------------------------------------------------------- */
+
+.hu-res-shell {
+  display: flex;
+  border-radius: 16px;
+}
+
+.hu-res-shell > .hu-res-card {
+  flex: 1;
+  min-width: 0;
+}
+
+/* The wrapper takes the hover lift so the card and its particles move together
+   rather than the card sliding out from under them. */
+.hu-res-shell:hover > .hu-res-card {
+  transform: none;
+}
+
+.hu-res-shell {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hu-res-shell:hover {
+  transform: translateY(-3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hu-res-shell,
+  .hu-res-shell:hover {
+    transform: none;
+    transition: none;
   }
 }

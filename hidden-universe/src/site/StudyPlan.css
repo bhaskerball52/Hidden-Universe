@@ -1,0 +1,575 @@
+/* Study plan page. Two-column: a sticky rail of pace-setting facts and a main
+   column that reads top to bottom as next action, then weeks, then simulations.
+   Deliberately not the homepage's stack of full-width sections. */
+
+.sp-shell {
+  --sp-line: rgba(255, 255, 255, 0.1);
+  --sp-line-strong: rgba(255, 255, 255, 0.18);
+  --sp-panel: rgba(14, 12, 24, 0.72);
+  --sp-ink: #ece9f6;
+  --sp-dim: #a7a2bd;
+  --sp-faint: #746e8c;
+  --sp-accent: #c084fc;
+  min-height: 100svh;
+  color: var(--sp-ink);
+  background: #030308;
+}
+
+/* --- nav ------------------------------------------------------------------ */
+
+.sp-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 64px;
+  padding: 0 max(20px, calc((100vw - 1180px) / 2));
+  border-bottom: 1px solid var(--sp-line);
+  background: rgba(3, 3, 8, 0.88);
+  backdrop-filter: blur(14px);
+}
+
+.sp-back {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--sp-ink);
+  text-decoration: none;
+}
+
+.sp-back::before {
+  content: '←';
+  margin-right: 8px;
+  color: var(--sp-faint);
+}
+
+.sp-nav-title {
+  padding-left: 14px;
+  border-left: 1px solid var(--sp-line);
+  font-size: 14px;
+  color: var(--sp-dim);
+}
+
+/* --- layout --------------------------------------------------------------- */
+
+.sp-body {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 40px;
+  padding: 40px max(20px, calc((100vw - 1180px) / 2)) 120px;
+}
+
+.sp-rail {
+  position: sticky;
+  top: 96px;
+  align-self: start;
+  display: grid;
+  gap: 16px;
+}
+
+.sp-main {
+  display: grid;
+  gap: 44px;
+  align-content: start;
+}
+
+@media (max-width: 900px) {
+  .sp-body {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .sp-rail {
+    position: static;
+  }
+}
+
+/* --- rail fields ---------------------------------------------------------- */
+
+.sp-field {
+  display: grid;
+  gap: 7px;
+}
+
+.sp-field > span {
+  font-size: 11.5px;
+  font-weight: 780;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #c3bedb;
+}
+
+.sp-field select,
+.sp-field input {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid var(--sp-line-strong);
+  border-radius: 10px;
+  background: rgba(20, 17, 34, 0.9);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 540;
+  color: #f3f1fa;
+  outline: none;
+}
+
+.sp-field select:focus,
+.sp-field input:focus {
+  border-color: rgba(192, 132, 252, 0.6);
+  box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.16);
+}
+
+.sp-goal-note {
+  margin: -6px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--sp-faint);
+}
+
+.sp-count {
+  display: grid;
+  gap: 2px;
+  padding: 14px 16px;
+  border: 1px solid var(--sp-line);
+  border-radius: 12px;
+  background: var(--sp-panel);
+}
+
+.sp-count strong {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+
+.sp-count span {
+  font-size: 13px;
+  color: var(--sp-dim);
+}
+
+.sp-count em {
+  font-size: 12px;
+  font-style: normal;
+  color: var(--sp-faint);
+}
+
+.sp-count-past strong {
+  color: #ff8fab;
+}
+
+.sp-ring {
+  justify-self: center;
+}
+
+.sp-ring-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 6;
+}
+
+.sp-ring-fg {
+  fill: none;
+  stroke: var(--sp-accent);
+  stroke-width: 6;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 40px 40px;
+  transition: stroke-dashoffset 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sp-ring-label {
+  fill: #fff;
+  font-size: 17px;
+  font-weight: 720;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.sp-tally {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.sp-tally > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.sp-tally dt {
+  color: var(--sp-faint);
+}
+
+.sp-tally dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--sp-ink);
+}
+
+.sp-reset {
+  justify-self: start;
+  padding: 7px 12px;
+  border: 1px solid var(--sp-line);
+  border-radius: 9px;
+  background: none;
+  font: inherit;
+  font-size: 12.5px;
+  color: var(--sp-faint);
+  cursor: pointer;
+}
+
+.sp-reset:hover {
+  border-color: var(--sp-line-strong);
+  color: var(--sp-ink);
+}
+
+/* --- headings ------------------------------------------------------------- */
+
+.sp-h2 {
+  margin: 0 0 6px;
+  font-size: clamp(21px, 2.4vw, 27px);
+  font-weight: 700;
+  letter-spacing: -0.024em;
+  color: #fff;
+}
+
+.sp-lede {
+  margin: 0 0 20px;
+  max-width: 60ch;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--sp-dim);
+}
+
+.sp-section {
+  display: block;
+}
+
+/* --- next up -------------------------------------------------------------- */
+
+.sp-next.card-spotlight {
+  padding: 26px;
+  border-radius: 18px;
+  border: 1px solid rgba(192, 132, 252, 0.34);
+  background: linear-gradient(150deg, rgba(192, 132, 252, 0.1), rgba(14, 12, 24, 0.8));
+}
+
+.sp-next-label {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 720;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sp-accent);
+}
+
+.sp-next h2 {
+  margin: 0;
+  font-size: clamp(24px, 3vw, 33px);
+  font-weight: 700;
+  letter-spacing: -0.028em;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.sp-next-blurb {
+  margin: 12px 0 0;
+  max-width: 62ch;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--sp-dim);
+}
+
+.sp-next-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.sp-cta {
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 11px;
+  background: linear-gradient(120deg, #ff4d6d, #c084fc);
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 680;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.14s ease;
+}
+
+.sp-cta:active {
+  transform: scale(0.98);
+}
+
+.sp-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--sp-dim);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sp-link:hover {
+  color: #fff;
+}
+
+.sp-done {
+  padding: 26px;
+  border: 1px solid rgba(95, 208, 255, 0.3);
+  border-radius: 18px;
+  background: rgba(95, 208, 255, 0.07);
+}
+
+.sp-done h2 {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.sp-done p {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: var(--sp-dim);
+}
+
+/* --- goal picker ---------------------------------------------------------- */
+
+.sp-goals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+.sp-goal {
+  display: grid;
+  gap: 6px;
+  padding: 18px;
+  border: 1px solid var(--sp-line);
+  border-radius: 14px;
+  background: var(--sp-panel);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.18s ease, transform 0.18s ease, background 0.18s ease;
+}
+
+.sp-goal:hover {
+  border-color: rgba(192, 132, 252, 0.5);
+  background: rgba(192, 132, 252, 0.07);
+  transform: translateY(-2px);
+}
+
+.sp-goal strong {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.sp-goal span {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--sp-dim);
+}
+
+/* --- weeks ---------------------------------------------------------------- */
+
+.sp-weeks {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sp-week {
+  border: 1px solid var(--sp-line);
+  border-radius: 12px;
+  background: var(--sp-panel);
+  overflow: hidden;
+}
+
+.sp-week-done {
+  border-color: rgba(95, 208, 255, 0.32);
+}
+
+.sp-week-head {
+  display: grid;
+  grid-template-columns: auto 1fr 140px;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sp-week-head:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.sp-week-n {
+  font-size: 15px;
+  font-weight: 760;
+  font-variant-numeric: tabular-nums;
+  color: var(--sp-accent);
+}
+
+.sp-week-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.sp-week-meta strong {
+  font-size: 14px;
+  font-weight: 620;
+  color: var(--sp-ink);
+}
+
+.sp-week-meta em {
+  font-size: 12.5px;
+  font-style: normal;
+  color: var(--sp-faint);
+}
+
+.sp-week-bar {
+  display: block;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.sp-week-bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ff8fab, var(--sp-accent));
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sp-topics {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0 10px 12px;
+  list-style: none;
+}
+
+.sp-topic {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 10px;
+  border-radius: 9px;
+  font-size: 14px;
+  color: var(--sp-ink);
+  cursor: pointer;
+}
+
+.sp-topic:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.sp-topic input {
+  accent-color: var(--sp-accent);
+}
+
+.sp-topic-done .sp-topic-name {
+  color: var(--sp-faint);
+  text-decoration: line-through;
+}
+
+.sp-topic-level {
+  font-size: 11.5px;
+  color: var(--sp-faint);
+}
+
+/* --- simulations ---------------------------------------------------------- */
+
+.sp-sims {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sp-sims > li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--sp-line);
+  border-left: 3px solid var(--sim-accent);
+  border-radius: 12px;
+  background: var(--sp-panel);
+}
+
+.sp-sim {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sp-sim input {
+  accent-color: var(--sim-accent);
+}
+
+.sp-sim-done .sp-sim-name {
+  color: var(--sp-faint);
+  text-decoration: line-through;
+}
+
+/* --- signed-out gate ------------------------------------------------------ */
+
+.sp-gate {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: clamp(70px, 14vh, 140px) 20px;
+  text-align: center;
+}
+
+.sp-gate h1 {
+  margin: 0;
+  font-size: clamp(27px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+
+.sp-gate p {
+  margin: 14px 0 26px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--sp-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-goal,
+  .sp-week-bar i,
+  .sp-ring-fg {
+    transition: none;
+  }
+}

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { Suspense, lazy, useMemo, useState } from 'react'
 import {
   SITE,
   SIMULATIONS,
@@ -10,6 +10,16 @@ import {
 import SimArt from './SimArt'
 import TopicFinder from './TopicFinder'
 import LensField from './LensField'
+import SpotlightCard from '../components/SpotlightCard'
+// ParticleCard pulls in gsap (~28 kB gzip). The library sits well below the
+// fold, so it is loaded on demand: the cards render immediately in their plain
+// form and gain particles once the module arrives. The Suspense fallback has
+// the same DOM shape, so nothing shifts.
+const ParticleCard = lazy(() =>
+  import('../components/MagicBento').then((m) => ({ default: m.ParticleCard }))
+)
+import Noise from '../components/Noise'
+import SectionSeam from './SectionSeam'
 import { AccountNav, ProgressTracker } from './Account'
 import { useProgress } from './useProgress'
 import { TOPICS } from './topics'
@@ -30,6 +40,7 @@ function NavBar({ onLaunch }) {
         <a href="#simulations">Simulations</a>
         <a href="#path">Start here</a>
         <a href="#library">Library</a>
+        <a href="#/plan">Study plan</a>
         <a href="#follow">Follow</a>
       </nav>
       <div className="hu-nav-actions">
@@ -91,6 +102,7 @@ function Hero({ onLaunch, burstAt }) {
       <a className="hu-scroll-hint hu-stage hu-stage-5" href="#simulations" aria-label="Scroll to simulations">
         <span />
       </a>
+      <SectionSeam />
     </section>
   )
 }
@@ -98,7 +110,10 @@ function Hero({ onLaunch, burstAt }) {
 function SimCard({ sim, onLaunch }) {
   const style = { '--sim-accent': sim.accent, '--sim-accent-soft': sim.accentSoft }
   return (
-    <article className="hu-sim-card" style={style}>
+    // React Bits SpotlightCard. The spotlight is tinted with each simulation's
+    // own accent, so the cursor picks out the card in its subject's colour
+    // rather than applying one generic white glow to everything.
+    <SpotlightCard className="hu-sim-card" style={style} spotlightColor={sim.accentSoft || sim.accent}>
       <div className="hu-sim-art">
         <SimArt kind={sim.art} />
         <span className="hu-sim-level">{sim.level}</span>
@@ -124,7 +139,7 @@ function SimCard({ sim, onLaunch }) {
           <ArrowIcon />
         </button>
       </div>
-    </article>
+    </SpotlightCard>
   )
 }
 
@@ -132,7 +147,6 @@ function Simulations({ onLaunch }) {
   return (
     <section className="hu-section" id="simulations">
       <div className="hu-section-head">
-        <span className="hu-eyebrow">The simulations</span>
         <h2>High-quality simulations, driven by physics and data</h2>
         <p>
           Every scene integrates the real equations live in the browser, running geodesics,
@@ -147,6 +161,7 @@ function Simulations({ onLaunch }) {
           <SimCard key={sim.key} sim={sim} onLaunch={onLaunch} />
         ))}
       </div>
+      <SectionSeam />
     </section>
   )
 }
@@ -155,7 +170,6 @@ function LearningPath({ progress, onToggleStage, onSetNotify }) {
   return (
     <section className="hu-section hu-section-tight" id="path">
       <div className="hu-section-head">
-        <span className="hu-eyebrow">Start here</span>
         <h2>A route for learning</h2>
         <p>
           You do not need a degree to follow this field, but you do need an order. Three stages,
@@ -185,13 +199,37 @@ function LearningPath({ progress, onToggleStage, onSetNotify }) {
           onSetNotify={onSetNotify}
         />
       </div>
+      <SectionSeam />
     </section>
   )
 }
 
-function ResourceCard({ item }) {
+function ResourceCard({ item, quiet }) {
+  // React Bits ParticleCard, exported from MagicBento by a local edit. It wraps
+  // the existing link rather than replacing it, so the filters, the search and
+  // the card's own markup are untouched; it adds only the hover particles and
+  // the click ripple.
+  const link = <ResourceLink item={item} />
   return (
-    <a className="hu-res-card" href={item.url} target="_blank" rel="noreferrer noopener">
+    <Suspense fallback={<div className="hu-res-shell">{link}</div>}>
+      <ParticleCard
+        className="hu-res-shell"
+        glowColor="192, 132, 252"
+        particleCount={10}
+        enableTilt={false}
+        enableMagnetism={false}
+        clickEffect
+        disableAnimations={quiet}
+      >
+        {link}
+      </ParticleCard>
+    </Suspense>
+  )
+}
+
+function ResourceLink({ item }) {
+  return (
+      <a className="hu-res-card" href={item.url} target="_blank" rel="noreferrer noopener">
       <div className="hu-res-top">
         <span className={`hu-res-badge hu-res-badge-${item.category}`}>
           {RESOURCE_CATEGORIES.find((c) => c.id === item.category)?.label ?? item.category}
@@ -206,14 +244,18 @@ function ResourceCard({ item }) {
       <div className="hu-res-foot">
         <span className="hu-chip hu-chip-quiet">{item.level}</span>
         {item.free ? <span className="hu-chip hu-chip-free">Free</span> : null}
-      </div>
-    </a>
+        </div>
+      </a>
   )
 }
 
 const RESOURCE_PAGE = 6
 
 function Learn() {
+  // Particles are decorative; someone who asked for less motion gets the cards
+  // with none. Read once here rather than per card.
+  const quiet = typeof window !== 'undefined'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const [filter, setFilter] = useState('all')
   const [query, setQuery] = useState('')
   const [shownCount, setShownCount] = useState(RESOURCE_PAGE)
@@ -241,7 +283,6 @@ function Learn() {
   return (
     <section className="hu-section" id="library">
       <div className="hu-section-head">
-        <span className="hu-eyebrow">The full library</span>
         <h2>Or browse everything</h2>
         <p>
           {RESOURCES.length} hand-picked courses, lecture notes, tools and archives. The whole
@@ -285,7 +326,7 @@ function Learn() {
         <>
           <div className="hu-res-grid">
             {visible.map((r) => (
-              <ResourceCard key={r.url} item={r} />
+              <ResourceCard key={r.url} item={r} quiet={quiet} />
             ))}
           </div>
           {remaining > 0 ? (
@@ -306,6 +347,7 @@ function Learn() {
       ) : (
         <p className="hu-empty">Nothing matches “{query}”. Try a broader term.</p>
       )}
+      <SectionSeam />
     </section>
   )
 }
@@ -323,6 +365,7 @@ function FindTopic({ onLaunch }) {
         </p>
       </div>
       <TopicFinder onLaunch={onLaunch} />
+      <SectionSeam />
     </section>
   )
 }
@@ -331,7 +374,6 @@ function Follow() {
   return (
     <section className="hu-section" id="follow">
       <div className="hu-section-head">
-        <span className="hu-eyebrow">Follow along</span>
         <h2>The same physics, in shorter form</h2>
       </div>
       <div className="hu-social-grid">
@@ -416,6 +458,13 @@ export default function Home({ onLaunch }) {
   return (
     <div className="hu-home" data-intro={running ? 'running' : undefined}>
       <LensField />
+      {/* React Bits Noise. Film grain over the whole page: it hides the banding
+          that dark radial gradients produce on 8-bit displays, and gives the
+          flat black some tooth. Fixed and pointer-events:none so it never
+          repaints the tall document or intercepts a click. */}
+      <div className="hu-grain" aria-hidden="true">
+        <Noise patternAlpha={11} patternRefreshInterval={4} />
+      </div>
       {running ? (
         <button type="button" className="hu-intro-skip" onClick={skip}>
           Skip

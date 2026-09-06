@@ -48,8 +48,12 @@ export default function LensField() {
           y: Math.random() * h,
           r: rand(0.5, 1.7),
           a: rand(0.3, 1),
-          vx: rand(0.006, 0.03), // slow drift, so the field lives without a cursor
-          vy: rand(-0.006, 0.006),
+          // px per frame; ~7-30 px/s at 60fps. The old 0.006-0.03 drifted a few
+          // pixels per MINUTE, which is indistinguishable from a static image.
+          vx: rand(0.25, 0.7),
+          vy: rand(-0.09, 0.09),
+          depth: rand(0.08, 0.42), // scroll parallax factor
+          size: Math.random(),
           tw: rand(0.0006, 0.002),
           ph: Math.random() * Math.PI * 2,
           warm: Math.random() < 0.14,
@@ -99,8 +103,12 @@ export default function LensField() {
     const draw = (t) => {
       // Fade in as the hero scrolls away, then stay for the rest of the page.
       const vh = window.innerHeight || 1
-      const target = clamp01((window.scrollY - vh * 0.3) / (vh * 0.45))
+      const sy = Math.max(0, window.scrollY)
+      const target = clamp01((sy - vh * 0.3) / (vh * 0.45))
       fade += (target - fade) * 0.12
+      // The field also rises into place as it fades, so the hand-off from the
+      // hero reads as one move rather than a crossfade between two still images.
+      const rise = (1 - fade) * vh * 0.22
 
       ctx.clearRect(0, 0, w, h)
       if (fade < 0.005) {
@@ -125,8 +133,12 @@ export default function LensField() {
           else if (s.y < -4) s.y = h + 4
         }
 
-        const dx = s.x - lens.x
-        const dy = s.y - lens.y
+        // Wrap the parallax so the field is endless however far the page scrolls.
+        const sxp = s.x
+        const syp = (((s.y - sy * s.depth + rise) % h) + h) % h
+
+        const dx = sxp - lens.x
+        const dy = syp - lens.y
         const b = Math.hypot(dx, dy)
         if (b < 0.001) continue
         const ux = dx / b

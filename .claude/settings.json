@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx eslint *)",
+      "Bash(npm run *)",
+      "Read(//tmp/**)",
+      "Bash(npx --yes playwright@latest install chromium)",
+      "Bash(cp /tmp/wh-shot.mjs ./wh-shot.mjs)",
+      "Bash(node ./wh-shot.mjs /tmp/wh.png)",
+      "Bash(git -C /Users/vasukrishnamurthy/Documents/GitHub/Hidden-Universe status --short)",
+      "Bash(pkill -f \"vite\")"
+    ]
+  }
+}
