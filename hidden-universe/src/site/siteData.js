@@ -51,11 +51,6 @@ export const SOCIALS = [
 
 // ---------------------------------------------------------------------------
 // Simulations. `route` is the hash slug; `key` is what App passes to setSim.
-// ---------------------------------------------------------------------------
-// Slugs used by the hash router. Kept as a plain list so main.jsx can pick the
-// layout mode before React mounts without importing the whole data module.
-export const SIM_ROUTES = ['dark-matter', 'black-hole', 'neutron-star', 'wormhole']
-
 export const SIMULATIONS = [
   {
     key: 'darkMatter',
@@ -136,6 +131,189 @@ export const SIMULATIONS = [
     ],
     level: 'Advanced',
   },
+  {
+    key: 'keplerOrbits',
+    route: 'kepler-orbits',
+    name: 'Kepler Orbits',
+    kicker: 'Orbital mechanics',
+    accent: '#ffb347',
+    accentSoft: '#ffd7a0',
+    art: 'orbit',
+    summary:
+      'Set an eccentricity and watch the orbit obey Kepler. Equal-time wedges keep equal areas, the velocity arrow follows vis-viva, and the period tracks the semi-major axis alone.',
+    concepts: ['Kepler laws', 'Vis-viva equation', 'Eccentricity', 'Specific angular momentum', 'Orbital energy'],
+    features: [
+      'Equal-area sweeps drawn live, so the second law is visible rather than asserted',
+      'Vis-viva speed in km/s, with a velocity arrow and labelled perihelion, aphelion and empty focus',
+      'Period from the semi-major axis only, independent of eccentricity',
+    ],
+    level: 'Beginner',
+  },
+  {
+    key: 'asteroidBelt',
+    route: 'asteroid-belt',
+    name: 'Asteroid Belt',
+    kicker: 'Solar system',
+    accent: '#c9a36a',
+    accentSoft: '#e8cfa5',
+    art: 'belt',
+    summary:
+      'Nine thousand test asteroids orbiting between Mars and Jupiter. Turn Jupiter up and the mean-motion resonances clear the Kirkwood gaps out of the belt over a million simulated years.',
+    concepts: ['Mean-motion resonance', 'Kirkwood gaps', 'Trojan points', 'Secular perturbation', 'Test particles'],
+    features: [
+      'Resonance positions computed from the period ratio, not painted on',
+      'Gaps open as resonant eccentricity pumping drives asteroids onto Mars-crossing orbits',
+      'A live Kirkwood histogram of surviving asteroids by orbit size',
+      'Trojan clouds at the L4 and L5 points of Jupiter',
+    ],
+    level: 'Intermediate',
+  },
+  {
+    key: 'exoplanetTransit',
+    route: 'exoplanet-transit',
+    name: 'Exoplanet Transit',
+    kicker: 'Exoplanets',
+    accent: '#6ee7b7',
+    accentSoft: '#b6f3d8',
+    art: 'transit',
+    summary:
+      'Fly around a planet orbiting a limb-darkened star in 3D, see the transit through a telescope inset, and watch the light curve draw itself. Depth gives you the radius ratio, duration gives you the orbit, and the ingress shape gives you the impact parameter.',
+    concepts: ['Transit depth', 'Limb darkening', 'Impact parameter', 'Radius ratio', 'Transit duration'],
+    features: [
+      'Telescope view along the sightline, rendered from the same 3D scene',
+      'Quadratic limb darkening evaluated per viewing angle, so the curve has the right rounded floor',
+      'Noisy photometry scattered over the exact occulted-flux model',
+    ],
+    level: 'Beginner',
+  },
+  {
+    key: 'gravLensing',
+    route: 'gravitational-lensing',
+    name: 'Gravitational Lensing',
+    kicker: 'Relativity',
+    accent: '#a78bfa',
+    accentSoft: '#d0c2ff',
+    art: 'lens',
+    summary:
+      'Drag a mass across a field of background galaxies and bend their light. Line the source up behind it and the two images close into an Einstein ring.',
+    concepts: ['Einstein radius', 'Thin-lens equation', 'Magnification', 'Image parity', 'Critical curves'],
+    features: [
+      'Images solved from the point-mass lens equation each frame',
+      'Magnification drives brightness, so faint counter-images fade correctly',
+      'Einstein ring closes when the alignment is exact',
+    ],
+    level: 'Advanced',
+  },
+  {
+    key: 'relativisticFlight',
+    route: 'relativistic-flight',
+    name: 'Relativistic Flight',
+    kicker: 'Special relativity',
+    accent: '#60a5fa',
+    accentSoft: '#b3d5ff',
+    art: 'aberration',
+    summary:
+      'Accelerate toward the stars and the sky rearranges itself. Aberration crowds them ahead of you, the Doppler shift recolours them, and beaming throws the light forward.',
+    concepts: ['Relativistic aberration', 'Doppler shift', 'Headlight effect', 'Lorentz factor', 'Time dilation'],
+    features: [
+      'Aberration from the relativistic velocity addition formula',
+      'Colour shifted by the true Doppler factor, not a tint ramp',
+      'Headlight beaming scales the intensity as the fourth power of the Doppler factor',
+    ],
+    level: 'Advanced',
+  },
+  {
+    key: 'hrDiagram',
+    route: 'hr-diagram',
+    name: 'HR Diagram',
+    kicker: 'Stellar physics',
+    accent: '#fbbf24',
+    accentSoft: '#fde3a7',
+    art: 'hr',
+    summary:
+      'The one plot that organises all of stellar astrophysics. Place a star by mass and watch it walk off the main sequence, swell into a giant beside the Sun at true scale, shed a nebula and shrink to a white dwarf.',
+    concepts: ['Main sequence', 'Mass-luminosity relation', 'Giant branch', 'Stefan-Boltzmann law', 'Stellar lifetime'],
+    features: [
+      'Main sequence drawn from the mass-luminosity relation, not traced from a picture',
+      'Evolutionary track advances with a real stellar clock',
+      'The star rendered in 3D in its true blackbody colour, sized by Stefan-Boltzmann',
+    ],
+    level: 'Beginner',
+  },
+  {
+    key: 'cosmicExpansion',
+    route: 'cosmic-expansion',
+    name: 'Cosmic Expansion',
+    kicker: 'Cosmology',
+    accent: '#f472b6',
+    accentSoft: '#fbbce0',
+    art: 'expansion',
+    summary:
+      'Every galaxy running from every other, with no centre to run from. Recession speed rises with distance exactly as Hubble found, and the redshift follows the scale factor.',
+    concepts: ['Hubble law', 'Scale factor', 'Cosmological redshift', 'Comoving distance', 'Hubble time'],
+    features: [
+      'Space expands rather than galaxies flying through it, and the grid shows the difference',
+      'Any galaxy can be made the observer, and the law looks identical from all of them',
+      'A live Hubble diagram whose slope falls as the expansion rate H(t) drops',
+    ],
+    level: 'Intermediate',
+  },
+  {
+    key: 'tidesRoche',
+    route: 'tides-roche',
+    name: 'Tides and the Roche Limit',
+    kicker: 'Solar system',
+    accent: '#38bdf8',
+    accentSoft: '#a5e4fd',
+    art: 'tides',
+    summary:
+      'Tides are a difference in gravity across a body, not a pull toward the Moon. Bring a moon inside the Roche limit and the same difference tears it into a ring.',
+    concepts: ['Tidal force', 'Roche limit', 'Differential gravity', 'Tidal locking', 'Ring formation'],
+    features: [
+      'Two bulges from the differential field, which is why there are two tides a day',
+      'Roche limit computed from the density ratio',
+      'Disruption into a ring when the moon crosses inside it',
+      'A tide gauge on a spinning Earth-like planet traces two high tides per rotation',
+    ],
+    level: 'Intermediate',
+  },
+  {
+    key: 'blackbodySpectra',
+    route: 'blackbody-spectra',
+    name: 'Blackbody and Spectra',
+    kicker: 'Physics foundations',
+    accent: '#fb7185',
+    accentSoft: '#fecdd3',
+    art: 'spectrum',
+    summary:
+      'Heat a glowing body and split its light through a prism. Wien tracks the peak, Stefan-Boltzmann tracks the area, and the colour you see is the Planck curve integrated against human vision.',
+    concepts: ['Planck law', 'Wien displacement law', 'Stefan-Boltzmann law', 'Absorption lines', 'Spectral class'],
+    features: [
+      'A 3D prism throws the visible spectrum onto a screen lit by the Planck function',
+      'Perceived colour from the CIE colour matching functions, not the peak wavelength',
+      'Rayleigh-Jeans and Wien approximations overlaid to show where each one fails',
+      'Absorption lines at their lab wavelengths, strengthening and fading with temperature',
+    ],
+    level: 'Beginner',
+  },
+  {
+    key: 'eclipsingBinary',
+    route: 'eclipsing-binary',
+    name: 'Eclipsing Binary',
+    kicker: 'Stellar physics',
+    accent: '#f59e0b',
+    accentSoft: '#fcd88a',
+    art: 'binary',
+    summary:
+      'Two stars orbiting a shared centre of mass in 3D, eclipsing each other twice per orbit as seen from a telescope. The depths of the two dips give you the surface brightness ratio, and the widths give you the radii.',
+    concepts: ['Roche lobes', 'Centre of mass', 'Primary and secondary eclipse', 'Mass ratio', 'Light curve'],
+    features: [
+      'Both stars orbit the barycentre, weighted by the mass ratio',
+      'Light curve built from the real overlap area of the two disks',
+      'Roche lobe sizes from Eggleton’s formula, with a mass-transfer check',
+    ],
+    level: 'Intermediate',
+  },
 ]
 
 // ---------------------------------------------------------------------------
@@ -170,6 +348,11 @@ export const PATH = [
     accent: '#5aa9ff',
   },
 ]
+
+// ---------------------------------------------------------------------------
+// Slugs used by the hash router, derived from SIMULATIONS so the two can never
+// drift. main.jsx reads this before React mounts to pick the layout mode.
+export const SIM_ROUTES = SIMULATIONS.map((s) => s.route)
 
 export const RESOURCE_CATEGORIES = [
   { id: 'all', label: 'Everything' },

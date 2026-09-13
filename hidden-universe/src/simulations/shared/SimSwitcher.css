@@ -1,0 +1,251 @@
+/* Simulation switcher. One stylesheet for all scenes, so the control looks and
+   behaves identically whichever simulation is mounted. Scoped under .sw-root
+   rather than the old per-scene .sim-type-* overrides. */
+
+.sw-root {
+  position: absolute;
+  z-index: 30;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+.sw-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(8, 14, 26, 0.72);
+  backdrop-filter: blur(16px);
+}
+
+.sw-home,
+.sw-current {
+  display: flex;
+  align-items: center;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  font: inherit;
+  color: rgba(226, 232, 248, 0.72);
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+.sw-home {
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sw-home:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.sw-current {
+  gap: 9px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 620;
+}
+
+.sw-current:hover,
+.sw-root-open .sw-current {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.sw-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.sw-current-name {
+  max-width: 42vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sw-count {
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.09);
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(226, 232, 248, 0.75);
+}
+
+.sw-chev {
+  transition: transform 0.2s ease;
+}
+
+.sw-root-open .sw-chev {
+  transform: rotate(180deg);
+}
+
+/* --- panel ---------------------------------------------------------------- */
+
+.sw-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(380px, calc(100vw - 32px));
+  max-height: min(64vh, 560px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(10, 13, 24, 0.94);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.62);
+  overflow: hidden;
+  animation: sw-in 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes sw-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+}
+
+.sw-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  color: rgba(226, 232, 248, 0.5);
+}
+
+.sw-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 540;
+  color: #f2f4fb;
+  outline: none;
+}
+
+.sw-search input::placeholder {
+  color: rgba(226, 232, 248, 0.42);
+}
+
+.sw-clear {
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 12px;
+  color: rgba(226, 232, 248, 0.5);
+  cursor: pointer;
+}
+
+.sw-clear:hover { color: #fff; }
+
+.sw-list {
+  overflow-y: auto;
+  padding: 6px;
+  overscroll-behavior: contain;
+}
+
+.sw-group + .sw-group { margin-top: 4px; }
+
+.sw-group-label {
+  padding: 8px 10px 5px;
+  font-size: 10.5px;
+  font-weight: 780;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(226, 232, 248, 0.42);
+}
+
+.sw-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  color: rgba(226, 232, 248, 0.86);
+  cursor: pointer;
+}
+
+.sw-item-active {
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+}
+
+.sw-item-current { color: #fff; }
+
+.sw-item-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--sw-accent, #8b8b9e);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sw-accent, #8b8b9e) 22%, transparent);
+}
+
+.sw-item-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.sw-item-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sw-item-level {
+  font-size: 11px;
+  color: rgba(226, 232, 248, 0.42);
+  flex: 0 0 auto;
+}
+
+.sw-item-here {
+  flex: 0 0 auto;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--sw-accent, #8b8b9e);
+  font-size: 10px;
+  font-weight: 750;
+  color: #0b0e18;
+}
+
+.sw-empty {
+  margin: 0;
+  padding: 22px 14px;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(226, 232, 248, 0.5);
+}
+
+@media (max-width: 640px) {
+  .sw-current-name { max-width: 38vw; }
+  .sw-panel { width: calc(100vw - 24px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sw-panel { animation: none; }
+  .sw-chev { transition: none; }
+}

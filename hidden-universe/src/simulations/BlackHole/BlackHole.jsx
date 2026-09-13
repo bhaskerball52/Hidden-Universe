@@ -4,8 +4,8 @@ import { OrbitControls } from '@react-three/drei'
 import { MathJaxContext, MathJax } from 'better-react-mathjax'
 import * as THREE from 'three'
 import HandGestureControl, { advanceGesture } from '../DarkMatter/HandGestureControl'
+import SimSwitcher from '../shared/SimSwitcher'
 import './BlackHole.css'
-import SimHomeButton from '../../site/SimHomeButton'
 
 // MathJax v3 config, load once for the side panel
 const MATHJAX_CONFIG = {
@@ -373,28 +373,6 @@ const LensedBlackHole = memo(function LensedBlackHole({
 
 
 // ─── Simulation type nav ──────────────────────────────────────────────────────
-function SimTypeBar({ onSwitchSim }) {
-  return (
-    <div className="sim-type-bar">
-      <SimHomeButton onSwitchSim={onSwitchSim} />
-      <button type="button" className="sim-type-tab"
-        onClick={() => onSwitchSim?.('darkMatter')}>
-        <span className="sim-type-icon">◉</span>Dark Matter
-      </button>
-      <button type="button" className="sim-type-tab sim-type-tab-active">
-        <span className="sim-type-icon">⬡</span>Kerr Black Hole
-      </button>
-      <button type="button" className="sim-type-tab"
-        onClick={() => onSwitchSim?.('neutronStar')}>
-        <span className="sim-type-icon">✦</span>Neutron Star
-      </button>
-      <button type="button" className="sim-type-tab"
-        onClick={() => onSwitchSim?.('wormhole')}>
-        <span className="sim-type-icon">◯</span>Wormhole
-      </button>
-    </div>
-  )
-}
 
 // ─── High-performance mode toggle ─────────────────────────────────────────────
 function PerfToggle({ value, onChange }) {
@@ -682,7 +660,7 @@ export default function BlackHole({ onSwitchSim }) {
 
   return (
     <div className="bh-sim">
-      <SimTypeBar onSwitchSim={onSwitchSim} />
+      <SimSwitcher current="blackHole" onSwitchSim={onSwitchSim} />
       <PerfToggle value={highPerf} onChange={setHighPerf} />
       <SidePanel values={params} onChange={setParam} />
       <Canvas

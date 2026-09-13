@@ -10,6 +10,16 @@ const COMPONENTS = {
   blackHole: lazy(() => import('./simulations/BlackHole/BlackHole')),
   neutronStar: lazy(() => import('./simulations/NeutronStar/NeutronStar')),
   wormhole: lazy(() => import('./simulations/Wormhole/Wormhole')),
+  keplerOrbits: lazy(() => import('./simulations/KeplerOrbits/KeplerOrbits')),
+  asteroidBelt: lazy(() => import('./simulations/AsteroidBelt/AsteroidBelt')),
+  exoplanetTransit: lazy(() => import('./simulations/ExoplanetTransit/ExoplanetTransit')),
+  gravLensing: lazy(() => import('./simulations/GravLensing/GravLensing')),
+  hrDiagram: lazy(() => import('./simulations/HRDiagram/HRDiagram')),
+  cosmicExpansion: lazy(() => import('./simulations/CosmicExpansion/CosmicExpansion')),
+  blackbodySpectra: lazy(() => import('./simulations/BlackbodySpectra/BlackbodySpectra')),
+  tidesRoche: lazy(() => import('./simulations/TidesRoche/TidesRoche')),
+  eclipsingBinary: lazy(() => import('./simulations/EclipsingBinary/EclipsingBinary')),
+  relativisticFlight: lazy(() => import('./simulations/RelativisticFlight/RelativisticFlight')),
 }
 
 const StudyPlan = lazy(() => import('./site/StudyPlan'))

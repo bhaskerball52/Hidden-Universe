@@ -5,8 +5,8 @@ import * as THREE from 'three'
 import SimulationSidebar from './SimulationSidebar'
 import HandGestureControl, { advanceGesture } from './HandGestureControl'
 import { computeHaloSeries } from './haloModels'
+import SimSwitcher from '../shared/SimSwitcher'
 import './GalaxySimulation.css'
-import SimHomeButton from '../../site/SimHomeButton'
 
 /* Procedural particle buffers: Math.random is intentional one-shot noise in useMemo. */
 /* eslint-disable react-hooks/purity */
@@ -630,41 +630,6 @@ function RotationCurveOverlay({ visible, series, massFactor = 1 }) {
   )
 }
 
-function SimTypeBar({ onSwitchSim }) {
-  return (
-    <div className="sim-type-bar">
-      <SimHomeButton onSwitchSim={onSwitchSim} />
-      <button type="button" className="sim-type-tab sim-type-tab-active">
-        <span className="sim-type-icon">◉</span>
-        Dark Matter
-      </button>
-      <button
-        type="button"
-        className="sim-type-tab"
-        onClick={() => onSwitchSim?.('blackHole')}
-      >
-        <span className="sim-type-icon">⬡</span>
-        Kerr Black Hole
-      </button>
-      <button
-        type="button"
-        className="sim-type-tab"
-        onClick={() => onSwitchSim?.('neutronStar')}
-      >
-        <span className="sim-type-icon">✦</span>
-        Neutron Star
-      </button>
-      <button
-        type="button"
-        className="sim-type-tab"
-        onClick={() => onSwitchSim?.('wormhole')}
-      >
-        <span className="sim-type-icon">◯</span>
-        Wormhole
-      </button>
-    </div>
-  )
-}
 
 function GalaxyViewportChrome({ showDM, onToggleDM }) {
   return (
@@ -779,7 +744,7 @@ export default function Galaxy({ onSwitchSim }) {
   rotateSpeed={0.65}
 />
         </Canvas>
-        <SimTypeBar onSwitchSim={onSwitchSim} />
+        <SimSwitcher current="darkMatter" onSwitchSim={onSwitchSim} />
         <GalaxyViewportChrome showDM={showDM} onToggleDM={setShowDM} />
         <HandGestureControl
           enabled={gestureEnabled}

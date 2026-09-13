@@ -1,0 +1,78 @@
+/* Root shell shared by the simulations added after the original four. Each of
+   those older scenes carries its own root class; this is the one stylesheet the
+   new ones use so fourteen scenes do not mean fourteen near-identical files. */
+
+.sim2 {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 45%, rgba(30, 50, 100, 0.22) 0%, transparent 58%), #04060d;
+  color: #e6efff;
+  font-family: ui-sans-serif, system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+.sim2 canvas {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* A 2D-canvas simulation draws into this instead of a WebGL canvas. */
+.sim2-plot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Bottom-left caption strip: the one number a scene most wants you to read. */
+.sim2-hud {
+  position: absolute;
+  z-index: 15;
+  left: 16px;
+  bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: min(60vw, 560px);
+  pointer-events: none;
+}
+
+.sim2-hud-item {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(8, 12, 22, 0.7);
+  backdrop-filter: blur(12px);
+  font-size: 12px;
+}
+
+.sim2-swatch {
+  align-self: center;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px currentColor, inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.sim2-hud-label { color: rgba(230, 239, 255, 0.55); }
+
+.sim2-hud-value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: #fff;
+}
+
+@media (max-width: 780px) {
+  .sim2-hud {
+    bottom: calc(46dvh + 16px);
+    max-width: calc(100vw - 32px);
+  }
+}

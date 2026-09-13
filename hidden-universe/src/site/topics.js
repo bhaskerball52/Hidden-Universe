@@ -152,6 +152,7 @@ export const TOPICS = [
     name: 'Spectroscopy',
     group: 'Observing & the night sky',
     level: 'Intermediate',
+    sims: ['blackbodySpectra'],
     aliases: ['spectra', 'emission lines', 'absorption lines', 'doppler shift', 'redshift', 'balmer', 'spectral classification'],
     blurb:
       'Nearly everything we know about anything beyond the solar system came from splitting its light. Composition, temperature, velocity, and distance all live in the spectrum.',
@@ -176,6 +177,7 @@ export const TOPICS = [
     name: 'Photometry & magnitudes',
     group: 'Observing & the night sky',
     level: 'Intermediate',
+    sims: ['exoplanetTransit', 'blackbodySpectra', 'eclipsingBinary'],
     aliases: ['apparent magnitude', 'absolute magnitude', 'flux', 'luminosity', 'colour index', 'bolometric', 'distance modulus'],
     blurb:
       'The magnitude scale is backwards, logarithmic, and inescapable. Distance modulus and colour indices come straight out of it.',
@@ -196,6 +198,7 @@ export const TOPICS = [
     name: 'The cosmic distance ladder',
     group: 'Observing & the night sky',
     level: 'Intermediate',
+    sims: ['cosmicExpansion'],
     aliases: ['parallax', 'cepheid', 'standard candle', 'type ia', 'tully fisher', 'gaia', 'hubble constant'],
     blurb:
       'Every cosmic distance is calibrated against the rung below it, starting from parallax. Understanding the ladder is understanding why the Hubble tension is hard.',
@@ -223,6 +226,7 @@ export const TOPICS = [
     name: 'Planetary astrophysics',
     group: 'Solar system & planets',
     level: 'Intermediate',
+    sims: ['keplerOrbits', 'asteroidBelt', 'tidesRoche'],
     aliases: ['planetary science', 'planets', 'terrestrial', 'gas giant', 'interior structure', 'differentiation'],
     blurb:
       'How planets form, differentiate, and hold onto atmospheres, and why the same physics produces Mercury and Jupiter from one disk.',
@@ -248,6 +252,7 @@ export const TOPICS = [
     name: 'Orbital mechanics',
     group: 'Solar system & planets',
     level: 'Intermediate',
+    sims: ['keplerOrbits', 'asteroidBelt'],
     aliases: ['celestial mechanics', 'kepler', 'two body problem', 'orbital elements', 'transfer orbit', 'hohmann', 'delta v', 'n-body', 'lagrange points'],
     blurb:
       "Kepler's laws, the vis-viva equation, and transfer orbits. The most directly useful maths in all of astronomy, and a guaranteed olympiad topic.",
@@ -275,6 +280,7 @@ export const TOPICS = [
     name: 'Exoplanets',
     group: 'Solar system & planets',
     level: 'Intermediate',
+    sims: ['exoplanetTransit'],
     aliases: ['transit method', 'radial velocity', 'hot jupiter', 'habitable zone', 'tess', 'kepler mission', 'direct imaging'],
     blurb:
       'Nearly 6,000 confirmed planets, almost all found by two techniques. Both are simple enough to work through by hand and then repeat on real data.',
@@ -301,6 +307,7 @@ export const TOPICS = [
     name: 'Asteroids, comets & small bodies',
     group: 'Solar system & planets',
     level: 'Beginner',
+    sims: ['asteroidBelt', 'tidesRoche'],
     aliases: ['kuiper belt', 'oort cloud', 'meteor', 'meteorite', 'trans neptunian', 'near earth object', 'impact'],
     blurb:
       'The leftovers of planet formation, and the only samples of the early solar system we can actually get our hands on.',
@@ -351,6 +358,7 @@ export const TOPICS = [
     name: 'Stellar structure & evolution',
     group: 'Stars & stellar physics',
     level: 'Intermediate',
+    sims: ['hrDiagram', 'eclipsingBinary'],
     aliases: ['hr diagram', 'main sequence', 'hertzsprung russell', 'red giant', 'hydrostatic equilibrium', 'stellar lifetime'],
     blurb:
       'Why a star is stable, what sets its lifetime, and how it moves across the HR diagram. The backbone of stellar astrophysics.',
@@ -372,6 +380,7 @@ export const TOPICS = [
     name: 'Star formation',
     group: 'Stars & stellar physics',
     level: 'Intermediate',
+    sims: ['hrDiagram'],
     aliases: ['molecular cloud', 'jeans mass', 'protostar', 'imf', 'nebula', 'accretion disk', 'protoplanetary'],
     blurb:
       'Collapse, fragmentation, and the initial mass function. This is how a cold cloud becomes a cluster of stars, and why it makes so many more small ones than large.',
@@ -421,6 +430,7 @@ export const TOPICS = [
     name: 'Variable & binary stars',
     group: 'Stars & stellar physics',
     level: 'Intermediate',
+    sims: ['eclipsingBinary'],
     aliases: ['cepheid', 'rr lyrae', 'eclipsing binary', 'light curve', 'period luminosity', 'cataclysmic variable', 'aavso'],
     blurb:
       'Stars that change, and stars in pairs. Between them they give us stellar masses and the distance ladder, and amateurs still contribute real data.',
@@ -461,7 +471,7 @@ export const TOPICS = [
     ],
     prereqs: { math: ['calculus-2'], physics: ['modern-physics', 'statistical-mechanics'] },
     links: [OPENSTAX, ARXIV, SPACETIME],
-    sims: ['neutronStar'],
+    sims: ['neutronStar', 'hrDiagram'],
   },
   {
     id: 'neutron-stars',
@@ -560,7 +570,7 @@ export const TOPICS = [
     ],
     prereqs: { math: ['calculus-2'], physics: ['mechanics-calculus'] },
     links: [SDSS, ARXIV, SPACETIME, ASTROBITES],
-    sims: ['darkMatter'],
+    sims: ['darkMatter', 'gravLensing'],
   },
   {
     id: 'agn-quasars',
@@ -607,7 +617,7 @@ export const TOPICS = [
     ],
     prereqs: { math: ['tensor-calculus'], physics: ['general-relativity'] },
     links: [CARROLL_GR, { t: 'JWST lensing cluster images', s: 'ESA/Webb', u: 'https://esawebb.org/images/' }, ARXIV],
-    sims: ['darkMatter', 'blackHole'],
+    sims: ['darkMatter', 'blackHole', 'gravLensing'],
   },
 
   // --------------------------------------------------------------- cosmology
@@ -616,6 +626,7 @@ export const TOPICS = [
     name: 'Big Bang & the expanding universe',
     group: 'Cosmology',
     level: 'Intermediate',
+    sims: ['cosmicExpansion'],
     aliases: ['hubble law', 'expansion', 'redshift', 'scale factor', 'friedmann', 'age of the universe', 'lambda cdm'],
     blurb:
       'The expansion, its history, and the Friedmann equations that govern it. Note that space itself expands; galaxies are not flying through it.',
@@ -641,6 +652,7 @@ export const TOPICS = [
     name: 'The cosmic microwave background',
     group: 'Cosmology',
     level: 'Advanced',
+    sims: ['cosmicExpansion', 'blackbodySpectra'],
     aliases: ['recombination', 'last scattering', 'planck', 'wmap', 'acoustic peaks', 'anisotropy', 'power spectrum'],
     blurb:
       'The oldest light there is, from 380,000 years after the Big Bang. Its temperature fluctuations encode almost every cosmological parameter we know.',
@@ -665,6 +677,7 @@ export const TOPICS = [
     name: 'Dark energy & the fate of the universe',
     group: 'Cosmology',
     level: 'Advanced',
+    sims: ['cosmicExpansion'],
     aliases: ['cosmological constant', 'lambda', 'accelerating expansion', 'quintessence', 'equation of state', 'big rip'],
     blurb:
       'The expansion is accelerating, and roughly 70% of the energy budget is something we can only describe by its effect. The largest open problem in physics.',
@@ -714,6 +727,7 @@ export const TOPICS = [
     name: 'Large-scale structure',
     group: 'Cosmology',
     level: 'Advanced',
+    sims: ['cosmicExpansion'],
     aliases: ['cosmic web', 'filament', 'void', 'galaxy cluster', 'baryon acoustic oscillation', 'bao', 'correlation function'],
     blurb:
       'On the largest scales the universe is a web of filaments and voids. Its statistics are one of the sharpest cosmological probes we have.',
@@ -736,6 +750,7 @@ export const TOPICS = [
     name: 'Newtonian mechanics & gravity',
     group: 'Physics foundations',
     level: 'Beginner',
+    sims: ['keplerOrbits', 'tidesRoche'],
     aliases: ['classical mechanics', 'newton', 'inverse square', 'angular momentum', 'lagrangian', 'conservation laws', 'energy'],
     blurb:
       'Forces, energy, angular momentum, and the inverse-square law. Everything else on this page is built on top of it.',
@@ -779,6 +794,7 @@ export const TOPICS = [
     name: 'Thermodynamics & statistical mechanics',
     group: 'Physics foundations',
     level: 'Intermediate',
+    sims: ['blackbodySpectra'],
     aliases: ['entropy', 'boltzmann', 'maxwell boltzmann', 'ideal gas', 'degeneracy', 'equation of state', 'saha'],
     blurb:
       'Stellar interiors, planetary atmospheres and degenerate matter are all thermodynamics problems. The Saha equation alone explains stellar spectral classes.',
@@ -800,6 +816,7 @@ export const TOPICS = [
     name: 'Quantum mechanics',
     group: 'Physics foundations',
     level: 'Advanced',
+    sims: ['blackbodySpectra'],
     aliases: ['schrodinger', 'wavefunction', 'atomic structure', 'selection rules', 'pauli exclusion', 'quantum tunneling', 'spectral lines'],
     blurb:
       'Atomic structure explains every spectral line; the exclusion principle explains degeneracy pressure; tunnelling is why the Sun fuses at all.',
@@ -860,7 +877,7 @@ export const TOPICS = [
     ],
     prereqs: { math: ['algebra-2'], physics: ['mechanics-calculus'] },
     links: [SUSSKIND, FEYNMAN, TONG, SPACETIME],
-    sims: ['blackHole'],
+    sims: ['blackHole', 'relativisticFlight'],
   },
   {
     id: 'general-relativity',
@@ -883,7 +900,7 @@ export const TOPICS = [
     ],
     prereqs: { math: ['tensor-calculus', 'differential-geometry'], physics: ['special-relativity', 'classical-mechanics'] },
     links: [CARROLL_GR, SUSSKIND, TONG, SPACETIME],
-    sims: ['blackHole', 'wormhole'],
+    sims: ['blackHole', 'wormhole', 'gravLensing'],
   },
   {
     id: 'black-holes',

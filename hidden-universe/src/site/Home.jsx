@@ -143,7 +143,14 @@ function SimCard({ sim, onLaunch }) {
   )
 }
 
+// Four on first view: fourteen full cards is a wall. The rest open in pages of
+// four, matching the library's rhythm and the two-column grid.
+const SIM_PAGE = 4
+
 function Simulations({ onLaunch }) {
+  const [shownCount, setShownCount] = useState(SIM_PAGE)
+  const visible = SIMULATIONS.slice(0, shownCount)
+  const remaining = SIMULATIONS.length - visible.length
   return (
     <section className="hu-section" id="simulations">
       <div className="hu-section-head">
@@ -157,9 +164,36 @@ function Simulations({ onLaunch }) {
         </p>
       </div>
       <div className="hu-sim-grid">
-        {SIMULATIONS.map((sim) => (
+        {visible.map((sim) => (
           <SimCard key={sim.key} sim={sim} onLaunch={onLaunch} />
         ))}
+      </div>
+      <div className="hu-more">
+        {remaining > 0 ? (
+          <button
+            type="button"
+            className="hu-btn hu-btn-ghost"
+            onClick={() => setShownCount((n) => n + SIM_PAGE)}
+          >
+            Show more simulations
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="hu-btn hu-btn-ghost"
+            onClick={() => {
+              setShownCount(SIM_PAGE)
+              // Collapsing ten cards would otherwise leave you far below the
+              // section with nothing in view.
+              document.getElementById('simulations')?.scrollIntoView({ block: 'start' })
+            }}
+          >
+            Show fewer
+          </button>
+        )}
+        <span className="hu-more-count">
+          Showing {visible.length} of {SIMULATIONS.length}
+        </span>
       </div>
       <SectionSeam />
     </section>

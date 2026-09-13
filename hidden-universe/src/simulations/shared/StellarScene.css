@@ -1,0 +1,109 @@
+/* Overlays for the photometry scenes. The telescope inset is an empty frame:
+   the WebGL canvas behind it draws the picture into exactly this rectangle. */
+
+.ss-inset {
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 12;
+  top: 16px;
+  left: 16px;
+  width: 228px;
+  height: 228px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), 0 18px 40px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.ss-inset-wide {
+  width: 312px;
+  height: 168px;
+}
+
+.ss-inset-label,
+.ss-inset-note {
+  position: absolute;
+  left: 10px;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: rgba(230, 239, 255, 0.72);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+.ss-inset-label { top: 8px; font-weight: 700; color: #fff; }
+.ss-inset-note { bottom: 8px; right: 10px; color: rgba(230, 239, 255, 0.55); }
+
+/* Small in-scene label, positioned by drei's <Html>. */
+.ss-tag {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(159, 184, 255, 0.35);
+  background: rgba(8, 12, 22, 0.72);
+  font: 600 11px ui-sans-serif, system-ui, sans-serif;
+  color: #cfdcff;
+}
+
+.ss-curve {
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 14;
+  left: 16px;
+  bottom: 62px;
+  width: min(660px, calc(100vw - 378px));
+  height: 196px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: rgba(8, 12, 22, 0.74);
+  backdrop-filter: blur(14px);
+  pointer-events: none;
+}
+
+.ss-curve-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 11.5px;
+}
+
+.ss-curve-title { font-weight: 700; color: #fff; }
+.ss-curve-note { color: rgba(230, 239, 255, 0.5); text-align: right; }
+
+.ss-curve-tall { height: min(300px, 38dvh); }
+
+.ss-curve-hr {
+  width: min(520px, 40vw);
+  height: min(600px, calc(100dvh - 94px));
+}
+
+/* Beats the full-bleed `.sim2 canvas` rule meant for the WebGL canvas. */
+.sim2 .ss-curve-canvas {
+  position: relative !important;
+  inset: auto !important;
+  flex: 1;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0;
+}
+
+@media (max-width: 780px) {
+  .ss-inset {
+    top: 64px;
+    width: 132px;
+    height: 132px;
+  }
+  .ss-inset-wide { width: 176px; height: 104px; }
+  .ss-inset-note { display: none; }
+  .ss-curve {
+    bottom: calc(46dvh + 62px);
+    width: calc(100vw - 32px);
+    height: 132px;
+  }
+  .ss-curve-note { display: none; }
+  .ss-curve-hr { height: 25dvh; }
+}
